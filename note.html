@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>අමිල උඩවත්ත-ඉතිහාසය වාග්මාලාව</title>
+    <title>සටහන් පොත</title>
     <style>
         * {
             margin: 0;
@@ -12,101 +12,82 @@
         }
 
         body {
-            font-family: 'Noto Sans Sinhala', 'Iskoola Pota', sans-serif;
+            font-family: 'Noto Sans Sinhala', Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.95);
+            background: white;
             border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             padding: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 600px;
+            max-width: 900px;
             width: 100%;
-            text-align: center;
-            backdrop-filter: blur(10px);
         }
 
         h1 {
-            color: #2d3748;
+            text-align: center;
+            color: #667eea;
+            font-size: 2.5em;
             margin-bottom: 40px;
-            font-size: 2em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
         .main-buttons {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
-            justify-content: center;
             margin-bottom: 30px;
-        }
-
-        .btn {
-            padding: 15px 30px;
-            font-size: 1.1em;
-            font-weight: bold;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .main-btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            flex: 1;
+            border: none;
+            padding: 20px 30px;
+            font-size: 1.3em;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            font-weight: bold;
         }
 
         .main-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .main-btn:active {
+            transform: translateY(-1px);
         }
 
         .main-btn.active {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            box-shadow: 0 8px 25px rgba(245, 87, 108, 0.5);
         }
 
-        .sub-buttons {
+        .lessons-container {
             display: none;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 20px;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .lessons-container.active {
+            display: block;
             animation: fadeIn 0.5s ease;
-        }
-
-        .sub-buttons.show {
-            display: flex;
-        }
-
-        .sub-btn {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-            width: 100%;
-        }
-
-        .sub-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 2px solid #e2e8f0;
-            color: #718096;
-            font-size: 0.9em;
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(-10px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
@@ -114,65 +95,138 @@
             }
         }
 
-        @media (max-width: 480px) {
-            .main-buttons {
-                flex-direction: column;
+        .lessons-title {
+            text-align: center;
+            color: #764ba2;
+            font-size: 1.5em;
+            margin-bottom: 25px;
+        }
+
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .lesson-btn {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 15px 20px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .lesson-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
             }
 
             h1 {
-                font-size: 1.5em;
+                font-size: 2em;
+            }
+
+            .main-btn {
+                font-size: 1.1em;
+                padding: 15px 20px;
+            }
+
+            .lessons-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>අමිල උඩවත්ත-ඉතිහාසය වාග්මාලාව</h1>
+        <h1>සටහන් පොත</h1>
         
         <div class="main-buttons">
-            <button class="btn main-btn" id="advancedBtn">උසස් පෙළ</button>
-            <button class="btn main-btn" id="ordinaryBtn">සාමාන්‍ය පෙළ</button>
+            <button class="main-btn" onclick="showLessons('sl')">ශ්‍රී ලංකා ඉතිහාසය</button>
+            <button class="main-btn" onclick="showLessons('erp')">යුරෝපා ඉතිහාසය</button>
+            <button class="main-btn" onclick="showLessons('ind')">ඉන්දියා ඉතිහාසය</button>
         </div>
 
-        <div class="sub-buttons" id="advancedSub">
-            <button class="btn sub-btn" onclick="window.location.href='slpedia.html'">ශ්‍රී ලංකා ඉතිහාසය</button>
-            <button class="btn sub-btn" onclick="window.location.href='erppedia.html'">යුරෝපා ඉතිහාසය</button>
-            <button class="btn sub-btn" onclick="window.location.href='indpedia.html'">ඉන්දියා ඉතිහාසය</button>
-			<button class="btn sub-btn" onclick="window.location.href='මෙතෙක් ආ ප්‍රශ්න.html'">මෙතෙක් ආ ප්‍රශ්න</button>
-			<button class="btn sub-btn" onclick="window.location.href='joinclass.html'">පන්තියට සම්බන්ධ වෙන්න</button>
-			<button class="btn sub-btn" onclick="window.location.href='note.html'">සටහන් පොත</button>
-			
+        <div id="sl-lessons" class="lessons-container">
+            <h2 class="lessons-title">ශ්‍රී ලංකා ඉතිහාසය - පාඩම්</h2>
+            <div class="lessons-grid" id="sl-grid"></div>
         </div>
 
-        <div class="sub-buttons" id="ordinarySub">
-            <button class="btn sub-btn" onclick="window.location.href='10pedia.html'">10 ශ්‍රේණිය</button>
-            <button class="btn sub-btn" onclick="window.location.href='11pedia.html'">11 ශ්‍රේණිය</button>
+        <div id="erp-lessons" class="lessons-container">
+            <h2 class="lessons-title">යුරෝපා ඉතිහාසය - පාඩම්</h2>
+            <div class="lessons-grid" id="erp-grid"></div>
         </div>
 
-        <div class="footer">
-            © Copyrights - අමිල උඩවත්ත-ඉතිහාසය
+        <div id="ind-lessons" class="lessons-container">
+            <h2 class="lessons-title">ඉන්දියා ඉතිහාසය - පාඩම්</h2>
+            <div class="lessons-grid" id="ind-grid"></div>
         </div>
+
+        <footer>
+            <p>&copy; අමිල උඩවත්ත ඉතිහාසය</p>
+        </footer>
     </div>
 
     <script>
-        const advancedBtn = document.getElementById('advancedBtn');
-        const ordinaryBtn = document.getElementById('ordinaryBtn');
-        const advancedSub = document.getElementById('advancedSub');
-        const ordinarySub = document.getElementById('ordinarySub');
+        const subjects = ['sl', 'erp', 'ind'];
+        const lessonNames = [
+            'පළමු පාඩම', 'දෙවන පාඩම', 'තෙවන පාඩම', 'හතරවන පාඩම',
+            'පස්වන පාඩම', 'හයවන පාඩම', 'හත්වන පාඩම', 'අටවන පාඩම',
+            'නවවන පාඩම', 'දහවන පාඩම', 'එකොළොස්වන පාඩම', 'දොළොස්වන පාඩම',
+            'දහතුන්වන පාඩම', 'දාහතරවන පාඩම', 'පහළොස්වන පාඩම', 'දහසයවන පාඩම',
+            'දාහත්වන පාඩම', 'දහඅටවන පාඩම'
+        ];
 
-        advancedBtn.addEventListener('click', function() {
-            advancedBtn.classList.add('active');
-            ordinaryBtn.classList.remove('active');
-            advancedSub.classList.add('show');
-            ordinarySub.classList.remove('show');
+        subjects.forEach(subject => {
+            const grid = document.getElementById(`${subject}-grid`);
+            for (let i = 1; i <= 18; i++) {
+                const link = document.createElement('a');
+                link.href = `${subject}${i}.html`;
+                link.className = 'lesson-btn';
+                link.textContent = lessonNames[i - 1];
+                grid.appendChild(link);
+            }
         });
 
-        ordinaryBtn.addEventListener('click', function() {
-            ordinaryBtn.classList.add('active');
-            advancedBtn.classList.remove('active');
-            ordinarySub.classList.add('show');
-            advancedSub.classList.remove('show');
-        });
+        let currentSubject = null;
+
+        function showLessons(subject) {
+            const buttons = document.querySelectorAll('.main-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            subjects.forEach(s => {
+                const container = document.getElementById(`${s}-lessons`);
+                if (s === subject) {
+                    container.classList.add('active');
+                    currentSubject = subject;
+                } else {
+                    container.classList.remove('active');
+                }
+            });
+        }
     </script>
 </body>
 </html>
