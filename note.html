@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>අමිල උඩවත්ත-ඉතිහාසය වාග්මාලාව</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans Sinhala', 'Iskoola Pota', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            color: #2d3748;
+            margin-bottom: 40px;
+            font-size: 2em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .main-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            flex: 1;
+        }
+
+        .main-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .main-btn.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .sub-buttons {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .sub-buttons.show {
+            display: flex;
+        }
+
+        .sub-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            width: 100%;
+        }
+
+        .sub-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e2e8f0;
+            color: #718096;
+            font-size: 0.9em;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-buttons {
+                flex-direction: column;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>අමිල උඩවත්ත-ඉතිහාසය වාග්මාලාව</h1>
+        
+        <div class="main-buttons">
+            <button class="btn main-btn" id="advancedBtn">උසස් පෙළ</button>
+            <button class="btn main-btn" id="ordinaryBtn">සාමාන්‍ය පෙළ</button>
+        </div>
+
+        <div class="sub-buttons" id="advancedSub">
+            <button class="btn sub-btn" onclick="window.location.href='slpedia.html'">ශ්‍රී ලංකා ඉතිහාසය</button>
+            <button class="btn sub-btn" onclick="window.location.href='erppedia.html'">යුරෝපා ඉතිහාසය</button>
+            <button class="btn sub-btn" onclick="window.location.href='indpedia.html'">ඉන්දියා ඉතිහාසය</button>
+			<button class="btn sub-btn" onclick="window.location.href='මෙතෙක් ආ ප්‍රශ්න.html'">මෙතෙක් ආ ප්‍රශ්න</button>
+			<button class="btn sub-btn" onclick="window.location.href='joinclass.html'">පන්තියට සම්බන්ධ වෙන්න</button>
+			<button class="btn sub-btn" onclick="window.location.href='note.html'">සටහන් පොත</button>
+			
+        </div>
+
+        <div class="sub-buttons" id="ordinarySub">
+            <button class="btn sub-btn" onclick="window.location.href='10pedia.html'">10 ශ්‍රේණිය</button>
+            <button class="btn sub-btn" onclick="window.location.href='11pedia.html'">11 ශ්‍රේණිය</button>
+        </div>
+
+        <div class="footer">
+            © Copyrights - අමිල උඩවත්ත-ඉතිහාසය
+        </div>
+    </div>
+
+    <script>
+        const advancedBtn = document.getElementById('advancedBtn');
+        const ordinaryBtn = document.getElementById('ordinaryBtn');
+        const advancedSub = document.getElementById('advancedSub');
+        const ordinarySub = document.getElementById('ordinarySub');
+
+        advancedBtn.addEventListener('click', function() {
+            advancedBtn.classList.add('active');
+            ordinaryBtn.classList.remove('active');
+            advancedSub.classList.add('show');
+            ordinarySub.classList.remove('show');
+        });
+
+        ordinaryBtn.addEventListener('click', function() {
+            ordinaryBtn.classList.add('active');
+            advancedBtn.classList.remove('active');
+            ordinarySub.classList.add('show');
+            advancedSub.classList.remove('show');
+        });
+    </script>
+</body>
+</html>
