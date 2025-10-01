@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>අමිල උඩවත්ත - ඉතිහාසය</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        
+        .banner {
+            width: 100%;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .banner img {
+            width: 100%;
+            display: block;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+            font-size: 16px;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .input-field:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+            outline: none;
+        }
+        
+        select.input-field {
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23555" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+        
+        textarea.input-field {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .btn {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .btn:hover {
+            background-color: #3a7bc8;
+            transform: translateY(-2px);
+        }
+        
+        .btn i {
+            margin-right: 10px;
+        }
+        
+        .btn.whatsapp {
+            background-color: #25D366;
+        }
+        
+        .btn.whatsapp:hover {
+            background-color: #20ba57;
+        }
+        
+        .btn.copy {
+            background-color: #6c5ce7;
+        }
+        
+        .btn.copy:hover {
+            background-color: #5b4ec7;
+        }
+        
+        .btn.link {
+            background-color: #FF5722;
+        }
+        
+        .btn.link:hover {
+            background-color: #e64a19;
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            display: none;
+        }
+        
+        .result p {
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            color: #4a90e2;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .copy-alert {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1000;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            animation: modalAppear 0.3s ease-out;
+        }
+        
+        @keyframes modalAppear {
+            from {transform: translateY(-50px); opacity: 0;}
+            to {transform: translateY(0); opacity: 1;}
+        }
+        
+        .modal-title {
+            font-size: 22px;
+            color: #4a90e2;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .modal-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .modal-text p {
+            margin-bottom: 10px;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .close-modal:hover {
+            color: #333;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="banner">
+            <img src="https://www.eduhelp.lk/wp-content/uploads/2025/05/banner2.gif" alt="අමිල උඩවත්ත - ඉතිහාසය">
+        </div>
+        
+        <h1>අමිල උඩවත්ත - ඉතිහාසය</h1>
+        
+        <form id="userForm">
+            <div class="form-group">
+                <label for="name">නම:</label>
+                <input type="text" id="name" name="name" class="input-field" placeholder="ඔබේ නම ඇතුළත් කරන්න" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="address">ලිපිනය (නිබන්ධන එවීම සඳහා):</label>
+                <textarea id="address" name="address" class="input-field" placeholder="ඔබේ ලිපිනය ඇතුළත් කරන්න" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">දුරකතන අංකය:</label>
+                <input type="tel" id="phone" name="phone" class="input-field" placeholder="ඔබේ දුරකතන අංකය ඇතුළත් කරන්න" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="whatsapp">Whatsapp අංකය:</label>
+                <input type="tel" id="whatsapp" name="whatsapp" class="input-field" placeholder="ඔබේ Whatsapp අංකය ඇතුළත් කරන්න" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="examType">විභාගය:</label>
+                <select id="examType" name="examType" class="input-field" required>
+                    <option value="" disabled selected>තෝරන්න</option>
+                    <option value="උසස් පෙළ">උසස් පෙළ</option>
+                    <option value="සාමාන්‍ය පෙළ">සාමාන්‍ය පෙළ(Individual පමණි.)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="year">විභාගයට පෙනී සිටින වර්ෂය:</label>
+                <input type="number" id="year" name="year" class="input-field" min="2020" max="2030" placeholder="විභාගයට පෙනී සිටින වර්ෂය ඇතුළත් කරන්න" required>
+            </div>
+            
+            <div class="form-group" id="subjectGroup">
+                <label for="subject">තේරීම උසස් පෙළ පන්තියක් නම්, ලංකා ඉතිහාසය සමග හදාරන අනෙක් කොටස දක්වන්න:</label>
+                <select id="subject" name="subject" class="input-field">
+                    <option value="" disabled selected>තෝරන්න</option>
+                    <option value="India">India</option>
+                    <option value="Europe">Europe</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="classType">සහභාගී වන්නට අපේක්ෂා කරන පන්තිය:</label>
+                <select id="classType" name="classType" class="input-field" required>
+                    <option value="" disabled selected>තෝරන්න</option>
+                    <option value="Physical">Physical Group class</option>
+                    <option value="Online">Online Class</option>
+                    <option value="Individual">Individual(කළුතර අවට)</option>
+                </select>
+            </div>
+            
+            <button type="button" id="whatsappBtn" class="btn whatsapp">
+                <i class="fab fa-whatsapp"></i> Send via WhatsApp
+            </button>
+            
+            <button type="button" id="copyBtn" class="btn copy">
+                <i class="fas fa-copy"></i> Copy detail
+            </button>
+            
+            <div class="section-title">අමතර තොරතුරු</div>
+            
+            <div class="buttons-container">
+                <button type="button" id="classScheduleBtn" class="btn link">
+                    <i class="fas fa-book"></i> පන්ති සැලසුම
+                </button>
+                
+                <button type="button" id="teacherInfoBtn" class="btn link">
+                    <i class="fas fa-user-tie"></i> ගුරුවරයා ගැන
+                </button>
+                
+                <button type="button" id="classFeeBtn" class="btn link">
+                    <i class="fas fa-money-bill-wave"></i> පන්ති ගාස්තු
+                </button>
+            </div>
+        </form>
+        
+        <div class="result" id="result">
+            <p id="resultText"></p>
+        </div>
+    </div>
+    
+    <!-- Copy Alert -->
+    <div class="copy-alert" id="copyAlert">තොරතුරු copy කරන ලදී!</div>
+    
+    <!-- Class Schedule Modal -->
+    <div id="classScheduleModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeClassSchedule">&times;</span>
+            <h2 class="modal-title">පන්ති සැලසුම</h2>
+            <div class="modal-text">
+                <p>අපගේ පන්තිය සම්පූර්ණ විෂය නිර්දේශය නියමිත කාලයට වඩා මාස 6කට පෙර ආවරණය කරන අයුරින් සකසා තිබේ.</p>
+                <p>මුද්‍රිත නිබන්ධන, සිතියම්, ප්‍රශ්නපත්‍ර ආදිය සැපයේ.</p>
+                <p>පුණරීක්ෂණ පන්තිය මාස 6ක් පුරා පැවත්වේ.</p>
+                <p>පාසල් කාලය තුළ උදේවරු පන්ති නොපැවත්වේ.</p>
+                <p><strong>විෂයනිර්දේශයට අමතරව</strong></p>
+                <p>අංගසම්පූර්ණව සකස් කළ සිතියම් ලකුණුකිරීමේ පාඨමාලාවක් යටතේ සිතියම් 80ක් හෝ අවශ්‍යතාව අනුව ඊට වැඩි ප්‍රාණයක් ලකුණු කර හුරුකරවනු ලැබේ. එහි ඉලක්කය සිතියම් ලකුණුකිරීමට අදාළ ලකුණු 12ම ලබාගැනීම යි.</p>
+                <p>රචනාමය ප්‍රශ්න 40 බැගින් 80ක් පන්ති කාලසීමාව තුළ පන්තියේ දී හා නිවසේ දී දිනකට එක බැගින් ලියවනු ලබයි.</p>
+                <p>MCQ දහස බැගින් දෙදහසක් සඳහා පිළිතුරු ලියවනු ලැබේ.</p>
+                <p>අපගේ අවසන් අරමුණ උසස් පෙළ ඉතිහාසය විෂයය සඳහා A සාමර්ථ්‍යයක් ලබා ගැනීම යි.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Teacher Info Modal -->
+    <div id="teacherInfoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeTeacherInfo">&times;</span>
+            <h2 class="modal-title">ගුරුවරයා ගැන</h2>
+            <div class="modal-text">
+                <p>ශ්‍රී ජයවර්ධනපුර විශ්වවිද්‍යාලයෙන් ඉතිහාසය පිළිබ﻿ඳ විශේෂ උපාධියක් හදාරා තිබේ..</p>
+                <p>රජයේ පාසල් ගුරුවරයෙකු වශයෙන් කලක් (බාරොන් ජයතිලක විද්‍යාලය-කොළඹ, මාකලන්දාව විදුහල හා වළල්ලාවිට මහා විද්‍යාලය-වළල්ලාවිට, නාගොඩ මහා විද්‍යාලය-නාගොඩ, පානදුර බාලිකා මහා විද්‍යාලය-පානදුර) සේවය කළ අතර දැනට මාර්ගගත ඉගැන්වීම් කටයුතු සඳහා කාලය යොදවා තිබේ.</p>
+                <p>ලංකාවේ අධ්‍යාපන කලාප ගණනාවක ම ගුරු පුහුණු වැඩසටහන් හා විභාග ඉලක්ක කර සිදු දරු දැරියන් සඳහා පවත්වන වැඩසටහන් වල සම්පත් දායකයෙකි.</p>
+                <p>සම්මාන දිනූ ලේඛකයෙකි(වෑ කම් පෙළහර...).</p>
+                <p>අධ්‍යාපන අමාත්‍යංශයේ ඉ තක්සලාව ආරම්භක යුගයේ එහි සම්පත් දායකයෙකි. ඉ-තක්සලාව ඉතිහාස සිතියම් පොත නිර්මාණයට පූර්ණ දායකත්වය ලබා දී තිබේ.</p>
+                <p>රූපවාහිනී ගුරුගෙදර සම්පත් දායකයෙකි.</p>
+                <p>www.eduhelp.lk වෙබ් අඩවියේ සම නිර්මාතෘ වේ.</p>
+                <p>උසස් පෙළ ඉතිහාසය ඉගැන්වීමේ පළපුරුද්ද 2025 වසර වන විට වර්ෂ 20කි.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Class Fee Modal -->
+    <div id="classFeeModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeClassFee">&times;</span>
+            <h2 class="modal-title">පන්ති ගාස්තු</h2>
+            <div class="modal-text">
+                <p>ආයතනයක පැවත්වෙන සාමාන්‍ය පන්තියක් සඳහා අයකිරීම මාසිකව රු. 2500/-කි.</p>
+                <p>Physical Group class එකක් සඳහා මාසිකව රු.15000/-කි. උපරිම ළමුන් 5ක් පමණි.(ළමුන් උපරිම සංඛ්‍යාව සිටින විට එක් අයෙකුගෙන් 3000/- බැගිනි.)</p>
+		<p>Online Group class එකක් සඳහා මාසිකව රු.12000/-කි. උපරිම ළමුන් 6ක් පමණි.(ළමුන් උපරිම සංඛ්‍යාව සිටින විට එක් අයෙකුගෙන් 2000/- බැගිනි.)</p>
+                <p>Physical Individual class එකක් සඳහා පැයක කාලයකට රු.1500/-කි.</p>
+                <p>Online Individual class එකක් සඳහා පැයක අයකිරීම 1250/-කි. </p>
+		 <p>සාමාන්‍ය Online class එකක් සඳහා මාසික අයකිරීම 2000/-/-කි. </p>
+                <p>සිතියම් ලකුණුකිරීමේ වැඩසටහන(Online) සඳහා සම්පූර්ණ අයකිරීම රු.4000/-කි. මාසයක් තුළ දින 6ක් පැවත්වේ.</p>
+                <p>Online MCQ test එක සඳහා සම්පූර්ණ අයකිරීම රු. 12000කි(2000x6)මසකට ප්‍රශ්නපත්‍ර 2 බැගින් වර්ෂ 2ක් සඳහා. පිළිතුරු සාකච්ඡා ඇතුළත්ව</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to handle exam type change
+        document.getElementById('examType').addEventListener('change', function() {
+            const examType = this.value;
+            const subjectGroup = document.getElementById('subjectGroup');
+            const subjectField = document.getElementById('subject');
+            
+            if (examType === 'සාමාන්‍ය පෙළ') {
+                // Hide and disable subject field for O/L
+                subjectGroup.classList.add('hidden');
+                subjectField.disabled = true;
+                subjectField.required = false;
+                // Set a default value to ensure form submission works
+                subjectField.value = 'N/A';
+            } else {
+                // Show and enable subject field for A/L
+                subjectGroup.classList.remove('hidden');
+                subjectField.disabled = false;
+                subjectField.required = true;
+                subjectField.value = '';
+            }
+        });
+        
+        // WhatsApp button functionality
+        document.getElementById('whatsappBtn').addEventListener('click', function() {
+            const name = document.getElementById('name').value;
+            const address = document.getElementById('address').value;
+            const phone = document.getElementById('phone').value;
+            const year = document.getElementById('year').value;
+            const whatsapp = document.getElementById('whatsapp').value;
+            const classType = document.getElementById('classType').value;
+            const examType = document.getElementById('examType').value;
+            
+            let subject = document.getElementById('subject').value;
+            
+            // Validate form
+            if (!name || !address || !phone || !year || !whatsapp || !classType || !examType) {
+                alert('කරුණාකර සියලුම තොරතුරු ඇතුළත් කරන්න');
+                return;
+            }
+            
+            // For O/L, don't validate subject field
+            if (examType === 'උසස් පෙළ' && !subject) {
+                alert('කරුණාකර සියලුම තොරතුරු ඇතුළත් කරන්න');
+                return;
+            }
+            
+            // Prepare WhatsApp message
+            let message = `නම: ${name}%0A` +
+                        `ලිපිනය: ${address}%0A` +
+                        `දුරකතන අංකය: ${phone}%0A` +
+                        `WhatsApp අංකය: ${whatsapp}%0A` +
+                        `විභාගය: ${examType}%0A` +
+                        `විභාගයට පෙනී සිටින වර්ෂය: ${year}%0A`;
+            
+            // Only add subject for A/L
+            if (examType === 'උසස් පෙළ') {
+                message += `හදාරන අනෙක් කොටස: ${subject}%0A`;
+            }
+            
+            message += `සහභාගී වන්නට අපේක්ෂා කරන පන්තිය: ${classType}`;
+            
+            // Open WhatsApp with predefined message
+            window.open(`https://wa.me/94701551279?text=${message}`, '_blank');
+        });
+        
+        // Copy button functionality
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            const name = document.getElementById('name').value;
+            const address = document.getElementById('address').value;
+            const phone = document.getElementById('phone').value;
+            const year = document.getElementById('year').value;
+            const whatsapp = document.getElementById('whatsapp').value;
+            const classType = document.getElementById('classType').value;
+            const examType = document.getElementById('examType').value;
+            
+            let subject = document.getElementById('subject').value;
+            
+            // Validate form
+            if (!name || !address || !phone || !year || !whatsapp || !classType || !examType) {
+                alert('කරුණාකර සියලුම තොරතුරු ඇතුළත් කරන්න');
+                return;
+            }
+            
+            // For O/L, don't validate subject field
+            if (examType === 'උසස් පෙළ' && !subject) {
+                alert('කරුණාකර සියලුම තොරතුරු ඇතුළත් කරන්න');
+                return;
+            }
+            
+            // Prepare text to copy
+            let textToCopy = `නම: ${name}
+ලිපිනය: ${address}
+දුරකතන අංකය: ${phone}
+WhatsApp අංකය: ${whatsapp}
+විභාගය: ${examType}
+විභාගයට පෙනී සිටින වර්ෂය: ${year}`;
+            
+            // Only add subject for A/L
+            if (examType === 'උසස් පෙළ') {
+                textToCopy += `
+හදාරන අනෙක් කොටස: ${subject}`;
+            }
+            
+            textToCopy += `
+සහභාගී වන්නට අපේක්ෂා කරන පන්තිය: ${classType}`;
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(textToCopy).then(function() {
+                // Show success message
+                const copyAlert = document.getElementById('copyAlert');
+                copyAlert.style.display = 'block';
+                
+                // Hide after 2 seconds
+                setTimeout(function() {
+                    copyAlert.style.display = 'none';
+                }, 2000);
+            });
+        });
+        
+        // Modal functionality
+        // Class Schedule Modal
+        const classScheduleModal = document.getElementById('classScheduleModal');
+        const classScheduleBtn = document.getElementById('classScheduleBtn');
+        const closeClassSchedule = document.getElementById('closeClassSchedule');
+        
+        classScheduleBtn.onclick = function() {
+            classScheduleModal.style.display = 'block';
+        }
+        
+        closeClassSchedule.onclick = function() {
+            classScheduleModal.style.display = 'none';
+        }
+        
+        // Teacher Info Modal
+        const teacherInfoModal = document.getElementById('teacherInfoModal');
+        const teacherInfoBtn = document.getElementById('teacherInfoBtn');
+        const closeTeacherInfo = document.getElementById('closeTeacherInfo');
+        
+        teacherInfoBtn.onclick = function() {
+            teacherInfoModal.style.display = 'block';
+        }
+        
+        closeTeacherInfo.onclick = function() {
+            teacherInfoModal.style.display = 'none';
+        }
+        
+        // Class Fee Modal (using the same content as Class Schedule for now)
+        const classFeeModal = document.getElementById('classFeeModal');
+        const classFeeBtn = document.getElementById('classFeeBtn');
+        const closeClassFee = document.getElementById('closeClassFee');
+        
+        classFeeBtn.onclick = function() {
+            classFeeModal.style.display = 'block';
+        }
+        
+        closeClassFee.onclick = function() {
+            classFeeModal.style.display = 'none';
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == classScheduleModal) {
+                classScheduleModal.style.display = 'none';
+            }
+            if (event.target == teacherInfoModal) {
+                teacherInfoModal.style.display = 'none';
+            }
+            if (event.target == classFeeModal) {
+                classFeeModal.style.display = 'none';
+            }
+        }
+        
+        //Add focus animation for input fields
+        const inputs = document.querySelectorAll('.input-field');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-5px)';
+                this.parentElement.style.transition = 'transform 0.3s ease';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
+
