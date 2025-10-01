@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ඉතිහාස විභාග ප්‍රශ්න ප්‍රදර්ශනය</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .step {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .step.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
+        }
+
+        .step h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .option-btn {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 12px;
+            background: white;
+            color: #2c3e50;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .option-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            background: #f8f9fa;
+        }
+
+        .option-btn.selected {
+            background: #3498db;
+            color: white;
+        }
+
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .theme-btn {
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .theme-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .years-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .year-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #3498db;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .year-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .year-btn.inactive {
+            background: #95a5a6;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .year-btn.inactive:hover {
+            background: #95a5a6;
+            transform: none;
+        }
+
+        .year-btn.no-questions {
+            background: #e67e22;
+            opacity: 0.8;
+        }
+
+        .year-btn.no-questions:hover {
+            background: #d35400;
+            transform: translateY(-2px);
+            cursor: pointer;
+        }
+
+        .back-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            background: #e74c3c;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .question-container {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .question-number {
+            color: #e74c3c;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            border-top: 2px solid #ecf0f1;
+            color: #7f8c8d;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .breadcrumb {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 20px;
+                border-radius: 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+                margin-bottom: 8px;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .options {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .option-btn {
+                padding: 18px 15px;
+                font-size: 1.1rem;
+            }
+
+            .themes-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .theme-btn {
+                padding: 18px;
+                font-size: 1.1rem;
+            }
+
+            .years-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .year-btn {
+                padding: 15px 8px;
+                font-size: 0.9rem;
+            }
+
+            .step {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+
+            .step h3 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+            }
+
+            .question-container {
+                padding: 20px;
+                margin-bottom: 15px;
+            }
+
+            .question {
+                font-size: 1.1rem;
+                line-height: 1.5;
+            }
+
+            .breadcrumb {
+                padding: 8px 15px;
+                font-size: 0.8rem;
+                margin-bottom: 15px;
+                word-wrap: break-word;
+            }
+
+            .back-btn {
+                padding: 10px 20px;
+                margin-bottom: 15px;
+                font-size: 0.9rem;
+            }
+
+            .footer {
+                margin-top: 30px;
+                padding: 15px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .option-btn, .theme-btn {
+                font-size: 1rem;
+                padding: 15px;
+            }
+
+            .years-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .breadcrumb {
+                font-size: 0.75rem;
+                line-height: 1.4;
+            }
+
+            .question {
+                font-size: 1rem;
+            }
+
+            .question-number {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>උසස් පෙළ ඉතිහාස මෙතෙක් ආ ප්‍රශ්න</h1>
+            <p>විභාග ප්‍රශ්න 2024 දක්වා ඇතුළත් කර තිබේ.</p>
+        </div>
+
+        <!-- Step 1: Region Selection -->
+        <div id="step1" class="step active">
+            <h3>කලාපය තෝරන්න</h3>
+            <div class="options">
+                <button class="option-btn" onclick="selectRegion('lanka')">🇱🇰 ලංකා ඉතිහාසය</button>
+                <button class="option-btn" onclick="selectRegion('europe')">🇪🇺 යුරෝපා ඉතිහාසය</button>
+                <button class="option-btn" onclick="selectRegion('india')">🇮🇳 ඉන්දියා ඉතිහාසය</button>
+            </div>
+        </div>
+
+        <!-- Step 2: Theme Selection -->
+        <div id="step2" class="step hidden">
+            <button class="back-btn" onclick="goBack('step1')">← ආපසු</button>
+            <div class="breadcrumb" id="breadcrumb2">කලාපය: <span id="regionName"></span></div>
+            <h3>තේමාව තෝරන්න</h3>
+            <div id="themesContainer" class="themes-grid"></div>
+        </div>
+
+        <!-- Step 3: Year Selection -->
+        <div id="step3" class="step hidden">
+            <button class="back-btn" onclick="goBack('step2')">← ආපසු</button>
+            <div class="breadcrumb" id="breadcrumb3">
+                කලාපය: <span id="regionName3"></span> | තේමාව: <span id="themeName3"></span>
+            </div>
+            <h3>වර්ෂය තෝරන්න</h3>
+            <div id="yearsContainer" class="years-grid"></div>
+        </div>
+
+        <!-- Step 4: Questions -->
+        <div id="step4" class="step hidden">
+            <button class="back-btn" onclick="goBack('step3')">← ආපසු</button>
+            <div class="breadcrumb" id="breadcrumb4">
+                කලාපය: <span id="regionName4"></span> | තේමාව: <span id="themeName4"></span> | වර්ෂය: <span id="yearName4"></span>
+            </div>
+            <h3>විභාග ප්‍රශ්න</h3>
+            <div id="questionsContainer"></div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2025 අමිල උඩවත්ත ඉතිහාසය. සියලුම අයිතිවාසිකම් ආරක්ෂිතයි.</p>
+        </div>
+    </div>
+
+    <script>
+        let selectedRegion = '';
+        let selectedTheme = '';
+        let selectedYear = '';
+
+        // Complete exam questions data structure
+        const examData = {
+            lanka: {
+                themes: [
+                    'භූගෝලීය සාධක සම්බන්ධයෙන්',
+                    'මූලාශ්‍රය සම්බන්ධයෙන්',
+                    'ආර්ය සංක්‍රමණ හා ජනපද සම්බන්ධයෙන්',
+                    'පණ්ඩුකාභය රාජ්‍ය සමය සම්බන්ධයෙන්',
+                    'දෙවනපෑතිස් රජු සම්බන්ධයෙන්',
+                    'මහින්දාගමනය සම්බන්ධයෙන්',
+                    'කාවන්තිස්ස රජු සම්බන්ධයෙන්',
+                    'දුටුගැමුණු රජු සම්බන්ධයෙන්',
+                    'වළගම්බා රජු සම්බන්ධයෙන්',
+                    'වසභ රජු සම්බන්ධයෙන්',
+                    'මහසෙන් රජු සම්බන්ධයෙන්',
+                    'ධාතුසේන රජු සම්බන්ධයෙන්',
+                    'සීගිරිය හෝ කාශ්‍යප රජු සම්බන්ධයෙන්',
+                    'අනුරාධපුර පරිහානිය සම්බන්ධයෙන්',
+                    'රජරට චෝළ ආධිපත්‍යය සම්බන්ධයෙන්',
+                    'මහා විජයබාහු රජු සම්බන්ධයෙන්',
+                    'මහා පරාක්‍රමබාහු රජු සම්බන්ධයෙන්',
+                    'නිශ්ශංකමල්ල රජු සම්බන්ධයෙන්',
+                    'වැව් හා වාරිමාර්ග ඇසුරෙන්',
+                    'රජරට සමයේ විදේශ ආක්‍රමණ සම්බන්ධයෙන්',
+                    'රජරට සමයේ විදේශ සම්බන්ධතා සම්බන්ධයෙන්',
+                    'පොළොන්නරු යුගයේ ආර්ථිකය',
+                    'පොළොන්නරු පරිහානිය සම්බන්ධයන්',
+                    'රජරට පරිහානිය සම්බන්ධයන්',
+                    'දඹදෙණි යුගය සම්බන්ධයෙන්',
+                    'තෙවන විජයබාහු රජු සම්බන්ධයෙන්',
+                    'දෙවන පරාක්‍රමබාහු රජු සම්බන්ධයෙන්',
+                    'යාපහුව යුගය සම්බන්ධයෙන්',
+                    'කුරුණෑගල යුගය සම්බන්ධයෙන්',
+                    'ගම්පොළ යුගය සම්බන්ධයෙන්',
+                    'කෝට්ටේ යුගය සම්බන්ධයෙන්',
+                    'හයවන පරාක්‍රමබාහු රජු සම්බන්ධයෙන්',
+                    'කලාකටයුතු සම්බන්ධයෙන්',
+                    'යාපන රාජධානිය සම්බන්ධයෙන්',
+                    'සීතාවක රාජ්‍යය සම්බන්ධයෙන්',
+                    'බ්‍රිතාන්‍ය පාලන සමය සම්බන්ධයෙන්',
+                    'බ්‍රිතාන්‍ය පාලන සමයේ සිංහලේ විමුක්ති අරගල සම්බන්ධයෙන්',
+                    'යටත්විජිත යුගයට පෙර ආර්ථිකය සම්බන්ධයෙන්',
+                    'පෘතුගීසි හා ලන්දේසි යුග සම්බන්ධයෙන්',
+                    'මහනුවර රාජධානිය සම්බන්ධයෙන්',
+                    'බ්‍රිතාන්‍ය සමයේ ආණ්ඩුක්‍රම ප්‍රතිසංස්කරණ සම්බන්ධයෙන්',
+                    'ආගමික හා සංස්කෘතික පුනරුදය සම්බන්ධයෙන්',
+                    'ගොවි ජනපද සම්බන්ධයෙන්',
+                    'යටත්විජිතයුගයට පසු 1978 දක්වා ආර්ථිකය සම්බන්ධයෙන්',
+                    'නිදහසින් පසු මැතිවරණ හා දේශපාලන කටයුතු සම්බන්ධයෙන්',
+                    'වතු ආර්ථිකය සම්බන්ධයෙන්',
+                    'ලංකා ජාතික සංගමය සම්බන්ධයෙන්',
+                    'පුද්ගල චරිත හා වෙනත්',
+                    'ජනරජ ව්‍යවස්ථා සම්බන්ධයෙන්'
+                ],
+                questions: {
+                    'භූගෝලීය සාධක සම්බන්ධයෙන්': {
+                        '2019': [
+                            'ශ්‍රී ලංකාවේ භූගෝලීය පිහිටීම මුහුදු මාර්ගයේ වැදගත්කම කුමක්ද?',
+                            'ශ්‍රී ලංකාව සහ ඉන්දියාව අතර ඇති අල්ක් පාලම ඉතිහාසයට කළ සේවය විස්තර කරන්න.'
+                        ],
+                        '2020': [
+                            'ශ්‍රී ලංකාවේ ස්වභාවික වරායන් ගේ ඉතිහාසික වැදගත්කම පිළිබඳව ලියන්න.',
+                            'මේ වසරේ මේ තේමාව යටතේ අමතර ප්‍රශ්නයක් ලැබී නැත.'
+                        ],
+                        '2021': [
+                            'ශ්‍රී ලංකාවේ කාලගුණික විශේෂතා සහ ඒවායේ ඉතිහාසික බලපෑම විස්තර කරන්න.'
+                        ]
+                    },
+                    'මූලාශ්‍රය සම්බන්ධයෙන්': {
+                        '2018': [
+                            'මහාවංශයේ ඉතිහාසික වැදගත්කම සහ එහි සීමාවන් කුමක්ද?',
+                            'දිපාවංශය සහ මහාවංශය අතර ඇති වෙනස්කම් පිළිබඳව ලියන්න.'
+                        ],
+                        '2019': [
+                            'පුරාණ ලිඛිත මූලාශ්‍ර සහ පුරාවිද්‍යා සාක්ෂි අතර සම්බන්ධකම කුමක්ද?'
+                        ],
+                        '2022': [
+                            'කූලවංශයේ මූලාශ්‍රීය වටිනාකම පිළිබඳව ලියන්න.'
+                        ]
+                    },
+                    'මහින්දාගමනය සම්බන්ධයෙන්': {
+                        '2017': [
+                            'මහින්දාගමනයේ ඉතිහාසික වැදගත්කම සහ ශ්‍රී ලංකාවට එහි බලපෑම විස්තර කරන්න.'
+                        ],
+                        '2020': [
+                            'මහින්ද මහරහතන් වහන්සේගේ ශ්‍රී ලංකාගමනයේ සමාජීය සහ සංස්කෘතික බලපෑම් පිළිබඳව ලියන්න.'
+                        ]
+                    }
+                }
+            },
+            europe: {
+                themes: [
+                    'යුරෝපා සංගමය',
+                    'ප්‍රථම ලෝක යුද්ධය',
+                    'බර්ලින් තාප්පය',
+                    'නැපෝලියන් යුගය'
+                ],
+                questions: {
+                    'යුරෝපා සංගමය': {
+                        '2019': [
+                            'යුරෝපා සංගමයේ පිහිටුවීම සහ එහි මූලික අරමුණු විස්තර කරන්න.',
+                            'Brexit හි ප්‍රධාන හේතු කුමන ඒවාද?'
+                        ],
+                        '2021': [
+                            'යුරෝ මුදලේ හඳුන්වාදීම සහ එහි බලපෑම් ගැන ලියන්න.'
+                        ]
+                    },
+                    'බර්ලින් තාප්පය': {
+                        '2020': [
+                            'බර්ලින් තාප්පය ඉදිකිරීමේ හේතු සහ ප්‍රතිඵල විස්තර කරන්න.',
+                            '1989 දී බර්ලින් තාප්පය කඩා දැමීමේ ඉතිහාසික වැදගත්කම කුමක්ද?'
+                        ]
+                    },
+                    'ප්‍රථම ලෝක යුද්ධය': {
+                        '2018': [
+                            'ප්‍රථම ලෝක යුද්ධයේ ප්‍රධාන හේතු පිළිබඳව ලියන්න.'
+                        ],
+                        '2022': [
+                            'ප්‍රථම ලෝක යුද්ධයේ යුරෝපාවට සිදු වූ බලපෑම් කුමක්ද?'
+                        ]
+                    }
+                }
+            },
+            india: {
+                themes: [
+                    'ඉන්දියා ස්වාධීනත්වය',
+                    'මහාත්මා ගාන්ධි',
+                    'මෝගල් අධිරාජ්‍යය',
+                    'සේපාහී කැරැල්ල'
+                ],
+                questions: {
+                    'ඉන්දියා ස්වාධීනත්වය': {
+                        '2019': [
+                            'ඉන්දියාවේ ස්වාධීනත්ව ව්‍යාපාරයේ ප්‍රධාන අවධි විස්තර කරන්න.',
+                            '1947 වර්ෂයේ සිදු වූ ප්‍රධාන සිදුවීම් කුමන ඒවාද?'
+                        ],
+                        '2020': [
+                            'ඉන්දියා බෙදීම සහ එහි ප්‍රතිඵල පිළිබඳව ලියන්න.'
+                        ]
+                    },
+                    'මහාත්මා ගාන්ධි': {
+                        '2021': [
+                            'ගාන්ධිගේ අහිංසා ව්‍යාපාරය සහ එහි බලපෑම විස්තර කරන්න.',
+                            'නමක් සත්‍යාග්‍රහයේ මූලධර්ම කුමන ඒවාද?'
+                        ]
+                    },
+                    'මෝගල් අධිරාජ්‍යය': {
+                        '2018': [
+                            'අක්බර් අධිරාජ්‍යයාගේ පාලන ප්‍රතිසංස්කරණ පිළිබඳව ලියන්න.'
+                        ]
+                    }
+                }
+            }
+        };
+
+        function getRegionDisplayName(region) {
+            const names = {
+                'lanka': 'ලංකා ඉතිහාසය',
+                'europe': 'යුරෝපා ඉතිහාසය',
+                'india': 'ඉන්දියා ඉතිහාසය'
+            };
+            return names[region] || region;
+        }
+
+        function selectRegion(region) {
+            selectedRegion = region;
+            
+            // Update button styles
+            document.querySelectorAll('#step1 .option-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+
+            // Update breadcrumb
+            document.getElementById('regionName').textContent = getRegionDisplayName(region);
+
+            // Load themes for selected region
+            loadThemes();
+
+            // Move to next step
+            setTimeout(() => {
+                showStep('step2');
+            }, 500);
+        }
+
+        function loadThemes() {
+            const themesContainer = document.getElementById('themesContainer');
+            themesContainer.innerHTML = '';
+
+            const themes = examData[selectedRegion].themes;
+            
+            themes.forEach(theme => {
+                const themeBtn = document.createElement('button');
+                themeBtn.className = 'theme-btn';
+                themeBtn.textContent = theme;
+                themeBtn.onclick = () => selectTheme(theme);
+                themesContainer.appendChild(themeBtn);
+            });
+        }
+
+        function selectTheme(theme) {
+            selectedTheme = theme;
+            
+            // Update breadcrumbs
+            document.getElementById('regionName3').textContent = getRegionDisplayName(selectedRegion);
+            document.getElementById('themeName3').textContent = theme;
+
+            loadYears();
+            showStep('step3');
+        }
+
+        function loadYears() {
+            const yearsContainer = document.getElementById('yearsContainer');
+            yearsContainer.innerHTML = '';
+
+            // Find matching theme (exact match first)
+            let matchedTheme = selectedTheme;
+            const availableThemes = Object.keys(examData[selectedRegion].questions || {});
+            
+            if (!availableThemes.includes(selectedTheme)) {
+                // Try partial match for key words
+                for (let theme of availableThemes) {
+                    if (selectedTheme.includes('භූගෝලීය') && theme.includes('භූගෝලීය')) {
+                        matchedTheme = theme;
+                        break;
+                    }
+                    if (selectedTheme.includes('මූලාශ්‍රය') && theme.includes('මූලාශ්‍රය')) {
+                        matchedTheme = theme;
+                        break;
+                    }
+                    if (selectedTheme.includes('මහින්දා') && theme.includes('මහින්දා')) {
+                        matchedTheme = theme;
+                        break;
+                    }
+                    // Add more partial matches as needed
+                }
+            }
+
+            // Get available years and questions for this theme
+            const themeQuestions = examData[selectedRegion].questions && examData[selectedRegion].questions[matchedTheme] 
+                ? examData[selectedRegion].questions[matchedTheme] 
+                : {};
+            const availableYears = Object.keys(themeQuestions);
+
+            // Generate year range (1995-2024)
+            for (let year = 1995; year <= 2024; year++) {
+                const yearBtn = document.createElement('button');
+                yearBtn.className = 'year-btn';
+                yearBtn.textContent = year;
+
+                if (availableYears.includes(year.toString())) {
+                    const questions = themeQuestions[year.toString()];
+                    // Check if it has actual questions or just "no questions" message
+                    if (questions && questions.length > 0 && !questions[0].includes('මේ වසරේ මේ තේමාව යටතේ ප්‍රශ්නයක් ලැබී නැත')) {
+                        // Has actual questions
+                        yearBtn.onclick = () => selectYear(year);
+                    } else {
+                        // Has "no questions" message
+                        yearBtn.classList.add('no-questions');
+                        yearBtn.onclick = () => selectYear(year);
+                        yearBtn.title = 'මේ වසරේ මේ තේමාව යටතේ ප්‍රශ්නයක් ලැබී නැත';
+                    }
+                } else {
+                    // No data at all for this year
+                    yearBtn.classList.add('inactive');
+                    yearBtn.title = 'මෙම වර්ෂයේ දත්ත නොමැත';
+                    yearBtn.onclick = null;
+                }
+
+                yearsContainer.appendChild(yearBtn);
+            }
+        }
+
+        function selectYear(year) {
+            selectedYear = year;
+
+            // Update breadcrumbs
+            document.getElementById('regionName4').textContent = getRegionDisplayName(selectedRegion);
+            document.getElementById('themeName4').textContent = selectedTheme;
+            document.getElementById('yearName4').textContent = year;
+
+            loadQuestions();
+            showStep('step4');
+        }
+
+        function loadQuestions() {
+            const questionsContainer = document.getElementById('questionsContainer');
+            questionsContainer.innerHTML = '';
+
+            // Find the correct theme key
+            let matchedTheme = selectedTheme;
+            const availableThemes = Object.keys(examData[selectedRegion].questions || {});
+            
+            if (!availableThemes.includes(selectedTheme)) {
+                for (let theme of availableThemes) {
+                    if (selectedTheme.includes('භූගෝලීය') && theme.includes('භූගෝලීය')) {
+                        matchedTheme = theme;
+                        break;
+                    }
+                    if (selectedTheme.includes('මූලාශ්‍රය') && theme.includes('මූලාශ්‍රය')) {
+                        matchedTheme = theme;
+                        break;
+                    }
+                    if (selectedTheme.includes('මහින්දා') && theme.includes('මහින්දා')) {
+                        matchedTheme = theme;
+                        break;
+                    }
+                    // Add more partial matches as needed
+                }
+            }
+
+            const questions = matchedTheme && examData[selectedRegion].questions && examData[selectedRegion].questions[matchedTheme] 
+                ? examData[selectedRegion].questions[matchedTheme][selectedYear] || []
+                : [];
+            
+            if (questions.length === 0) {
+                questionsContainer.innerHTML = '<div class="question-container"><div class="question">මෙම වර්ෂයේ මෙම තේමාව යටතේ ප්‍රශ්න දත්ත තවම එක් කර නොමැත.</div></div>';
+                return;
+            }
+
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-container';
+                questionDiv.innerHTML = `
+                    <div class="question-number">ප්‍රශ්නය ${index + 1}:</div>
+                    <div class="question">${question}</div>
+                `;
+                questionsContainer.appendChild(questionDiv);
+            });
+        }
+
+        function showStep(stepId) {
+            // Hide all steps
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.add('hidden');
+                step.classList.remove('active');
+            });
+
+            // Show selected step
+            const targetStep = document.getElementById(stepId);
+            targetStep.classList.remove('hidden');
+            targetStep.classList.add('active');
+        }
+
+        function goBack(stepId) {
+            showStep(stepId);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            showStep('step1');
+        });
+    </script>
+</body>
+</html>
