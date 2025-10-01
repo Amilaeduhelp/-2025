@@ -1,0 +1,358 @@
+
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>අනුරාධපුර යුගයේ ආර්ථික තත්ත්වය</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        body {
+            font-family: 'Noto Sans Sinhala', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 30px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 30px;
+            font-size: 2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .search-container {
+            margin-bottom: 25px;
+        }
+        
+        #searchBox {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1em;
+            border: 2px solid #667eea;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        #searchBox:focus {
+            border-color: #764ba2;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        .search-container {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 100;
+            padding: 20px 0 10px 0;
+            margin: -30px -30px 25px -30px;
+            padding-left: 30px;
+            padding-right: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 20px 20px 0 0;
+        }
+		.button-container {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 5px 5px;
+            border-radius: 50px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        button {
+            padding: 5px;
+            width:25px;
+            height: 25px;
+            font-size: 1.3em;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .note-area {
+            background: #f7fafc;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border: 2px solid #e2e8f0;
+            min-height: 300px;
+            line-height: 1.8;
+            font-size: 1em;
+        }
+        
+        .note-area[contenteditable="true"] {
+            background: #fff;
+            border-color: #667eea;
+            cursor: text;
+        }
+        
+        .highlight {
+            background-color: #ffd700;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .button-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        button {
+            padding: 12px 24px;
+            font-size: 1em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        #increaseBtn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        #decreaseBtn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        #editBtn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        #saveBtn {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .note-area {
+                padding: 15px;
+                font-size: 0.95em;
+            }
+            
+            button {
+                padding: 10px 18px;
+                font-size: 0.9em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.3em;
+            }
+            
+            .button-container {
+                gap: 8px;
+            }
+            
+            button {
+                padding: 8px 15px;
+                font-size: 0.85em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>අනුරාධපුර යුගයේ ආර්ථික තත්ත්වය</h1>
+        
+        <div class="search-container">
+            <input type="text" id="searchBox" placeholder="සෙවීමට වචනයක් ඇතුලත් කරන්න...">
+        </div>
+        
+        <div class="note-area" id="noteArea">10 පරිච්ඡේදය
+අනුරාධපුර යුගයේ පටන් අද දක්වාත් ලංකාව කෘෂි ආර්ථ ක්‍රමයක් මත පදනම් වූ රටකි. කෘෂි අර්ථ ක්‍රමය යනු ලෝකයේ ඕනෑම පැරණි ශිෂ්ටාචාරයක මුල් අර්ථ ක්‍රමය යි. මේ නිසා ලොව පැරණි සෙසු ශිෂ්ටාචාර හා සසඳන විට ලංකාවේ අර්ථ ක්‍රමයේ විශාල වෙනසක් හෝ විශේෂත්වයක් නැත. නමුත් අංශ කිහිපයකින් මේ අර්ථ ක්‍රමය ලංකාවට ආවේනිකව හැඩගැසී ඇති නිසා එකී අංශ වලින් එහි විශේෂත්වයත් තිබේ. විශේෂයෙන් ම ලංකාවේ වාරි පද්ධතිය  මෙහිලා විශේෂයෙන් කැපී පෙනෙයි. ඊට අමතරව කෘෂිකර්මය කෙරෙහි ආගමික බලපෑම හා කෘෂිකර්මය හා බැඳුණු ජන සංස්කෘතිය ලංකාවට ආවේනික නිසා ඒවායේ විශේෂත්වයන් තිබේ.
+අර්ථ ක්‍රමය කෘෂිකර්මය මත ප්‍රධාන වශයෙන් පදනම් වුව ද ලංකාවේ අතීත අර්ථ ක්‍රමයේ තවත් අංශ විය. මේ සමස්තය පිළිබඳ පහත තේමා යටතේ විමසුමට බඳුන් කෙරේ.
+1.	කෘෂිකර්මය හා සත්ත්ව පාලනය
+2.	දේශීය වා විදේශීය වෙළඳාම
+3.	කර්මාන්ත හා වෘත්තීන්
+<br>
+කෘෂිකර්මය හා සත්ත්ව පාලනය.
+මෙය ප්‍රධාන කොටස් දෙකකින් සිදුකර ඇත. ඒ
+• ගොඩ ගොවිතැන(ඇල්කෙත්, හේන් හා ගෙවතු වගා)
+• මඩ ගොවිතැන (වී වගාව)
+ලංකිකයන් මුල්වරට කාෂි කටයුතු සේ සිදුකරන්නට ඇත්තේ හේන් වගාව යැයි අනුමාන කරයි. හේන් වගාව සම්බන්ධයෙන් පුරාවිද්‍යාත්මක හා සාහිත්‍යමය සාධක රැසක් තිබේ. මහාවංසයේ එන ගිරිකණ්ටසිව කතාවේ සියයක් කිරියක කෙත් යායක් ගැන සඳහන් වේ. ඒ වන විටත් මහා පරිමාණ කෘෂිකටයුතු පැතිර තිබූ බවට සාධකයකි. පණ්ඩුකාභය කුමරු අනුරාධපුරයට ආසන්නව අභය වැව ඇතුළු වැව් කර්මාන්ත කළේ කෘෂිකර්මය සඳහාම ද යන්න පැහැදිලිව සඳහන්වී නැතත් ඒ සඳහා යැයි අනුමාන කළ හැකි ය. දෙවනපෑතිස් රජ දවස මහානාග උපරජු කරවූ වළස් වැව ගැන සඳහන් වීමෙන් කෘෂිකර්මයට නැඹුරුවීම අවබෝධකරගත හැකි වේ. තිසා වැව ද මේ යුගයට ම අයත් වේ.  කාවන්තිස්ස රජු සිය බාල පුතු දිගාවැවට යොමුකළේ ද කෘෂි කටයුතු සංවර්ධනය කිරීම පිණිස ය. තිස්ස කුමරු බලයට පත් වූ පසු දූරතිස්ස නමින් වැවක් ද කරවා ඇත. ඉලනාග රජු ද තිස්ස නමින් හා දූරතිස්ස නමින් වැවක් කරවූ බව දැක්වේ. වසභරජු කෘෂිකර්මයේ වැඩි දියුණුව දෙස වඩාත් පුළුල් ඇසකින් බැලුවේ ය. දකුණු ඉන්දීය සාගතය ද ඔහුට ඒ සඳහා යම් බලපෑමක් කරන්නට ඇත. ගම්වැව් පද්ධතිය තිබියදී ම, රාජ්‍යානුග්‍රහ ඇතිව මහවැව් කරවීම පිළිබඳ වසභ රජු අවධානය යොමු කළේ ය. මයෙත් වැව, රජුපුල් වැව, කොළොම්බගාමක වැව, මාණිකවිටි වැව, මාගම් වැව් දෙක, කේහාල වැව, කේලිවාස වැව, ඇම්බිටි වැව, වාතමංගන වැව, අභිවඩ්ඪමානක වැව, ඇළහැර අමුණ හා ඇළ (මෙතුමා ඉහත වැව් එකොළහ සහ ඇළ මාර්ග 12ක් කරවා ඇත. එම වැව් වලින් මයෙත්,   කොළොම්බගාමක,  මාණිකවිටි, අභිවඩ්ඪමානක හා කේලිවාස යන වැව්අනුරාධපුර නගර ආසන්නයේ ද කේහාල වැව මන්නාරම සමීපයේ ත් කරවා ඇති බව මහාවංස ටීකාව අනුව පෙනෙයි. පැරණි ලංකාවේ වාරි කර්මාන්ත පුවතේ වසභ රජුට සුවිශේෂ ස්ථානයක් හමුවන්නේ එකේ තිබූ සුළු වැව් ක්‍රමය වෙනුවට මහවැව් ඉදිකිරිමේ ක්‍රමය හඳුන්වා දුන් නිසා ය. එසේ ඉදිකළ ඇතැම් වැව් වලටත් පොකුණු වලටත් පොළොව යටින් නළ මාර්ගිකව දිය සැපයූ බව ද සඳහන් වේ.
+ඔහුගේ පුත්‍ර වංකනාසිකතිස්ස රජ දවස වන විට අපගේ වැව් කර්මාන්ත හැකියාව ඉන්දියාව පවා දැන සිටි බව පෙනී යන්නේ කරිකාලන් චෝළ රජු දකුණු ඉන්දියාවේ වාරිකර්මාන්ත ඇතිකිරීම පිණිස ලංකාවේ මානව සම්පත් පැහැරගත් බව සඳහන් වන නිසා ය. වසභ රජුගෙන් ඇරඹි ලංකාවේ පළමු ලම්බකර්ණ වංශික රජ පෙළපතේ විශිෂ්ටයෙකු සේ සැලකෙන මහාසේන රජු ලංකාවේ ඊළඟ වාරි සංග්‍රාමය අරඹමින් කෘෂිකර්මය තවදුරටත් නගාසිටුවී ය.මහසෙන් රජු මෙතුමා වැව් 16ක් කරවී ය. මණිහීර වැව  ජල්ලූර වැව, බානුවාපි, මාමිණියා වැව , කෝකවාත වැව, මොනරා වැව, පරක් වැව, කුම්බාලක වැව, වාහත වැව, රත්මල්කඩ වැව, තිස්සවඩ්ඪමාවක වැව , වෙළන්වැටිය වැව, මාගල් වැව, සීරු වැව, මහාදාරගල්ලක වැව, කාලපාෂාණ වැව, පර්වත ඇළ ආදී වශයෙනි. ඉන් අනතුරුව පළමු උපතිස්ස රජු  රජුපුල වැව, ගිජුකුල වැව, පොකුරුපස වැව, වලහස වැව, ඇඹිටිය වැව, ගොඩිගමු වැව, තෝපා වැව ආදී වැව් කරවූ අතර ධාතුසේන රජු කලා වැව, පාදුලක වැව, හඹලට්ටිය වැව, මහාදත්තය වැව, යොද වැව, යෝධ ඇළ ආදීවැව් හා වාරිමාර්ග කරවී ය. නම් වශයෙන් සඳහන් නො වුව ද මෙතුමා මහ වැව් අටළොසක් ද කරවූ බව මහාවංසයේ ස`දහන් වේ. දෙවන මුගලන් රජු පත්තපාසාන වැව,  ධනවාපිය , ගිරිතර වැව ආදිය කරවීය. පළමු අග්බෝ රජු සිරිවඩ්ඪමාන වැව, කුරුන්ද වැව, මිහින්තලා වැව, මණිමේඛලා ඇළ  හා එහි අමුණත් දෙවන අග්බෝ රජු ගංතලා වැව  ගිරිතලා වැව  වළස් වැවත් කරවීය. මින් අනතුරුව ද වැව් හා වාරිමාර්ග කරවූ රජවරු හා වෙනත් ප්‍රභූන් පිළිබඳ සඳහන් වේ. මේ වාරි ව්‍යාපෘති ලංකාවේ කෘෂිකර්මය පිළිබඳ ඍජු සාධක වශයෙන් ගත හැකි වේ. මහසෙන් රජ පුත් කිත්සිරිමෙවන් රජුට අයත් තෝණිගල සෙල්ලිපිය  කෘෂිකර්මය පිළිබඳ වැදගත් ප්‍රධාන ලිපියකි. එහි යළ - මහ - මැද (පිටදඩහස, අකලහස, මැදහස) වශයෙන් වගා කන්න තුනක් පිළිබඳවත් ලංකාවේ වගා කළ ධාන්‍ය වර්ග පිළිබඳවත් සාධක ඇතුළත් වේ. දස වන සියවසට අයත් කොණ්ඩවට්ටවාන් ලිපියේ දැක්වෙන්නේ නිසි කලට පසු සීසෑමේ වරදට රන් කලං පහක් දඩ අයකළ බව යි. ඊට හේතුව එසේ කිරීමෙන් අස්වනු හානි, ජලහානි, පාංශු හානි සිදුවන නිසා වියයුතු ය. අස්වනු නෙළා නව දිනකට පසු යළි ගොවිබිම් වලට ජලය නිකුත්කළයුතු යැයි වෙස්සගිරි පුවරු ලිපියේ දැක්වේ. කුඹුරුවල සිහිනැටි වී(හීනටි වී) මිස මුං වැපිරීම නොකළ යුතු බව ද මෙම ලිපියේ ම දක්වා තිබේ. මේ කලයේ රත් ඇල් හා ඇල් වී වර්ග ගැන නිතර මූලාශ්‍රය වල සඳහන් වේ. මහාචූලි මහාතිස්ස රජු වෙස්වලාගෙන ගොස් ඇල් කෙතක ගොයම් කපා ලත් කුලියෙන් දානයක් දුන් බව ද සඳහන් වේ. රසවාහිනී, සද්ධර්මාලංකාරය වැනි ලංකාවේ සාහිත්‍ය මූලාශ්‍රය වල නගුල්, පෝරු ආදිය පිළිබඳ ඇති සටහන් ද කෘෂිකර්මය සනාථ කරන සාක්ෂි වශයෙන් ගතහැකි වේ. විසුද්ධිමග්ග අටුවාවේ පැල්රැකීම පිබිඳ සඳහනක් තිබේ. පපංචසූදනියේ ද එවැනි තොරතුරක් තිබේ. කංකාවිතරණියේ යව, ඉරිඟු, තණහාල් ආදී ගොඩ වගාවන් ගැන සඳහන් වේ. මීට අමතරව හේන් ආදියේ වගා කළ කටුසර බෝග ගැන මූලාශ්‍රය කිහිපයක ම සඳහන් වේ. බුත්සරණේ සෙහෙන් නමින් ද, උම්මග්ග ජාතකයේ සේන් නමින් ද, සෙල්ලිපි වල පිටබිම් නමින් ද දක්වා ඇත්තේ හේන් ය.  ගෝඨයිම්බර යෝධයාගේ සොහොයුරන් හේනේ උඳු වැපිරූ පුවත ද මෙහි දී වැදගත් වේ.
+සත්ත්ව පාලනය පිළිබඳ තොරතුරු ද රැසක් තිබේ. පණ්ඩුකාභය කුමරා කුඩා කළ හැදී වැඩුණේ ගොපල්ලන් විසූ ගමක ය. උත්තරෝලිය ගම අසල වූ ගොපළු ගමක් ගැන රසවාහිනීයේ සඳහන් වන අතර ගොපළු දරුවන් සතුන් බලාගත් ආකාරය ගැන සඳහනක් විසුද්ධිමග්ගයේ ද එයි. ගවයන් එළුවන් මැරූ අයට මරණීය දණ්ඩනය දුන් බව 4වන මිහිඳු රජුට අයත් වේවැල්කැටිය ලිපියේ දැක්වේ. රෝගීන් සඳහා එබඳු මස් අවශ්‍ය නම්, ස්වභාවිකව මියගිය සතුන්ගේ මාංශ ගන්නැයි ද අවවාද කර තිබේ. සෙල්ලිපි වල කිරිගෙරි නමින් සඳහන් වෙන්නේ ද එළ ගවයින් ය. සිව්වන කාශ්‍යප රජුගේ සෙල්ලිපියක ද කිරිගෙරි යන වදන එයි.
+මහාතිත්ථ ඇතුළු වරාය වලින් දැනට ලැබී ඇති සාධක වලින් ලංකාවේ විදෙස් වෙළඳ ගනුදෙන් පිළිබඳ මනා අවබෝධයක් ලබාගත හැකි ය. ලංකාවේ බොහොමයක් වරාය වලින් රෝම කාසි ඇතුළු විදේශීය කාසි හමු වේ. ලංකාවට ආ චීන වෙළෙන්දන් පිළිබඳ පාහියන් වාර්තාවේ මද වශයෙන් තොරතුරු ඇතුළත් වේ. වජ්‍රබෝධි නම් සංචාරක භික්ෂුව සදහන් කර ඇත්තේ ලංකාවේ තොටුපළක නවතා තිබූ පර්සියන් නැව් තිස්පහක් තමා දුටු බව යි. ලංකාව මැණික් උපදින දේශයක් ලෙස කෞටිල්‍ය අර්ථශාස්ත්‍රයේ දක්වා ඇත්තේ ලංකාවේ මැණික් ඉන්දියාවටත් යැවූ නිසා වියයුතු ය. ලංකාවේ ඇතුන් ද විදේස් වෙළඳ කටයුතු සම්බන්ධ විස්තර අතර විශේෂ පරිච්ඡදෙයක් වේ. විදෙස් යුධ කටයුතු සඳහා ඇතුන් යැවූ බවට මිගැස්තිනීස්ගේ වාර්තා වලින් ද සාධක සොයාගතහැකි වේ. ලංකාවේන් විදෙස් ගතකළ දේ අතර කුළුබඩු, කැස්බෑලෙලි ආදිය ද වේ. මන්නාරම් මුතුපරය නිසාවෙන් ලංකාවේ මුතු කිමිදීම ද ඉහළ තත්ත්වයක පැවති අතර මුතු ද විදෙස්ගතකර තිබේ. මේ වෙළඳ කටයුතු හා සම්බන්ධ විදේශීය වෙළඳ සංවිධාන ලංකාවේ සිය ශාඛාවන් පවා පවත්වාගෙන ගොස් තිබේ. කාම්බෝජීය මහා වෙළඳ සංවිධානය ගැන දකුණු පළාතේ බෝවත්තේගල සෙල්ලිපියේ සඳහන් වෙයි. එහි කබොජ මහපුගිය නමින් දක්වා ඇත්තේ එයයි. මෙහි කාම්බෝජ යනු වයඹදිග ඉන්දියාවේ පැවති රාජ්‍යයකි. එය සොළොස්මහ ජනපද අතරින් ද එකක් විය. ලංකාවට විදේශවලින් ගෙන්වූ දේ අතර සේද රෙදි, පිඟන්භාණ්ඩ, වීදුරු, සුවඳවිලවුන් හා අශ්වයන් වැනි සතුන් ද වේ. එළාර හා සේන ගුත්තික වැනි වාණිජ පදනමක් ඇති පුද්ගලයින් ලංකාවේ බලය අල්ලාගැනීමට පෙළඹුණේ මහාතිත්ථ වරායේ ආදායම් පිළිබඳ ඇසින්දුටු සාක්ෂි නිසා යැයි සිතිය හැකි වේ. මහාතිත්ථය එකල ලෝකයේ ප්‍රධාන පෙළේ වරායක් හා හුවමාරු මධ්‍යස්ථානයක් ද විය.
+අනුරාධපුර යුගයේ ලංකාවේ විවිධ කර්මාන්තයන් ද ව්‍යාප්තව තිබී ඇත. පණ්ඩුකාභය රජ දවස සම්බන්ධ පුවත් වල කම්මාර දෙවියෙකු ගැන ද සඳහන් වේ. පේෂකාර්මිකයින් පිළිබඳ සඳහන් වන්නේ පෙහෙකාර කුලය වශයෙනි. විසුද්ධිමග්ගයේ බලිසාටකං යනුවෙන් දැක්වෙන්නේ  ගස්වල පට්ටා වලින් සකස් කළ ඇඳුම් ගැන ය. මීට අමතරව සුමංගලවිලාසිනියේ කුසචීර, වාකචීර, ඵලකචීර ආදී වශයෙන් රෙදි වර්ග ගැන සඳහන් වේ. ඒවා ගස්වල පට්ටා වලින්, කෙඳි වලින් ආදී වශයෙන් වියමන් කළ ඒවා ය.
+ලෝහ කර්මාන්තයේ නිරත වූවන් හඳුන්වා ඇත්තේ කබර නමිනි. පොළොන්නරුව මුතුගල්ල ලිපියේ මජ්ජිම නම් කම්මල්කරුවා ගැන සඳහන් වේ. හම්බන්තොට මණ්ඩගල සෙල්ලිපියේ තුලධර සුමන පිළිබඳ සඳහන් වේ. තුලධර යනු රන්කරුවන් හැඳින්වීමට යෙදූ නමකි. මැණික් කර්මාන්තයේ නිරතවූවන් මණිකර නමින් හඳුන්වා තිබේ. මනෝරථපූරණියේ උක්යන්ත්‍රයක් පිළිබඳ සාධකයක් තිබේ. සීනි හා හකුරු කර්මාන්තය පිළිබඳ එය සාධකයක් වේ. ධීවරයින් විසූ ගම් එකල කේවට්ටගාම නමින් හඳුනාවා ඇත. කෙවුලන් යනු ධීවරයන් ය. විහාරමහාදේවිය තොටළුතොටට ගොඩබට අවස්ථාවේ කාවන්තිස්ස රජුට ඒ පිළිබඳ දැන්වූයේ කෙවුලන් විසින් යැයි රසවාහිනියේ සඳහන් ය. මෙය ධීවර කර්මාන්තය පිළිබඳ සාධකයකි. මස්කරප්පයක් භාවිත කරමින් මසුන් ඇල්ලූ පුද්ගලයෙකු ගැන විසුද්ධිමග්ගයේ සඳහන් වේ. කරප්පය යනු පට පතුරු වැනි දෙයින් කළ කේතුකාකාර උපකරණයකි. ඇළමාර්ග වල  මසුන් ඇල්ලූ පුද්ගලයින්ගෙන් රජය අයකළ මජිබික නම් බද්දක් ගැන ද සෙල්ලිපිවල සඳහන් වේ.
+කුම්කාභර ගම්මාන ගැන ද මූලාශ්‍රය වල සඳහන් වේ. අනුරාධපුර දකුණු වාසල් දොරටුව අසල කුම්භකාරගමක් තිබී ඇත. අභයගිරි පියගැටපේලි ලිපියක ‘උළවඩ සදෙව ගණය’ නමින් ඇත්තේ මැටි ආශ්‍රිතව උළු කර්මාන්තය කළ පිරිස් ගැනය. නමුත් එකළ ගඩොල් කර්මාන්තය ද මේ නමින් ම හඳුන්වා ඇති නිසා මෙයින් ථූපකර්මාන්තයට ගඩොල් සැපයූවන් දක්වා තිබෙනවා ද විය හැක. දොරටුපාල රුවක් දෙස බලා රාගයෙන් ළය පැලී මියගිය භික්ෂුණියක් ගැන සම්මෝහවිනෝදනියේ සඳහන් වේ. එකළ ඉතා දක්ෂ ගල්වඩුවන් සිටි බවට මෙය ද සාක්ෂියකි. ශිලාකාර්මිකයන්ගෙන් අඩුවක් නැති අනුරාධපුර සමයේ කළ ශිලා නිර්මාණ අදටත් ජීවමානව ඒ බව සනාථ කරයි. දැව ආශ්‍රිත රැකියා කළ වඩ්ඪකී වරුන් ගැන ද මූලාශ්‍රය වල සඳහන් වේ. වඩ්ඪකීගාම පිළිබඳව ද සාධක හමු වේ. මීට අමතරව පෙදරේරුවන්, සිත්තරුන්(ලපන/සිත්කැමි), සම් කර්මාන්තකරුවන් ආදී නොයෙක් කර්මාන්ත වල නිරතවූවන් පිළිබඳ සාහිත්‍යාගත තොරතුරු තිබේ.
+<br> <br>
+
+</div>
+        
+<div class="button-container">
+            <button id="increaseBtn">+</button>
+            <button id="decreaseBtn">-</button>
+            <button id="editBtn">E</button>
+            <button id="saveBtn">S</button>
+        </div>
+    </div>
+
+    <script>
+        // Disable right-click
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // Disable text selection via keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Disable Ctrl+A, Ctrl+C, Ctrl+X
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'a' || e.key === 'c' || e.key === 'x' || e.key === 'A' || e.key === 'C' || e.key === 'X')) {
+                const noteArea = document.getElementById('noteArea');
+                if (!noteArea.isContentEditable || noteArea.contentEditable === 'false') {
+                    e.preventDefault();
+                    return false;
+                }
+            }
+        });
+        
+        let fontSize = 16;
+        let isEditing = false;
+        let originalContent = '';
+        
+        const searchBox = document.getElementById('searchBox');
+        const noteArea = document.getElementById('noteArea');
+        const increaseBtn = document.getElementById('increaseBtn');
+        const decreaseBtn = document.getElementById('decreaseBtn');
+        const editBtn = document.getElementById('editBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        
+        // Search functionality
+        searchBox.addEventListener('input', function() {
+            const searchTerm = this.value.trim();
+            
+            if (!searchTerm) {
+                noteArea.innerHTML = originalContent || noteArea.textContent;
+                return;
+            }
+            
+            if (!originalContent) {
+                originalContent = noteArea.textContent;
+            }
+            
+            const text = originalContent;
+            const regex = new RegExp(`(${searchTerm})`, 'gi');
+            const highlightedText = text.replace(regex, '<span class="highlight">$1</span>');
+            
+            noteArea.innerHTML = highlightedText;
+        });
+        
+        // Increase font size
+        increaseBtn.addEventListener('click', function() {
+            fontSize += 2;
+            noteArea.style.fontSize = fontSize + 'px';
+        });
+        
+        // Decrease font size
+        decreaseBtn.addEventListener('click', function() {
+            if (fontSize > 10) {
+                fontSize -= 2;
+                noteArea.style.fontSize = fontSize + 'px';
+            }
+        });
+        
+        // Edit note
+        editBtn.addEventListener('click', function() {
+            const password = prompt('සංස්කරණය කිරීම සඳහා මුරපදය ඇතුළත් කරන්න:');
+            
+            if (password !== 'Lakmini79') {
+                alert('වැරදි මුරපදයක්! සංස්කරණය කිරීමට ඉඩ නොදේ.');
+                return;
+            }
+            
+            isEditing = true;
+            noteArea.contentEditable = 'true';
+            noteArea.style.userSelect = 'text';
+            noteArea.style.webkitUserSelect = 'text';
+            noteArea.style.mozUserSelect = 'text';
+            noteArea.focus();
+            editBtn.style.display = 'none';
+            saveBtn.style.display = 'inline-block';
+            
+            // Clear search when editing
+            searchBox.value = '';
+            if (originalContent) {
+                noteArea.textContent = originalContent;
+            }
+        });
+        
+        // Save edit
+        saveBtn.addEventListener('click', function() {
+            isEditing = false;
+            noteArea.contentEditable = 'false';
+            noteArea.style.userSelect = 'none';
+            noteArea.style.webkitUserSelect = 'none';
+            noteArea.style.mozUserSelect = 'none';
+            originalContent = noteArea.textContent;
+            editBtn.style.display = 'inline-block';
+            saveBtn.style.display = 'none';
+        });
+    </script>
+</body>
+</html>

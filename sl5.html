@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>රජරට ශිෂ්ටාචාරයේ පදනම</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        body {
+            font-family: 'Noto Sans Sinhala', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 30px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 30px;
+            font-size: 2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .search-container {
+            margin-bottom: 25px;
+        }
+        
+        #searchBox {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1em;
+            border: 2px solid #667eea;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        #searchBox:focus {
+            border-color: #764ba2;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        .search-container {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 100;
+            padding: 20px 0 10px 0;
+            margin: -30px -30px 25px -30px;
+            padding-left: 30px;
+            padding-right: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 20px 20px 0 0;
+        }
+		.button-container {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 5px 5px;
+            border-radius: 50px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        button {
+            padding: 5px;
+            width:25px;
+            height: 25px;
+            font-size: 1.3em;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .note-area {
+            background: #f7fafc;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border: 2px solid #e2e8f0;
+            min-height: 300px;
+            line-height: 1.8;
+            font-size: 1em;
+        }
+        
+        .note-area[contenteditable="true"] {
+            background: #fff;
+            border-color: #667eea;
+            cursor: text;
+        }
+        
+        .highlight {
+            background-color: #ffd700;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .button-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        button {
+            padding: 12px 24px;
+            font-size: 1em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        #increaseBtn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        #decreaseBtn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        #editBtn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        #saveBtn {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .note-area {
+                padding: 15px;
+                font-size: 0.95em;
+            }
+            
+            button {
+                padding: 10px 18px;
+                font-size: 0.9em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.3em;
+            }
+            
+            .button-container {
+                gap: 8px;
+            }
+            
+            button {
+                padding: 8px 15px;
+                font-size: 0.85em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>රජරට ශිෂ්ටාචාරයේ පදනම</h1>
+        
+        <div class="search-container">
+            <input type="text" id="searchBox" placeholder="සෙවීමට වචනයක් ඇතුලත් කරන්න...">
+        </div>
+        
+        <div class="note-area" id="noteArea">06 පරිච්ඡේදය
+1.	රජරට ශිෂ්ටාචාරයේ පදනම පැහැදිලි කරන්න.
+2.	රජරට ශිෂ්ටාචාර සමයට අයත් අගනගර දෙක මොනවා ද?
+3.	ඒවා සමග මේ කාලයේ වැදගත්වූ වරාය 6ක් සිතියමක ලකුණු කරන්න.
+4.	රජරට ශිෂ්ටාචාරය කෙතෙක් කාලයක් සක්‍රියව පැවතියේ ද?
+5.	රජරට ශිෂ්ටාචාරය එකෙත්කල් පැවතීමට හේතු මොනවා ද?
+රජරට ශිෂ්ටාචාරය
+(අනුරාධපුර යුගයේ සිට පොළොන්නරු යුගයේ අවසානය දක්වා)
+¬¬ලංකාවේ වියළි කලාපය මුල් කරගනිමින් අනුරාධපුරය හා පොළොන්නරුව ලංකාවේ අගනගර වශයෙන් පැවති කාලපරිච්ඡේදය හැඳින්වෙන්නේ රජරට ශිෂ්ටාචාර සමය ලෙසිනි. සියවස් වශයෙන් ගතහොත් මේ කාලපරිච්ඡේදය සියවස් 15ක් පමණ වේ.
+මේ කාලයේ ලංකාව රුහුණු, පිහිටි හා මායා වශයෙන් ප්‍රධාන කලාප තුනකට බෙදා තිබුණි.(සිතියම බලන්න.) අනුරාධපුරය හා පොළොන්නරුව අයත් වූයේ රජරට කොටසට ය. කලා ඔය හා මහවැලි ගංගාවෙන් ඉහළ කොටස් රජරටට අයත් සේ පිළිගැනුනි. නමුත් ඇතැම් කාලවල දැදුරු ඔය හා කලා ඔය අතර භූමිය රජරටට හෝ මායා රටට අයත් පොදු භූමියක් වශයෙන් පැවතියේ යැයි විශ්වාස කළ හැකි වේ. ඒ කෙසේ වුව ද අනුරාධපුරය හා¬ පොළොන්නරුව අගනුවර කරගත් කාලපරිච්ඡේදය හැඳින්වූයේ රජරට ශිෂ්ටාචාර සමය නමිනි.
+¬රජරට ශිෂ්ටාචාරයේ පදනම.
+ආර්ථික පදනම
+රජරට ශිෂ්ටාචාරයේ මූලික ආර්ථික පදනම වූයේ කෘෂිකර්මය හා වෙළඳාම යි. විවිධ කර්මාන්ත හා වෘත්තීන් ද පැවතියත් රාජ්‍යය පවත්වාගෙන යෑමේ මූලික ශක්තිය උත්පාදනය කරනු ලැබූයේ කෘෂිකර්මය හා වෙළඳාම විසිනි. පූර්ව ඓතිහාසික සමයේ සිට ම මෙරට ජනයා කෘෂිකර්මයට හුරු වී සිටි අතර ක්‍රමයෙන් විධිමත් කෘෂි කටයුතු වලට හුරුවීමක් මේ යුගයේ දී දක්නට ලැබේ. රජරට වනාහි ස්ථාවර වර්ෂාවක් පතිත වන හෝ ජලය සුලබ ප්‍රදේශයක් නොවේ. එහෙත් ඒ අභියෝගයට සාර්ථකව මුහුණ දෙමින් මේ යුගයේ පාලකයින් හා වැසියන් එක්ව වසර පුරා ස්ථාවර ලෙස ජලය සපයා ගන්නට ක්‍රම සකස් කරගනිමින් එකී ක්‍රම මනා කලමනාකරණයකින් යුතුව පරිහරණය කරමින් ක්‍රමවත් හා සාර්ථක කෘෂි ආර්ථිකයක් ගොඩනංවනු දක්නට ලැබේ. මේ සඳහා මුල් ඓතිහාසික යුගයේ සිදුවූ ඉන්දීය සංක්‍රමණ වලින් තවත් උත්තේජනයක් ලැබී ඇත. උතුරු ඉන්දියාවේ සිට දකුණු ඉන්දියාව හරහා ලංකාව දෙසට සංක්‍රමණය වීම සඳහා ආර්ය යැයි හඳුන්වන ජනයා ගතකළ කාලය සහස්‍රකයක්(වර්ෂ දහසක්) පමණ වේ. මේ කාලය පුරා ඔවුන් ඇසුරු කළ දකුණු ඉන්දීය ජනයා කුඩා චක්‍රීය ජල යන්ත්‍ර මගින් ඇළ මාර්ග වල හෝ ළිං ආදියේ ජලය ගෙන ඇළ මාර්ග ඔස්සේ වගා බිම් වලට යැවීමට කටයුතු කර ඇත.  රජරට සමය වන විට බහුතර ජනාවාස ප්‍රමාණයක් ව්‍යාප්තව පැවතියේ ලංකාවේ වියළි කලාපයේ ය. මේ සඳහා හේතු වූයේ ලාංකිකයින් මේ වන විටත් සිය ප්‍රධාන ආහාරය වශයෙන් බත තෝරාගෙන තිබීමත්, ඒ සඳහා අවශ්‍ය වී වගාවට උචිත ම පරිසරය මෙකී වියළි කලාපයේ තිබීමත් ය. සරුපස, හිරුඑළිය, තැනිතලා බිම, දේශගුණය, උණුසුම ආදී වූ සාධක නිසා උතුරුදිග හා දකුණු දිග වියළි කලාපීය තැනිතලා වල වීවගාව සරුවට සිදුකළ හැකි විය. මේ නිසා ලංකා ජනගහණයෙන් බහුතරයක් මේ ප්‍රෙද්ශ වල පදිංචි වී සිටියහ. නමුත් මේ කාලාපයේ වර්ෂාව අඩු නිසා ජලසැපයුම පිළිබඳ විශේෂ අවධානයක් යොමු කිරීමට සිදුවිය. ඊසානදිග මෝසම සක්‍රියව පැවති ඔත්තෝබර්-අප්‍රේල් කාලසීමාව තුළ දී පතිත වූ වර්ෂාවේ ජලය ගබඩා කරතබාගැනීමේ මූලික උත්සාහය ලාංකිකයන් විසින් ගනුලැබූයේ පූර්ව ඓතිහාසික සමයේ දී පමණ ය. වැවක් සේ හැඳින්වීමට අපහසු මෙම සුළු ජල ගබඩා ක්‍රිස්තුපූර්ව 4-3 සියවස් පමණ වන විට ගම්වැව් දක්වාත් ක්‍රිස්තු පූර්ව පළමු සියවසත් ක්‍රිස්තු වර්ෂ පළමු සියවසත් අතර කාලය වන විට අංගසම්පූර්ණ මහ වැව් දක්වා වර්ධනය  වී තිබුණි. වියළි කලාපයේ තැනි බිම් මනා ලෙස පරිහරණය කරමින් නිර්මාණය කළ වැව් යනු හෙළයාගේ අද්විතීය බුද්ධි මහිමයේ ඵලයකි. මෙකී බුද්ධිය යනු කලක් තිස්සේ පරිසරය හා බද්ධව ජීවත්වෙමින් පරිසරය අවබෝධ කරගනිමින්, පරිසරයට අනුගතවෙමින් ගතකළ ජීවිතය වෙනුවෙන් පරිසරය හෙළයා වෙත ලබා දුන් තිළිණයකැයි කීම වඩාත් නිවැරදි වනු ඇත. ඔහු පරිසරය හා නිවැරදි සන්නිවේදනයක් සිදුකළේ ය. පරිසරය සමග ඉතා සාධාරණ ගනුදෙනු සිදුකළේ ය. පරිසරය වෙත ගෞරවය පුදකරමින් යුතුකම් ඉටුකළේ ය. මේ නිසා පරිසරය ද ඊට සාධාරණය ඉටුකරන ලදී.
+කෘෂිබිමට වඩා තරමක් උස් බිමක නිර්මාණය කළ වැවේ ජලය කෘෂි ක්ෂේත්‍ර(කුඹුරු හා කෙත්වතු) කරා ගෙනයනු ලැබූයේ වාරිමාර්ග ඔස්සේ ය. වාරිමාර්ග වලින් මෙකී කාර්යයට අමතරව වැව් ජාල  සැකසීමේ කාර්යය ද සිදුකරන ලදී. මේ නිසා රජරට ශිෂ්ටාචාරය ජලාශ්‍රිත ශිෂ්ටාචාරයක් වශයෙන් ද හඳුනවනු ලැබේ. රජරට ශිෂ්ටාචාරයේ ආර්ථිකය ඒ මත පදනම් විය.
+ආර්ථිකයේ අනෙක් පදනම වූයේ වෙළඳාම යි. අනාදිමත් කාලයක සිට ලාංකිකයන් විවිධාකාරයේ ගනුදෙනු වලට හුරුවී සිටියහ. මෙය ලාංකිකයින්ට ආවේණික ලක්ෂණයක් නොවූව ද, ජීවත් වූ පරිසරය හා අවශ්‍යතා ආදිය නිසා එකී ගනුදෙනු ක්‍රම වල ලාංකේය අනන්‍යතා ද වර්ධනය වී තිබුණි. ප්‍රාග් ඓතිහාසික මානවයා පවා මුහුදුබඩ ජනයා සමග ගනුදෙනු කළ බවට සාධක ලැබී තිබේ. රට අභ්‍යන්තරයෙන් හමු වූ මුහුදු බෙල්ලන්ගේ අවශේෂ මේ සඳහා කදිම සාධකයකි. ලුණු තැවරුණු ඒ බෙල්ලන් ලාංකිකයින්ගේ ගනුදෙනු ක්‍රම වල පදනම සේ සැලකීමේ වරදක් නැත.
+ලංකාව පිළිබඳ සටහන් තැබූ විදෙස් ලේඛකයෝ ද ලංකාව විදෙස් වෙළෙන්දන් අතර ප්‍රකට මධ්‍යස්ථානයක් වූ බවට සාධක ඉදිරිපත් කර තිබේ. ෆාහියන්, හ්‍යුන්සාන් වැනි ලේඛකයින්ගේ වාර්තා මේ සඳහා ප්‍රකට සාධක වේ. ලාංකිකයින්ගේ අදෘෂ්‍ය වෙළඳාම පිළිබඳව ෆාහියන් හිමියෝ සිය වාර්තාවේ සඳහන් කර ඇත. හ්‍යුන්සාන් හිමියෝ ද ‘‘ මැණික් සොයා ගිය වෙළෙන්දෝ නිතර ලංකාවට ආ ගිය බව ‘‘ සඳහන් කර තිබේ.   දියවැල් රටාවක මධ්‍යගතව හෙවත් නෞකා මාර්ගයක මධ්‍යගතව පිහිටීම නිසා මුල්කාලීන වෙළෙඳුන් ලංකාවට ආයේ නිතැතිනි. නමුත් මෙර ඇති වටිනා වෙළඳ ද්‍රව්‍ය කෙරේ ලොබ සිත් ඇතිකරගත්තෝ  විටින් විට, යළි යළිත් මෙරටට පැමිණ ලාංකිකයන් සමග ගනුදෙනු කරන්නට පටන්ගත්හ. දියවැල් රටාවේ ම අතුරු ඵලයක් සේ නිර්මාණය වුණු මුහුදු බොකු හා ඒ ආශ්‍රිත වරාය පද්ධතියක් පැවතීම නිසා විදෙස් වෙළඳුන්ට ලංකා භූමිය වඩාත් ආකර්ෂණීය ස්ථානයක් විය.
+<br>
+සංස්කෘතික පදනම
+රජරට ශිෂ්ටාචාරටයේ සංස්කෘතිය කෙරේ ඉන්දීය ආභාසයක් ඇති බව අවිවාදයෙන් ම පිළිගැනීමට සිදුවේ. මේ පිළිබඳව ලංකාවේ භූගෝලීය සාධක පිළිබඳ ඒකකය තුළින් ද ඔබ උගනින්නට ඇත‍. ශ්‍රී ලංකාවේ ආගම සම්බන්ධයෙන් ඇති ඉන්දීය ආභාසය පිළිබඳ පැහැදිලි සාධක  තිබේ. බුදුදහම පමණක් නොව ජෛන, හින්දු, නිගණ්ඨ, පරිබ්‍රාජක... ආදී ආගම් පිළිබඳ පැහැදිලි සාධක හමු වී තිබේ. නමුත් ඒ සියල්ල සපුරාම ඉන්දීයකරණය නොවී ලංකාවේ පැවති ආගමික ඇදහිලි හා විශ්වාස සමග මිශ්‍ර වී ගිය බව බුදුදහම සම්බන්ධයෙන් පවා පෙනී යයි. ගෘහ නිර්මාණ ශිල්පයේ ද, චිත්‍ර, මූර්ති, කැටයම් ආදියේ ද මෙකී ආභාසය ප්‍රකට වේ. අජන්තාවට සම සීගිරි සිතුවම් කලාවත්, පල්ලව ආභාසය ලැබූ ඉසුරුමුණි කැටයම් ආදියත්, අමරාවතී ලක්ෂණ ප්‍රකට කරන අවුකන පිළිමයත් මේ සම්බන්ධයෙන් ඇති ප්‍රබලතම සාධකයෝ වෙති. නමුත් ඉන්දීය ආභාසය ලැබූ මෙකී සංස්කෘතික බීජ ලංකා භූමියේ රෝපණය වූයේ දේශීය වාතාවරණයක් යටතේ ය. ඒ නිසා ඉන්දියාවේ හා ලංකාවේ සංස්කෘතික අතින් සමීප සමාන බවක් ‍වර්ධනය වී නැත. දෙරටේ සංස්කෘතික පරස්පරතා ද තිබේ. කෙසේ වුව ද ලංකාවේ රජරට ශිෂ්ටාචාර සමයේ සංස්කෘතික පදනම සකස් වීම කෙරේ ඉන්දීය ආභාසයක් තිබීම පිළිගතයුත්තකි. මේ පිළිබඳව භූගෝලීය සාධක පිළිබඳ ඒකකයේ දැක්වූ විස්තර එකතුකරගන්න.
+මෙකී පදනම් ලංකාවේ රජරට ශිෂ්ටාචාරයට කෙතරම් ශක්තිමත් පදනමක් වී ද යත් මේ ශිෂ්ටාචාරය බිඳ නොවැටී වර්ෂ එක්දහස් හත්සිය පනහක් පමණ පැවැත්තේ ය. මෙකී ශිෂ්ටාචාරයේ මෙම ශක්තිමත් පදනම සකස්වීමේ දී අදාළ පරිසරයට අනුගත වීම, පරිසරය අරපිරිමැස්මෙන් පරිහරණය කිරීම, විනය, කැපවීම, නිසිකලට ක්‍රියාත්මක වීම වැනි සාධක බලපා තිබේ. දකුණු ඉන්දියාවට සමීපව මහාතිත්ථය ස්ථානගතවතිබියදීත්, අනුරාධපුරය මහාතිත්ථයට සමීපව පිහිටා තිබියදීත්, එනම් සතුරාට දොරටු විවෘතව තිබියදීත් වර්ෂ එක්දහස් හත්සිය පනහක් පමණ නිරුපද්‍රිතව පැවතීමත්,  එසේ නොවූ අභ්‍යන්තරික රාජධානි ඉක්මනින් බිඳවැටීමත් තුළ ඇත්තේ ඉහතින් කී සාධක කෙරේ අවධානය අඩු වීම වග පෙනී යයි.
+<br> <br>
+
+</div>
+        
+<div class="button-container">
+            <button id="increaseBtn">+</button>
+            <button id="decreaseBtn">-</button>
+            <button id="editBtn">E</button>
+            <button id="saveBtn">S</button>
+        </div>
+    </div>
+
+    <script>
+        // Disable right-click
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // Disable text selection via keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Disable Ctrl+A, Ctrl+C, Ctrl+X
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'a' || e.key === 'c' || e.key === 'x' || e.key === 'A' || e.key === 'C' || e.key === 'X')) {
+                const noteArea = document.getElementById('noteArea');
+                if (!noteArea.isContentEditable || noteArea.contentEditable === 'false') {
+                    e.preventDefault();
+                    return false;
+                }
+            }
+        });
+        
+        let fontSize = 16;
+        let isEditing = false;
+        let originalContent = '';
+        
+        const searchBox = document.getElementById('searchBox');
+        const noteArea = document.getElementById('noteArea');
+        const increaseBtn = document.getElementById('increaseBtn');
+        const decreaseBtn = document.getElementById('decreaseBtn');
+        const editBtn = document.getElementById('editBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        
+        // Search functionality
+        searchBox.addEventListener('input', function() {
+            const searchTerm = this.value.trim();
+            
+            if (!searchTerm) {
+                noteArea.innerHTML = originalContent || noteArea.textContent;
+                return;
+            }
+            
+            if (!originalContent) {
+                originalContent = noteArea.textContent;
+            }
+            
+            const text = originalContent;
+            const regex = new RegExp(`(${searchTerm})`, 'gi');
+            const highlightedText = text.replace(regex, '<span class="highlight">$1</span>');
+            
+            noteArea.innerHTML = highlightedText;
+        });
+        
+        // Increase font size
+        increaseBtn.addEventListener('click', function() {
+            fontSize += 2;
+            noteArea.style.fontSize = fontSize + 'px';
+        });
+        
+        // Decrease font size
+        decreaseBtn.addEventListener('click', function() {
+            if (fontSize > 10) {
+                fontSize -= 2;
+                noteArea.style.fontSize = fontSize + 'px';
+            }
+        });
+        
+        // Edit note
+        editBtn.addEventListener('click', function() {
+            const password = prompt('සංස්කරණය කිරීම සඳහා මුරපදය ඇතුළත් කරන්න:');
+            
+            if (password !== 'Lakmini79') {
+                alert('වැරදි මුරපදයක්! සංස්කරණය කිරීමට ඉඩ නොදේ.');
+                return;
+            }
+            
+            isEditing = true;
+            noteArea.contentEditable = 'true';
+            noteArea.style.userSelect = 'text';
+            noteArea.style.webkitUserSelect = 'text';
+            noteArea.style.mozUserSelect = 'text';
+            noteArea.focus();
+            editBtn.style.display = 'none';
+            saveBtn.style.display = 'inline-block';
+            
+            // Clear search when editing
+            searchBox.value = '';
+            if (originalContent) {
+                noteArea.textContent = originalContent;
+            }
+        });
+        
+        // Save edit
+        saveBtn.addEventListener('click', function() {
+            isEditing = false;
+            noteArea.contentEditable = 'false';
+            noteArea.style.userSelect = 'none';
+            noteArea.style.webkitUserSelect = 'none';
+            noteArea.style.mozUserSelect = 'none';
+            originalContent = noteArea.textContent;
+            editBtn.style.display = 'inline-block';
+            saveBtn.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
