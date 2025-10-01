@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="si">
 <head>
@@ -164,6 +165,32 @@
 
         .back-to-search:hover {
             background: #c0392b;
+        }
+
+        .back-to-home {
+            background: var(--secondary-color);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .back-to-home:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .home-button-container {
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         .results-container {
@@ -353,7 +380,7 @@
         <!-- Header -->
         <div class="header">
             <h3>අමිල උඩවත්ත</h3>
-			<h2>ඉතිහාසය වාග්කෝෂය</h2>
+            <h2>ඉතිහාසය වාග්කෝෂය</h2>
             <p>2025 සංස්කරණය</p>
         </div>
 
@@ -386,6 +413,11 @@
             </div>
         </div>
 
+        <!-- Back to Home Button -->
+        <div class="home-button-container">
+            <a href="index.html" class="back-to-home">🏠 Back to Home</a>
+        </div>
+
         <!-- Footer -->
         <div class="footer">
             <p>&copy; 2025 අමිල උඩවත්ත. සියලුම හිමිකම් ඇවිරිණි. <br>නව සංස්කරණයන් ලබා ගැනීම හා වෙනත් විමසීම් සඳහා-0701551279 </p>
@@ -393,8 +425,8 @@
     </div>
 
     <script>
-        // Sample dictionary data - FIXED SYNTAX
-        const dictionaryData = 	[
+        // Sample dictionary data
+        const dictionaryData = [
     {
         word: "අංකෙළිය",
         category: "ශ්‍රීලඉ",
