@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ලංකා ඉතිහාසයේ මූලාශ්‍රය</title>
+    <title>දඹදෙණිය රාජධානි සමය</title>
     <style>
         * {
             margin: 0;
@@ -300,7 +300,7 @@
 </head>
 <body>
     <div class="container">
-        <h1 id="pageTitle">ලංකා ඉතිහාසයේ මූලාශ්‍රය</h1>
+        <h1 id="pageTitle">දඹදෙණිය රාජධානි සමය</h1>
         
         <div class="search-container">
             <input type="text" id="searchBox" placeholder="සෙවීමට වචනයක් ඇතුලත් කරන්න...">
@@ -355,23 +355,16 @@
         let originalContent = '';
         let currentHighlightIndex = 0;
         let highlights = [];
-        let currentArticleId = 2;
+        let currentArticleId = null;
         let originalHTML = '';
 
         // Glossary definitions
         const glossary = {
-            'සංක්ෂිප්තව': 'කෙටියෙන්',
-            'පුනරුක්තීන්': 'එක ම දේ යළි යළිත් ලියවුණු අවස්ථා',
-            'පුඤ්ඤපොත්ථක': 'පිං පොත්, යමෙක් තමන් කළ යහපත් වැඩ ලියා තබන පොත. ඔහුගේ මරණාසන්න මෙහොතේ දී ඔහුගේ සමීපතමයින් විසින් ඔහුට ඇසෙන සේ කියවනු ලබයි. එවිට ඔහුගේ මතු භවයන් සතුටුදායක අයුරින් සිදුවන බව බෞද්ධ විශ්වාසය යි.',
-            'ප්‍රාග්මහින්ද යුගයේ': 'මහින්දාගමනය හෙවත් මිහිඳු හිමියන්ගේ පැමිණීමට පෙර අවදිය',
-            'වළගම්බා රාජ්‍යෝදය': 'වළගම්බා රජු බලයට පත්වීම, රජවීම',
-			'හුදී ජන පහන් සංවේගය පිණිස': 'යහපත් ජනයාගේ(සුධී ජනයාගේ) සිත් තුළ ප්‍රීතිය,ප්‍රසන්න බව මුසු හැඟීමක් ඇති කරනු පිණිස',			
-			'පෙර‘පර දෙදිග': 'පෙරදිග හා අපරදිග, නැගෙනහිර හා බටහිර',
-			'මිථ්‍යා කතා': 'සත්‍ය නොවන විශ්වාස මත පදනම් වූ කතා',
-			'වෛතුල්‍යවාදී භික්ෂූන්': 'සැබෑ මුල් බුද්ධ දේශනාව වෙනස් කරමින් විකෘති දේශනාවක් ඉදිරිපත් කළ භික්ෂූන්',
-			'තඹකර, පෙහෙකර, වෙජ': 'තඹ කාර්මිකයින්, පේෂ කාර්මිකයින් හා වෛද්‍යවරු',
-			'මෙහෙණවරෙහි': 'භික්ෂුණී ආරාමයෙහි',
-			'මෙහෙණවරෙහි': 'භික්ෂුණී ආරාමයෙහි',
+            'නරේන්ද්\u200dර': 'රජු, රජකුමාර, පාලකයා',
+            'මාඝ': 'කාලිංග රාජධානියෙන් පැමිණි ආක්‍රමණිකයා',
+            'මිලේච්ඡ': 'ජාතික අපරිස්කාරයින්, ප්‍රචණ්ඩකාරීන්',
+            'යෝධ': 'දැඩි සහ ප්‍රචණ්ඩකාරී සෙනඟ',
+            'රුහුණු රටට': 'රෝහණයට'
         };
 
         const searchBox = document.getElementById('searchBox');
@@ -577,6 +570,11 @@
                 currentHighlightIndex = 0;
             }
         });
+		window.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const slug = urlParams.get('slug') || 'slhmulashra'; // ← මෙන්න default slug
+    loadArticle(slug);
+});
 
         // Navigation functions
         function updateNavButtons() {
@@ -648,7 +646,7 @@
             noteArea.innerHTML = originalHTML;
             initializeGlossary();
         });
-
+		
         // Save edit
         saveBtn.addEventListener('click', async function() {
             const success = await saveArticle();
