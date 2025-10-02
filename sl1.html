@@ -570,11 +570,6 @@
                 currentHighlightIndex = 0;
             }
         });
-		window.addEventListener('DOMContentLoaded', function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const slug = urlParams.get('slug') || 'slhmulashra'; // ← මෙන්න default slug
-    loadArticle(slug);
-});
 
         // Navigation functions
         function updateNavButtons() {
@@ -646,7 +641,7 @@
             noteArea.innerHTML = originalHTML;
             initializeGlossary();
         });
-		
+        
         // Save edit
         saveBtn.addEventListener('click', async function() {
             const success = await saveArticle();
@@ -663,6 +658,14 @@
                 saveBtn.style.display = 'none';
                 initializeGlossary();
             }
+        });
+
+        // IMPORTANT: Load article when DOM is ready - THIS MUST BE AT THE END
+        window.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const slug = urlParams.get('slug') || 'slhmulashra';
+            console.log('Loading article with slug:', slug); // Debug log
+            loadArticle(slug);
         });
       
     </script>
