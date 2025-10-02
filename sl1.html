@@ -570,12 +570,7 @@
                 currentHighlightIndex = 0;
             }
         });
-		window.addEventListener('DOMContentLoaded', function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const slug = urlParams.get('slug') || 'slhmulashra'; // ← මෙන්න default slug
-    loadArticle(slug);
-});
-
+		
         // Navigation functions
         function updateNavButtons() {
             prevBtn.disabled = currentHighlightIndex === 0;
