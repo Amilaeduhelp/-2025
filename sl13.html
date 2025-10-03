@@ -570,11 +570,6 @@
                 currentHighlightIndex = 0;
             }
         });
-		window.addEventListener('DOMContentLoaded', function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const slug = urlParams.get('slug') || 'slhdambadeniya'; // ← මෙන්න default slug
-    loadArticle(slug);
-});
 
         // Navigation functions
         function updateNavButtons() {
@@ -665,11 +660,11 @@
             }
         });
 
-        // Load article on page load
+        // IMPORTANT: Load article when DOM is ready - THIS MUST BE AT THE END
         window.addEventListener('DOMContentLoaded', function() {
-            // Get slug from URL parameter if exists
             const urlParams = new URLSearchParams(window.location.search);
-            const slug = urlParams.get('slug');
+            const slug = urlParams.get('slug') || 'slhdambadeniya';
+            console.log('Loading article with slug:', slug); // Debug log
             loadArticle(slug);
         });
     </script>
