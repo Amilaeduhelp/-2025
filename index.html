@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>අමිල උඩවත්ත-ඉතිහාසය වාග්මාලාව</title>
+    <title>සටහන් පොත</title>
     <style>
         * {
             margin: 0;
@@ -12,203 +12,82 @@
         }
 
         body {
-            font-family: 'Noto Sans Sinhala', 'Iskoola Pota', sans-serif;
+            font-family: 'Noto Sans Sinhala', Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.95);
+            background: white;
             border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             padding: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 600px;
+            max-width: 1000px;
             width: 100%;
-            text-align: center;
-            backdrop-filter: blur(10px);
         }
 
         h1 {
-            color: #2d3748;
+            text-align: center;
+            color: #667eea;
+            font-size: 2.5em;
             margin-bottom: 40px;
-            font-size: 2em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .password-screen {
-            display: block;
-        }
-
-        .main-screen {
-            display: none;
-        }
-
-        .password-container {
-            margin: 40px 0;
-        }
-
-        .password-input {
-            width: 100%;
-            padding: 15px;
-            font-size: 1.2em;
-            border: 2px solid #667eea;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-family: 'Noto Sans Sinhala', 'Iskoola Pota', sans-serif;
-        }
-
-        .password-input:focus {
-            outline: none;
-            border-color: #764ba2;
-            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
-        }
-
-        .error-message {
-            color: #f5576c;
-            font-weight: bold;
-            margin: 15px 0;
-            display: none;
-        }
-
-        .success-message {
-            color: #10b981;
-            font-weight: bold;
-            margin: 15px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
         .main-buttons {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
-            justify-content: center;
             margin-bottom: 30px;
-        }
-
-        .btn {
-            padding: 15px 30px;
-            font-size: 1.1em;
-            font-weight: bold;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .main-btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            flex: 1;
+            border: none;
+            padding: 20px 30px;
+            font-size: 1.3em;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            font-weight: bold;
         }
 
         .main-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .main-btn:active {
+            transform: translateY(-1px);
         }
 
         .main-btn.active {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            box-shadow: 0 8px 25px rgba(245, 87, 108, 0.5);
         }
 
-        .verify-btn {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            width: 100%;
-        }
-
-        .verify-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .whatsapp-btn {
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            color: white;
-            width: 100%;
-            margin-top: 15px;
-        }
-
-        .whatsapp-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .sub-buttons {
+        .lessons-container {
             display: none;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 20px;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .lessons-container.active {
+            display: block;
             animation: fadeIn 0.5s ease;
-        }
-
-        .sub-buttons.show {
-            display: flex;
-        }
-
-        .sub-btn {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-            width: 100%;
-        }
-
-        .sub-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 2px solid #e2e8f0;
-            color: #718096;
-            font-size: 0.9em;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal.show {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-            animation: slideIn 0.3s ease;
-        }
-
-        .modal-content h2 {
-            color: #10b981;
-            margin-bottom: 20px;
-        }
-
-        .modal-content p {
-            margin-bottom: 25px;
-            color: #4a5568;
-            line-height: 1.6;
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(-10px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
@@ -216,204 +95,268 @@
             }
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
+        .lessons-title {
+            text-align: center;
+            color: #764ba2;
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .lesson-btn {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 20px 25px;
+            font-size: 1.15em;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: 600;
+            min-height: 70px;
+            line-height: 1.4;
+        }
+
+        .lesson-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
             }
-            to {
-                opacity: 1;
-                transform: scale(1);
+
+            h1 {
+                font-size: 2em;
+                margin-bottom: 30px;
+            }
+
+            .main-btn {
+                font-size: 1.1em;
+                padding: 15px 20px;
+            }
+
+            .lessons-title {
+                font-size: 1.4em;
+                margin-bottom: 20px;
+            }
+
+            .lessons-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .lesson-btn {
+                font-size: 1.05em;
+                padding: 18px 20px;
+                min-height: 65px;
             }
         }
 
         @media (max-width: 480px) {
-            .main-buttons {
-                flex-direction: column;
+            .container {
+                padding: 15px;
             }
 
             h1 {
-                font-size: 1.5em;
+                font-size: 1.6em;
+            }
+
+            .main-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .lesson-btn {
+                font-size: 1em;
+                padding: 15px;
+                min-height: 60px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Password Screen -->
-        <div class="password-screen" id="passwordScreen">
-            <h1>අමිල උඩවත්ත-ඉතිහාසය වාග්මාලාව</h1>
-            
-            <div class="password-container">
-                <input type="text" 
-                       class="password-input" 
-                       id="passwordInput" 
-                       placeholder="මුරපදය ඇතුළත් කරන්න">
-                
-                <div class="error-message" id="errorMessage">
-                    වැරදි මුරපදයකි! නැවත උත්සාහ කරන්න.
-                </div>
-                
-                <button class="btn verify-btn" onclick="verifyPassword()">
-                    තහවුරු කරන්න
-                </button>
-            </div>
-
-            <div class="footer">
-                © Copyrights - අමිල උඩවත්ත-ඉතිහාසය
-            </div>
+        <h1>සටහන් පොත</h1>
+        
+        <div class="main-buttons">
+            <button class="main-btn" onclick="showLessons('sl')">ශ්‍රී ලංකා ඉතිහාසය</button>
+            <button class="main-btn" onclick="showLessons('erp')">යුරෝපා ඉතිහාසය</button>
+            <button class="main-btn" onclick="showLessons('ind')">ඉන්දියා ඉතිහාසය</button>
         </div>
 
-        <!-- Main Screen -->
-        <div class="main-screen" id="mainScreen">
-            <h1>අමිල උඩවත්ත-ඉතිහාසය වාග්මාලාව</h1>
-            
-            <div class="main-buttons">
-                <button class="btn main-btn" id="advancedBtn">උසස් පෙළ</button>
-                <button class="btn main-btn" id="ordinaryBtn">සාමාන්‍ය පෙළ</button>
-            </div>
-
-            <div class="sub-buttons" id="advancedSub">
-                <button class="btn sub-btn" onclick="window.location.href='slpedia.html'">ශ්‍රී ලංකා ඉතිහාසය</button>
-                <button class="btn sub-btn" onclick="window.location.href='erppedia.html'">යුරෝපා ඉතිහාසය</button>
-                <button class="btn sub-btn" onclick="window.location.href='indpedia.html'">ඉන්දියා ඉතිහාසය</button>
-                <button class="btn sub-btn" onclick="window.location.href='මෙතෙක් ආ ප්‍රශ්න.html'">මෙතෙක් ආ ප්‍රශ්න</button>
-                <button class="btn sub-btn" onclick="window.location.href='joinclass.html'">පන්තියට සම්බන්ධ වෙන්න</button>
-                <button class="btn sub-btn" onclick="window.location.href='note.html'">සටහන් පොත</button>
-            </div>
-
-            <div class="sub-buttons" id="ordinarySub">
-                <button class="btn sub-btn" onclick="window.location.href='10pedia.html'">10 ශ්‍රේණිය</button>
-                <button class="btn sub-btn" onclick="window.location.href='11pedia.html'">11 ශ්‍රේණිය</button>
-            </div>
-
-            <div class="footer">
-                © Copyrights - අමිල උඩවත්ත-ඉතිහාසය
-            </div>
+        <div id="sl-lessons" class="lessons-container">
+            <h2 class="lessons-title">ශ්‍රී ලංකා ඉතිහාසය - පාඩම්</h2>
+            <div class="lessons-grid" id="sl-grid"></div>
         </div>
-    </div>
 
-    <!-- Success Modal -->
-    <div class="modal" id="successModal">
-        <div class="modal-content">
-            <h2>✅ නිවැරදි මුරපදයකි!</h2>
-            <p>ඔබේ මුරපදය WhatsApp හරහා යවන ලදී. කරුණාකර අනුමැතිය රැඳී සිටින්න.</p>
-            <button class="btn whatsapp-btn" onclick="sendWhatsAppNotification()">
-                📱 WhatsApp හරහා දන්වන්න
-            </button>
+        <div id="erp-lessons" class="lessons-container">
+            <h2 class="lessons-title">යුරෝපා ඉතිහාසය - පාඩම්</h2>
+            <div class="lessons-grid" id="erp-grid"></div>
         </div>
+
+        <div id="ind-lessons" class="lessons-container">
+            <h2 class="lessons-title">ඉන්දියා ඉතිහාසය - පාඩම්</h2>
+            <div class="lessons-grid" id="ind-grid"></div>
+        </div>
+
+        <footer>
+            <p>&copy; අමිල උඩවත්ත ඉතිහාසය</p>
+        </footer>
     </div>
 
     <script>
-        // 100 valid passwords
-        const validPasswords = [
-            'ජයග්‍රහණය', 'විජයබාහු', 'පරාක්‍රමබාහු', 'දුටුගැමුණු', 'මහින්ද', 'දෙවනම්පියතිස්ස',
-            'සේනරත්', 'ආනන්ද', 'අනුරුද්ධ', 'බුද්ධදාස', 'ධාතුසේන', 'කස්සප', 'මෝග්ගල්ලාන',
-            'කළිඟ්ග', 'නිස්සංකමල්ල', 'විජයබාහු', 'සප්පුමල්', 'වීරපරාක්‍රම', 'භුවනෙක', 'වික්‍රමබාහු',
-            'සිරිසංඝබෝ', 'කිත්සිරිමේවන්', 'රාජසිංහ', 'වීරසුන්දර', 'බුවනෙකබාහු', 'පඬු', 'පරාක්‍රම',
-            'විජය', 'සංඝමිත්තා', 'මහාවංශය', 'දීපවංශය', 'චූළවංශය', 'රජරට', 'මයාරට', 'රුහුණු',
-            'යාපනය', 'කොට්ටේ', 'සීතාවක', 'දඹදෙණිය', 'කුරුණෑගල', 'ගම්පොල', 'කැලණිය', 'රාජගල',
-            'සිගිරිය', 'පොළොන්නරුව', 'අනුරාධපුර', 'යාපහුව', 'පන්දුවස්නුවර', 'රිටිගල', 'මිහින්තලේ',
-            'දඹුල්ල', 'මුලකිරිගල', 'බුද්ධගය', 'සාරනාථ්', 'කුසිනාර', 'ලුම්බිණිය', 'රාජගිරිය',
-            'වෙසාලිය', 'පාවා', 'උජේනි', 'තක්ෂශීලා', 'මද්‍රාස්', 'මහාජනපද', 'මෞර්ය', 'ගුප්ත',
-            'හර්ෂවර්ධන', 'අශෝක', 'චන්ද්‍රගුප්ත', 'සමුද්‍රගුප්ත', 'බින්දුසාර', 'කනිෂ්ක', 'රුද්‍රදාමන්',
-            'හූණ', 'පුෂ්‍යමිත්‍ර', 'දේවපාල', 'ධර්මපාල', 'ගෝපාල', 'හර්ෂ', 'ශශාංක', 'පුලකේශි',
-            'විජයාලය', 'රාජරාජ', 'රාජේන්ද්‍ර', 'කෘෂ්ණදේව', 'බුක්කරාය', 'හරිහර', 'දේවරාය',
-            'ගජපති', 'කපිලේන්ද්‍ර', 'පුරුෂොත්තම', 'නරසිංහ', 'බාබර්', 'හුමායුන්', 'අක්බර්', 'ජහාන්ගීර්',
-            'ෂාජහාන්', 'ඕරංසීබ්', 'බහාදුර්ෂා', 'ටිපූ', 'සිරාජ්', 'මීර්ජාෆර්', 'රණජිත්සිං'
-        ];
+        // මෙහි නව මාතෘකා එකතු කිරීමට ලැයිස්තුව සංස්කරණය කරන්න
+        const lessonData = {
+            sl: [
+                '1. මූලාශ්‍රය',
+                '2. භූගෝලීය සාධක',
+                '3. ප්‍රාග් ඓතිහාසික යුගය',
+				'4. පූර්ව ඓතිහාසික යුගය',
+				'5. මුල් ඓතිහාසික යුගය හා ජනාවාස ව්‍යාප්තිය',
+				'6. රජරට පදනම',
+				'7. පණ්ඩුකාභය රාජ්‍ය සමය හා අනුරාධපුර නගර නිර්මාණය',
+				'8. මුටසිව, දෙවපෑතිස් රජවරු හා මහින්දාගමනය',
+				'9. කාවන්තිස්ස රජතුමා',
+				'10. දුටුගැමුණු රජතුමා',
+				'11. වසභ රජතුමා',
+				'12. මහසෙන් රජතුමා',
+				'13. කීර්ති ශ්‍රී මේඝවර්ණාභය රජතුමා',
+				'14. ධාතුසේන රජතුමා',
+				'15. පළමු කාශ්‍යප හෙවත් සීගිරි කාශ්‍යප රජතුමා',
+				'16. මානවම්ම රජතුමා',
+				'17. පළමුවන සේන රජතුමා',
+				'18. දෙවන සේන රජතුමා',
+				'19. අනුරාධපුර අපර භාගයේ රජවරු',
+				'20. අනුරාධපුර පරිහානිය',
+				'21. අනුරාධපුර යුගයේ ආර්ථිකය',
+				'22. අනුරාධපුර යුගයේ විදේශ සබඳතා',
+				'23. අනුරාධපුර යුගයේ විදේශ ආක්‍රමණ',
+				'24. පොළොන්නරු යුගයේ චෝළ පාලන සමය',
+				'25. පළමුවන විජයබාහු රාජ්‍ය සමය',
+				'26. පළමුවන පරාක්‍රමබාහු රාජ්‍ය සමය',
+				'27. නිශ්ශංකමල්ල රාජ්‍ය සමය',
+				'28. පොළොන්නරු යුගයේ විදේශ සබඳතා',
+				'29. කාලිංග මාඝ පාලන සමය',
+				'30. දඹදෙණියේ උදාව හා තෙවන විජයබාහු රජතුමා',
+				'31. දෙවන පරාක්‍රමබාහු රජතුමා',
+				'32. යාපහුව රාජධානිය',
+				'33. කුරුණෑගල රාජධානිය',
+				'34. ගම්පොළ රාජධානිය',
+				'35. කෝට්ටේ යුගය',
+				'36. මහනුවර මුල් යුගය',
+				'37. මහනුවර පළමු විමළධර්මසූරිය රජු',
+				'38. මහනුවර සෙනරත් හා දෙවන රාජසිංහ රජවරු',
+				'39. මහනුවර ශ්‍රී වීරපරාක්‍රම නරේන්ද්‍රසිංහ රජතුමා',
+				'40. මහනුවර ශ්‍රී විජය රාජසිංහ හා කීර්තිශ්‍රී රාජසිංහ රජවරු',
+				'41. මහනුවර රාජාධි රාජසිංහ හා ශ්‍රී වික්‍රම රාජසිංහ රජවරු',
+				'42. ලංකාවේ පුර්තුගීසි හා ලන්දේසි',
+				'43. ලංකාවේ ඉංග්‍රීසි පාලන සමය 1796 සිට 1815 දක්වා',
+				'44. ලංකාවේ ඉංග්‍රීසි පාලන සමය 1815 සිට 1848 දක්වා',
+				'45. කෝල්බෲක් කැමරන් ප්‍රතිසංස්කරණය',
+				'46. කෲ මැකලම් මැනිං හා මැනිං ඩෙවොන්ෂයර් ප්‍රතිසංස්කරණ',
+				'47. ඩොනමෝර් ප්‍රතිසංස්කරණය',
+				'48. සෝල්බර් ප්‍රතිසංස්කරණය හා ජාතික නිදහස',
+				'49. ලංකාවේ ආගමික හා සංස්කෘතික පුනරුදය',
+				'50. වතුවගාව',
+				'51. අධ්‍යාපනය',
+				'52. නිදහසට පසු මැතිවරණ',
+				'53. 1972 හා 1978 ආණ්ඩුක්‍රම ව්‍යවස්ථා',
+				'54. ගොවි ජනපද ව්‍යාපාරය හා මහවැලි ව්‍යාපාරය'
+				// නව මාතෘකා මෙහි එකතු කරන්න
+            ],
+            erp: [
+                '1. ග්‍රීක ශිෂ්ටාචාරය',
+                '2. රෝම ශිෂ්ටාචාරය',
+                '3. ඉස්ලාම් හා ක්‍රිස්තියානි ශිෂ්ටාචාර',
+				'4. වැඩවසම් යුගය',
+				'5. පුනරුදය',
+				'6. ජාතික රාජ්‍ය බිහිවීම',
+				'7. දේශ ගවේෂණය',
+				'8. ආගමික ප්‍රතිසංස්කරණ ව්‍යාපාරය',
+				'9. තිස් අවුුරුදු යුද්ධය',
+				'10. බ්‍රිතාන්‍ය පාර්ලිමේන්තු ක්‍රමය',
+				'11. කාර්මික විප්ලවය',
+				'12. ප්‍රංශ විප්ලවය',
+				'13. ඇමරිකානු නිදහස් සටන',
+				'14. ප්‍රංශ විප්ලවය',
+				'15. නැපෝලියන් බොනපාට්',
+				'16. වියානා සම්මේලනය',
+				'17. එක්සත් කිරීමේ ව්‍යාපාර',
+				'18. පළමු ලෝක යුද්ධය',
+				'19. රුසියානු විප්ලවය',
+				'20. දෙවන ලෝක යුද්ධය',
+				'21. දෙවන ලෝක යුද්ධයෙන් පසු ලෝකය',
+				// නව මාතෘකා මෙහි එකතු කරන්න
+            ],
+            ind: [
+                '1. භූගෝලීය සාධක',
+                '2. ඉන්දුනිම්න ශිෂ්ටාචාරය',
+                '3. සෘග් වෛදික හා පශ්චාත් වෛදික යුග',
+				'4. සොළොස්මහා ජනපද යුගය',
+				'5. මගධය මුල් වර්ධන අවස්ථාව',
+				'6. මගධය දෙවන වර්ධන අවස්ථාව',
+				'7. පශ්චාත් මෞර්ය ඉන්දියාව',
+				'8. ගුප්ත යුගය',
+				'9. පශ්චාත් ගුප්ත ඉන්දියාව',
+				'10. මුස්ලිම් ආක්‍රමණ එල්ලවීම',
+				'11. දකුණු ඉන්දියාව',
+			    // නව මාතෘකා මෙහි එකතු කරන්න
+            ]
+        };
 
-        const adminWhatsApp = '94716637804'; // Your WhatsApp number
-
-        // Check if user has valid session
-        function checkSession() {
-            const lastLogin = localStorage.getItem('lastLogin');
-            const currentTime = new Date().getTime();
-            const fortyEightHours = 48 * 60 * 60 * 1000;
-
-            if (lastLogin && (currentTime - lastLogin) < fortyEightHours) {
-                showMainScreen();
-            }
-        }
-
-        function verifyPassword() {
-            const input = document.getElementById('passwordInput').value.trim();
-            const errorMsg = document.getElementById('errorMessage');
-
-            if (validPasswords.includes(input)) {
-                // Save login time
-                localStorage.setItem('lastLogin', new Date().getTime());
-                localStorage.setItem('userPassword', input);
-                
-                // Hide error, show modal
-                errorMsg.style.display = 'none';
-                document.getElementById('successModal').classList.add('show');
-            } else {
-                errorMsg.style.display = 'block';
-            }
-        }
-
-        function sendWhatsAppNotification() {
-            const password = localStorage.getItem('userPassword');
-            const timestamp = new Date().toLocaleString('si-LK', { timeZone: 'Asia/Colombo' });
-            
-            // Create WhatsApp message
-            const message = `🔐 නව ප්‍රවේශය\n\n` +
-                          `මුරපදය: ${password}\n` +
-                          `වේලාව: ${timestamp}\n\n` +
-                          `අමිල උඩවත්ත-ඉතිහාසය වාග්මාලාව`;
-            
-            // Encode message for URL
-            const encodedMessage = encodeURIComponent(message);
-            
-            // Open WhatsApp with pre-filled message
-            window.open(`https://wa.me/${adminWhatsApp}?text=${encodedMessage}`, '_blank');
-            
-            // Show main screen after sending
-            setTimeout(() => {
-                document.getElementById('successModal').classList.remove('show');
-                showMainScreen();
-            }, 1000);
-        }
-
-        function showMainScreen() {
-            document.getElementById('passwordScreen').style.display = 'none';
-            document.getElementById('mainScreen').style.display = 'block';
-        }
-
-        // Main screen buttons
-        const advancedBtn = document.getElementById('advancedBtn');
-        const ordinaryBtn = document.getElementById('ordinaryBtn');
-        const advancedSub = document.getElementById('advancedSub');
-        const ordinarySub = document.getElementById('ordinarySub');
-
-        if (advancedBtn) {
-            advancedBtn.addEventListener('click', function() {
-                advancedBtn.classList.add('active');
-                ordinaryBtn.classList.remove('active');
-                advancedSub.classList.add('show');
-                ordinarySub.classList.remove('show');
+        Object.keys(lessonData).forEach(subject => {
+            const grid = document.getElementById(`${subject}-grid`);
+            lessonData[subject].forEach((lessonName, index) => {
+                const link = document.createElement('a');
+                link.href = `${subject}${index + 1}.html`;
+                link.className = 'lesson-btn';
+                link.textContent = lessonName;
+                grid.appendChild(link);
             });
-        }
-
-        if (ordinaryBtn) {
-            ordinaryBtn.addEventListener('click', function() {
-                ordinaryBtn.classList.add('active');
-                advancedBtn.classList.remove('active');
-                ordinarySub.classList.add('show');
-                advancedSub.classList.remove('show');
-            });
-        }
-
-        // Allow Enter key to submit password
-        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                verifyPassword();
-            }
         });
 
-        // Check session on page load
-        checkSession();
+        let currentSubject = null;
+
+        function showLessons(subject) {
+            const buttons = document.querySelectorAll('.main-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const subjects = ['sl', 'erp', 'ind'];
+            subjects.forEach(s => {
+                const container = document.getElementById(`${s}-lessons`);
+                if (s === subject) {
+                    container.classList.add('active');
+                    currentSubject = subject;
+                } else {
+                    container.classList.remove('active');
+                }
+            });
+        }
     </script>
 </body>
 </html>
