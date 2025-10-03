@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="si">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>රජරට ශිෂ්ටාචාරයේ පදනම</title>
+    <title>ශ්‍රී ලංකාවේ මුල් ඓතිහාසික යුගය හා ජනාවාස ව්‍යාප්තිය</title>
     <style>
         * {
             margin: 0;
@@ -40,8 +39,34 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
         
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2em;
+            color: #667eea;
+        }
+        
+        .error {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.1em;
+            color: #f5576c;
+            background: #ffe0e0;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
         .search-container {
-            margin-bottom: 25px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 100;
+            padding: 20px 0 10px 0;
+            margin: -30px -30px 25px -30px;
+            padding-left: 30px;
+            padding-right: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 20px 20px 0 0;
         }
         
         #searchBox {
@@ -58,50 +83,45 @@
             border-color: #764ba2;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
-        .search-container {
-            position: sticky;
-            top: 0;
-            background: white;
-            z-index: 100;
-            padding: 20px 0 10px 0;
-            margin: -30px -30px 25px -30px;
-            padding-left: 30px;
-            padding-right: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            border-radius: 20px 20px 0 0;
-        }
-		.button-container {
-            position: fixed;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 5px;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 5px 5px;
-            border-radius: 50px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-            z-index: 1000;
-            backdrop-filter: blur(10px);
+        
+        .search-results-info {
+            text-align: center;
+            margin: 10px 0;
+            font-size: 0.9em;
+            color: #4a5568;
+            font-weight: 500;
         }
         
-        button {
-            padding: 5px;
-            width:25px;
-            height: 25px;
-            font-size: 1.3em;
+        .search-nav-buttons {
+            display: none;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        .search-nav-btn {
+            padding: 8px 14px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             border: none;
-            border-radius: 50%;
+            border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s;
-            font-weight: bold;
-            color: white;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            min-width: 45px;
         }
+        
+        .search-nav-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .search-nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
         .note-area {
             background: #f7fafc;
             padding: 25px;
@@ -126,23 +146,86 @@
             font-weight: bold;
         }
         
+        .current-highlight {
+            background-color: #ff6b6b !important;
+            box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+        }
+        
+        .glossary-term {
+            color: #2563eb;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            text-underline-offset: 3px;
+            transition: all 0.2s;
+        }
+        
+        .glossary-term:hover {
+            color: #1d4ed8;
+            text-decoration-style: solid;
+        }
+        
+        .tooltip {
+            position: fixed;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 10000;
+            max-width: 300px;
+            font-size: 0.9em;
+            line-height: 1.5;
+            display: none;
+            animation: tooltipFadeIn 0.2s ease-out;
+            left: 10px !important;
+            right: 10px !important;
+            margin: 0 auto;
+        }
+        
+        @keyframes tooltipFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         .button-container {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+            gap: 5px;
             justify-content: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 5px 5px;
+            border-radius: 50px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
         }
         
         button {
-            padding: 12px 24px;
-            font-size: 1em;
+            padding: 5px;
+            width: 25px;
+            height: 25px;
+            font-size: 1.3em;
             border: none;
-            border-radius: 50px;
+            border-radius: 50%;
             cursor: pointer;
             transition: all 0.3s;
             font-weight: bold;
             color: white;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         button:hover {
@@ -170,12 +253,32 @@
             background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
             display: none;
         }
+		 .book-link {
+            display: block;
+            text-align: center;
+            padding: 15px 25px;
+            margin: 0 0 20px 0;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .book-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
         
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
             }
-            
+        
+                  
             h1 {
                 font-size: 1.5em;
             }
@@ -212,42 +315,35 @@
                 padding: 8px 15px;
                 font-size: 0.85em;
             }
+			
+			
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>රජරට ශිෂ්ටාචාරයේ පදනම</h1>
-        
-        <div class="search-container">
+   <div class="container">
+    <h1 id="pageTitle">ශ්‍රී ලංකාවේ මුල් ඓතිහාසික යුගය හා ජනාවාස ව්‍යාප්තිය</h1>
+    
+    <a href="https://amilaeduhelp.github.io/book-price/" target="_blank" class="book-link">
+        📚 මෙම සටහන ඇතුළු සම්පූර්ණ සටහන් ඇතුළත් මුද්‍රිත පොත ලබාගැනීම සඳහා මෙතැනින් පිවිසෙන්න
+    </a>
+    
+    <div class="search-container">
             <input type="text" id="searchBox" placeholder="සෙවීමට වචනයක් ඇතුලත් කරන්න...">
+            <div class="search-results-info" id="searchInfo"></div>
+            <div class="search-nav-buttons" id="searchNavButtons">
+                <button class="search-nav-btn" id="prevBtn">▲</button>
+                <button class="search-nav-btn" id="nextBtn">▼</button>
+            </div>
         </div>
         
-        <div class="note-area" id="noteArea">06 පරිච්ඡේදය
-1.	රජරට ශිෂ්ටාචාරයේ පදනම පැහැදිලි කරන්න.
-2.	රජරට ශිෂ්ටාචාර සමයට අයත් අගනගර දෙක මොනවා ද?
-3.	ඒවා සමග මේ කාලයේ වැදගත්වූ වරාය 6ක් සිතියමක ලකුණු කරන්න.
-4.	රජරට ශිෂ්ටාචාරය කෙතෙක් කාලයක් සක්‍රියව පැවතියේ ද?
-5.	රජරට ශිෂ්ටාචාරය එකෙත්කල් පැවතීමට හේතු මොනවා ද?
-රජරට ශිෂ්ටාචාරය
-(අනුරාධපුර යුගයේ සිට පොළොන්නරු යුගයේ අවසානය දක්වා)
-¬¬ලංකාවේ වියළි කලාපය මුල් කරගනිමින් අනුරාධපුරය හා පොළොන්නරුව ලංකාවේ අගනගර වශයෙන් පැවති කාලපරිච්ඡේදය හැඳින්වෙන්නේ රජරට ශිෂ්ටාචාර සමය ලෙසිනි. සියවස් වශයෙන් ගතහොත් මේ කාලපරිච්ඡේදය සියවස් 15ක් පමණ වේ.
-මේ කාලයේ ලංකාව රුහුණු, පිහිටි හා මායා වශයෙන් ප්‍රධාන කලාප තුනකට බෙදා තිබුණි.(සිතියම බලන්න.) අනුරාධපුරය හා පොළොන්නරුව අයත් වූයේ රජරට කොටසට ය. කලා ඔය හා මහවැලි ගංගාවෙන් ඉහළ කොටස් රජරටට අයත් සේ පිළිගැනුනි. නමුත් ඇතැම් කාලවල දැදුරු ඔය හා කලා ඔය අතර භූමිය රජරටට හෝ මායා රටට අයත් පොදු භූමියක් වශයෙන් පැවතියේ යැයි විශ්වාස කළ හැකි වේ. ඒ කෙසේ වුව ද අනුරාධපුරය හා¬ පොළොන්නරුව අගනුවර කරගත් කාලපරිච්ඡේදය හැඳින්වූයේ රජරට ශිෂ්ටාචාර සමය නමිනි.
-¬රජරට ශිෂ්ටාචාරයේ පදනම.
-ආර්ථික පදනම
-රජරට ශිෂ්ටාචාරයේ මූලික ආර්ථික පදනම වූයේ කෘෂිකර්මය හා වෙළඳාම යි. විවිධ කර්මාන්ත හා වෘත්තීන් ද පැවතියත් රාජ්‍යය පවත්වාගෙන යෑමේ මූලික ශක්තිය උත්පාදනය කරනු ලැබූයේ කෘෂිකර්මය හා වෙළඳාම විසිනි. පූර්ව ඓතිහාසික සමයේ සිට ම මෙරට ජනයා කෘෂිකර්මයට හුරු වී සිටි අතර ක්‍රමයෙන් විධිමත් කෘෂි කටයුතු වලට හුරුවීමක් මේ යුගයේ දී දක්නට ලැබේ. රජරට වනාහි ස්ථාවර වර්ෂාවක් පතිත වන හෝ ජලය සුලබ ප්‍රදේශයක් නොවේ. එහෙත් ඒ අභියෝගයට සාර්ථකව මුහුණ දෙමින් මේ යුගයේ පාලකයින් හා වැසියන් එක්ව වසර පුරා ස්ථාවර ලෙස ජලය සපයා ගන්නට ක්‍රම සකස් කරගනිමින් එකී ක්‍රම මනා කලමනාකරණයකින් යුතුව පරිහරණය කරමින් ක්‍රමවත් හා සාර්ථක කෘෂි ආර්ථිකයක් ගොඩනංවනු දක්නට ලැබේ. මේ සඳහා මුල් ඓතිහාසික යුගයේ සිදුවූ ඉන්දීය සංක්‍රමණ වලින් තවත් උත්තේජනයක් ලැබී ඇත. උතුරු ඉන්දියාවේ සිට දකුණු ඉන්දියාව හරහා ලංකාව දෙසට සංක්‍රමණය වීම සඳහා ආර්ය යැයි හඳුන්වන ජනයා ගතකළ කාලය සහස්‍රකයක්(වර්ෂ දහසක්) පමණ වේ. මේ කාලය පුරා ඔවුන් ඇසුරු කළ දකුණු ඉන්දීය ජනයා කුඩා චක්‍රීය ජල යන්ත්‍ර මගින් ඇළ මාර්ග වල හෝ ළිං ආදියේ ජලය ගෙන ඇළ මාර්ග ඔස්සේ වගා බිම් වලට යැවීමට කටයුතු කර ඇත.  රජරට සමය වන විට බහුතර ජනාවාස ප්‍රමාණයක් ව්‍යාප්තව පැවතියේ ලංකාවේ වියළි කලාපයේ ය. මේ සඳහා හේතු වූයේ ලාංකිකයින් මේ වන විටත් සිය ප්‍රධාන ආහාරය වශයෙන් බත තෝරාගෙන තිබීමත්, ඒ සඳහා අවශ්‍ය වී වගාවට උචිත ම පරිසරය මෙකී වියළි කලාපයේ තිබීමත් ය. සරුපස, හිරුඑළිය, තැනිතලා බිම, දේශගුණය, උණුසුම ආදී වූ සාධක නිසා උතුරුදිග හා දකුණු දිග වියළි කලාපීය තැනිතලා වල වීවගාව සරුවට සිදුකළ හැකි විය. මේ නිසා ලංකා ජනගහණයෙන් බහුතරයක් මේ ප්‍රෙද්ශ වල පදිංචි වී සිටියහ. නමුත් මේ කාලාපයේ වර්ෂාව අඩු නිසා ජලසැපයුම පිළිබඳ විශේෂ අවධානයක් යොමු කිරීමට සිදුවිය. ඊසානදිග මෝසම සක්‍රියව පැවති ඔත්තෝබර්-අප්‍රේල් කාලසීමාව තුළ දී පතිත වූ වර්ෂාවේ ජලය ගබඩා කරතබාගැනීමේ මූලික උත්සාහය ලාංකිකයන් විසින් ගනුලැබූයේ පූර්ව ඓතිහාසික සමයේ දී පමණ ය. වැවක් සේ හැඳින්වීමට අපහසු මෙම සුළු ජල ගබඩා ක්‍රිස්තුපූර්ව 4-3 සියවස් පමණ වන විට ගම්වැව් දක්වාත් ක්‍රිස්තු පූර්ව පළමු සියවසත් ක්‍රිස්තු වර්ෂ පළමු සියවසත් අතර කාලය වන විට අංගසම්පූර්ණ මහ වැව් දක්වා වර්ධනය  වී තිබුණි. වියළි කලාපයේ තැනි බිම් මනා ලෙස පරිහරණය කරමින් නිර්මාණය කළ වැව් යනු හෙළයාගේ අද්විතීය බුද්ධි මහිමයේ ඵලයකි. මෙකී බුද්ධිය යනු කලක් තිස්සේ පරිසරය හා බද්ධව ජීවත්වෙමින් පරිසරය අවබෝධ කරගනිමින්, පරිසරයට අනුගතවෙමින් ගතකළ ජීවිතය වෙනුවෙන් පරිසරය හෙළයා වෙත ලබා දුන් තිළිණයකැයි කීම වඩාත් නිවැරදි වනු ඇත. ඔහු පරිසරය හා නිවැරදි සන්නිවේදනයක් සිදුකළේ ය. පරිසරය සමග ඉතා සාධාරණ ගනුදෙනු සිදුකළේ ය. පරිසරය වෙත ගෞරවය පුදකරමින් යුතුකම් ඉටුකළේ ය. මේ නිසා පරිසරය ද ඊට සාධාරණය ඉටුකරන ලදී.
-කෘෂිබිමට වඩා තරමක් උස් බිමක නිර්මාණය කළ වැවේ ජලය කෘෂි ක්ෂේත්‍ර(කුඹුරු හා කෙත්වතු) කරා ගෙනයනු ලැබූයේ වාරිමාර්ග ඔස්සේ ය. වාරිමාර්ග වලින් මෙකී කාර්යයට අමතරව වැව් ජාල  සැකසීමේ කාර්යය ද සිදුකරන ලදී. මේ නිසා රජරට ශිෂ්ටාචාරය ජලාශ්‍රිත ශිෂ්ටාචාරයක් වශයෙන් ද හඳුනවනු ලැබේ. රජරට ශිෂ්ටාචාරයේ ආර්ථිකය ඒ මත පදනම් විය.
-ආර්ථිකයේ අනෙක් පදනම වූයේ වෙළඳාම යි. අනාදිමත් කාලයක සිට ලාංකිකයන් විවිධාකාරයේ ගනුදෙනු වලට හුරුවී සිටියහ. මෙය ලාංකිකයින්ට ආවේණික ලක්ෂණයක් නොවූව ද, ජීවත් වූ පරිසරය හා අවශ්‍යතා ආදිය නිසා එකී ගනුදෙනු ක්‍රම වල ලාංකේය අනන්‍යතා ද වර්ධනය වී තිබුණි. ප්‍රාග් ඓතිහාසික මානවයා පවා මුහුදුබඩ ජනයා සමග ගනුදෙනු කළ බවට සාධක ලැබී තිබේ. රට අභ්‍යන්තරයෙන් හමු වූ මුහුදු බෙල්ලන්ගේ අවශේෂ මේ සඳහා කදිම සාධකයකි. ලුණු තැවරුණු ඒ බෙල්ලන් ලාංකිකයින්ගේ ගනුදෙනු ක්‍රම වල පදනම සේ සැලකීමේ වරදක් නැත.
-ලංකාව පිළිබඳ සටහන් තැබූ විදෙස් ලේඛකයෝ ද ලංකාව විදෙස් වෙළෙන්දන් අතර ප්‍රකට මධ්‍යස්ථානයක් වූ බවට සාධක ඉදිරිපත් කර තිබේ. ෆාහියන්, හ්‍යුන්සාන් වැනි ලේඛකයින්ගේ වාර්තා මේ සඳහා ප්‍රකට සාධක වේ. ලාංකිකයින්ගේ අදෘෂ්‍ය වෙළඳාම පිළිබඳව ෆාහියන් හිමියෝ සිය වාර්තාවේ සඳහන් කර ඇත. හ්‍යුන්සාන් හිමියෝ ද ‘‘ මැණික් සොයා ගිය වෙළෙන්දෝ නිතර ලංකාවට ආ ගිය බව ‘‘ සඳහන් කර තිබේ.   දියවැල් රටාවක මධ්‍යගතව හෙවත් නෞකා මාර්ගයක මධ්‍යගතව පිහිටීම නිසා මුල්කාලීන වෙළෙඳුන් ලංකාවට ආයේ නිතැතිනි. නමුත් මෙර ඇති වටිනා වෙළඳ ද්‍රව්‍ය කෙරේ ලොබ සිත් ඇතිකරගත්තෝ  විටින් විට, යළි යළිත් මෙරටට පැමිණ ලාංකිකයන් සමග ගනුදෙනු කරන්නට පටන්ගත්හ. දියවැල් රටාවේ ම අතුරු ඵලයක් සේ නිර්මාණය වුණු මුහුදු බොකු හා ඒ ආශ්‍රිත වරාය පද්ධතියක් පැවතීම නිසා විදෙස් වෙළඳුන්ට ලංකා භූමිය වඩාත් ආකර්ෂණීය ස්ථානයක් විය.
-<br>
-සංස්කෘතික පදනම
-රජරට ශිෂ්ටාචාරටයේ සංස්කෘතිය කෙරේ ඉන්දීය ආභාසයක් ඇති බව අවිවාදයෙන් ම පිළිගැනීමට සිදුවේ. මේ පිළිබඳව ලංකාවේ භූගෝලීය සාධක පිළිබඳ ඒකකය තුළින් ද ඔබ උගනින්නට ඇත‍. ශ්‍රී ලංකාවේ ආගම සම්බන්ධයෙන් ඇති ඉන්දීය ආභාසය පිළිබඳ පැහැදිලි සාධක  තිබේ. බුදුදහම පමණක් නොව ජෛන, හින්දු, නිගණ්ඨ, පරිබ්‍රාජක... ආදී ආගම් පිළිබඳ පැහැදිලි සාධක හමු වී තිබේ. නමුත් ඒ සියල්ල සපුරාම ඉන්දීයකරණය නොවී ලංකාවේ පැවති ආගමික ඇදහිලි හා විශ්වාස සමග මිශ්‍ර වී ගිය බව බුදුදහම සම්බන්ධයෙන් පවා පෙනී යයි. ගෘහ නිර්මාණ ශිල්පයේ ද, චිත්‍ර, මූර්ති, කැටයම් ආදියේ ද මෙකී ආභාසය ප්‍රකට වේ. අජන්තාවට සම සීගිරි සිතුවම් කලාවත්, පල්ලව ආභාසය ලැබූ ඉසුරුමුණි කැටයම් ආදියත්, අමරාවතී ලක්ෂණ ප්‍රකට කරන අවුකන පිළිමයත් මේ සම්බන්ධයෙන් ඇති ප්‍රබලතම සාධකයෝ වෙති. නමුත් ඉන්දීය ආභාසය ලැබූ මෙකී සංස්කෘතික බීජ ලංකා භූමියේ රෝපණය වූයේ දේශීය වාතාවරණයක් යටතේ ය. ඒ නිසා ඉන්දියාවේ හා ලංකාවේ සංස්කෘතික අතින් සමීප සමාන බවක් ‍වර්ධනය වී නැත. දෙරටේ සංස්කෘතික පරස්පරතා ද තිබේ. කෙසේ වුව ද ලංකාවේ රජරට ශිෂ්ටාචාර සමයේ සංස්කෘතික පදනම සකස් වීම කෙරේ ඉන්දීය ආභාසයක් තිබීම පිළිගතයුත්තකි. මේ පිළිබඳව භූගෝලීය සාධක පිළිබඳ ඒකකයේ දැක්වූ විස්තර එකතුකරගන්න.
-මෙකී පදනම් ලංකාවේ රජරට ශිෂ්ටාචාරයට කෙතරම් ශක්තිමත් පදනමක් වී ද යත් මේ ශිෂ්ටාචාරය බිඳ නොවැටී වර්ෂ එක්දහස් හත්සිය පනහක් පමණ පැවැත්තේ ය. මෙකී ශිෂ්ටාචාරයේ මෙම ශක්තිමත් පදනම සකස්වීමේ දී අදාළ පරිසරයට අනුගත වීම, පරිසරය අරපිරිමැස්මෙන් පරිහරණය කිරීම, විනය, කැපවීම, නිසිකලට ක්‍රියාත්මක වීම වැනි සාධක බලපා තිබේ. දකුණු ඉන්දියාවට සමීපව මහාතිත්ථය ස්ථානගතවතිබියදීත්, අනුරාධපුරය මහාතිත්ථයට සමීපව පිහිටා තිබියදීත්, එනම් සතුරාට දොරටු විවෘතව තිබියදීත් වර්ෂ එක්දහස් හත්සිය පනහක් පමණ නිරුපද්‍රිතව පැවතීමත්,  එසේ නොවූ අභ්‍යන්තරික රාජධානි ඉක්මනින් බිඳවැටීමත් තුළ ඇත්තේ ඉහතින් කී සාධක කෙරේ අවධානය අඩු වීම වග පෙනී යයි.
-<br> <br>
-
-</div>
+        <div class="tooltip" id="tooltip"></div>
         
-<div class="button-container">
+        <div class="note-area" id="noteArea">
+            <div class="loading">පාඩම පූරණය වෙමින් පවතී...</div>
+        </div>
+        
+        <div class="button-container">
             <button id="increaseBtn">+</button>
             <button id="decreaseBtn">-</button>
             <button id="editBtn">E</button>
@@ -255,16 +351,23 @@
         </div>
     </div>
 
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+        // Supabase configuration
+        const SUPABASE_URL = 'https://uqgzlaxsnknheoerbfus.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxZ3psYXhzbmtuaGVvZXJiZnVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ4MDQzMTEsImV4cCI6MjA2MDM4MDMxMX0.O5dNUizqZ5kfwTs0mHLEorqOAqjZFjWakp2Q484MKEk';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         // Disable right-click
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
             return false;
         });
-        
+
         // Disable text selection via keyboard shortcuts
         document.addEventListener('keydown', function(e) {
-            // Disable Ctrl+A, Ctrl+C, Ctrl+X
             if ((e.ctrlKey || e.metaKey) && (e.key === 'a' || e.key === 'c' || e.key === 'x' || e.key === 'A' || e.key === 'C' || e.key === 'X')) {
                 const noteArea = document.getElementById('noteArea');
                 if (!noteArea.isContentEditable || noteArea.contentEditable === 'false') {
@@ -273,44 +376,264 @@
                 }
             }
         });
-        
+
         let fontSize = 16;
         let isEditing = false;
         let originalContent = '';
-        
+        let currentHighlightIndex = 0;
+        let highlights = [];
+        let currentArticleId = null;
+        let originalHTML = '';
+
+        // Glossary definitions
+        const glossary = {
+            'නරේන්ද්‍ර': 'රජු, රජකුමාර, පාලකයා',
+            'මාඝ': 'කාලිංග රාජධානියෙන් පැමිණි ආක්‍රමණිකයා',
+            'මිලේච්ඡ': 'සිත් පිත් නැති දරුණු',
+            'යෝධයා': 'සෙන්පතියා',
+            'රුහුණු රටට': 'රෝහණයට'
+        };
+
         const searchBox = document.getElementById('searchBox');
         const noteArea = document.getElementById('noteArea');
         const increaseBtn = document.getElementById('increaseBtn');
         const decreaseBtn = document.getElementById('decreaseBtn');
         const editBtn = document.getElementById('editBtn');
         const saveBtn = document.getElementById('saveBtn');
-        
+        const searchInfo = document.getElementById('searchInfo');
+        const searchNavButtons = document.getElementById('searchNavButtons');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const tooltip = document.getElementById('tooltip');
+        const pageTitle = document.getElementById('pageTitle');
+
+        // Load article from Supabase
+        async function loadArticle(slug = null) {
+            try {
+                let query = supabase
+                    .from('Historynt')
+                    .select('*');
+                
+                if (slug) {
+                    query = query.eq('slug', slug);
+                } else {
+                    // Load first article if no slug specified
+                    query = query.order('created_at', { ascending: true }).limit(1);
+                }
+                
+                const { data, error } = await query;
+                
+                if (error) throw error;
+                
+                if (data && data.length > 0) {
+                    const article = data[0];
+                    currentArticleId = article.id;
+                    pageTitle.textContent = article.title;
+                    noteArea.innerHTML = article.content;
+                    originalHTML = article.content;
+                    originalContent = noteArea.textContent;
+                    initializeGlossary();
+                } else {
+                    noteArea.innerHTML = '<div class="error">පාඩම හමු නොවිණි. කරුණාකර Supabase database එක පරීක්ෂා කරන්න.</div>';
+                }
+            } catch (error) {
+                console.error('Error loading article:', error);
+                noteArea.innerHTML = `<div class="error">දෝෂයක්: ${error.message}</div>`;
+            }
+        }
+
+        // Save article to Supabase
+        async function saveArticle() {
+            if (!currentArticleId) {
+                alert('සුරැකීමට ලිපියක් නැත!');
+                return false;
+            }
+            
+            try {
+                const { error } = await supabase
+                    .from('Historynt')
+                    .update({ content: noteArea.innerHTML })
+                    .eq('id', currentArticleId);
+                
+                if (error) throw error;
+                
+                alert('ලිපිය සාර්ථකව සුරකින ලදී!');
+                return true;
+            } catch (error) {
+                console.error('Error saving article:', error);
+                alert(`දෝෂයක්: ${error.message}`);
+                return false;
+            }
+        }
+
+        // Initialize glossary terms
+        function initializeGlossary() {
+            let content = noteArea.innerHTML;
+            
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = content;
+            const existingGlossaryTerms = tempDiv.querySelectorAll('.glossary-term');
+            existingGlossaryTerms.forEach(term => {
+                term.outerHTML = term.textContent;
+            });
+            content = tempDiv.innerHTML;
+            
+            for (const [term, definition] of Object.entries(glossary)) {
+                const regex = new RegExp(`(?<!<[^>]*)(${term})(?![^<]*>)`, 'g');
+                content = content.replace(regex, `<span class="glossary-term" data-definition="${definition}">$1</span>`);
+            }
+            
+            noteArea.innerHTML = content;
+            attachGlossaryListeners();
+        }
+
+        function attachGlossaryListeners() {
+            const terms = document.querySelectorAll('.glossary-term');
+            terms.forEach(term => {
+                term.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    showTooltip(this, this.dataset.definition);
+                });
+            });
+        }
+
+        function showTooltip(element, text) {
+            const rect = element.getBoundingClientRect();
+            tooltip.textContent = text;
+            tooltip.style.display = 'block';
+            
+            let leftPos = rect.left + (rect.width / 2) - (tooltip.offsetWidth / 2);
+            
+            const margin = 10;
+            if (leftPos < margin) {
+                leftPos = margin;
+            } else if (leftPos + tooltip.offsetWidth > window.innerWidth - margin) {
+                leftPos = window.innerWidth - tooltip.offsetWidth - margin;
+            }
+            
+            tooltip.style.left = leftPos + 'px';
+            tooltip.style.top = rect.top - tooltip.offsetHeight - 10 + 'px';
+            
+            if (rect.top - tooltip.offsetHeight - 10 < 0) {
+                tooltip.style.top = rect.bottom + 10 + 'px';
+            }
+        }
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.classList.contains('glossary-term')) {
+                tooltip.style.display = 'none';
+            }
+        });
+
         // Search functionality
         searchBox.addEventListener('input', function() {
             const searchTerm = this.value.trim();
             
             if (!searchTerm) {
-                noteArea.innerHTML = originalContent || noteArea.textContent;
+                noteArea.innerHTML = originalHTML;
+                initializeGlossary();
+                searchInfo.textContent = '';
+                searchNavButtons.style.display = 'none';
+                highlights = [];
+                currentHighlightIndex = 0;
                 return;
             }
             
-            if (!originalContent) {
-                originalContent = noteArea.textContent;
+            const text = noteArea.textContent;
+            const regex = new RegExp(`(${searchTerm})`, 'gi');
+            const matches = text.match(regex);
+            
+            if (matches && matches.length > 0) {
+                let content = originalHTML;
+                
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = content;
+                
+                function highlightTextNodes(node) {
+                    if (node.nodeType === Node.TEXT_NODE) {
+                        const text = node.textContent;
+                        if (regex.test(text)) {
+                            const span = document.createElement('span');
+                            span.innerHTML = text.replace(regex, '<span class="highlight">$1</span>');
+                            node.parentNode.replaceChild(span, node);
+                            
+                            while (span.firstChild) {
+                                span.parentNode.insertBefore(span.firstChild, span);
+                            }
+                            span.remove();
+                        }
+                    } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'SCRIPT' && node.tagName !== 'STYLE') {
+                        Array.from(node.childNodes).forEach(child => highlightTextNodes(child));
+                    }
+                }
+                
+                highlightTextNodes(tempDiv);
+                noteArea.innerHTML = tempDiv.innerHTML;
+                
+                initializeGlossary();
+                
+                highlights = Array.from(document.querySelectorAll('.highlight'));
+                currentHighlightIndex = 0;
+                
+                if (highlights.length > 0) {
+                    highlights[0].classList.add('current-highlight');
+                    highlights[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                
+                searchInfo.textContent = `ප්‍රතිඵල ${highlights.length} ක් හමු විය`;
+                
+                if (highlights.length > 1) {
+                    searchNavButtons.style.display = 'flex';
+                    updateNavButtons();
+                } else {
+                    searchNavButtons.style.display = 'none';
+                }
+            } else {
+                noteArea.innerHTML = originalHTML;
+                initializeGlossary();
+                searchInfo.textContent = 'ප්‍රතිඵල හමු නොවිය';
+                searchNavButtons.style.display = 'none';
+                highlights = [];
+                currentHighlightIndex = 0;
+            }
+        });
+
+        // Navigation functions
+        function updateNavButtons() {
+            prevBtn.disabled = currentHighlightIndex === 0;
+            nextBtn.disabled = currentHighlightIndex === highlights.length - 1;
+        }
+
+        function navigateHighlights(direction) {
+            if (highlights.length === 0) return;
+            
+            highlights[currentHighlightIndex].classList.remove('current-highlight');
+            
+            if (direction === 'next' && currentHighlightIndex < highlights.length - 1) {
+                currentHighlightIndex++;
+            } else if (direction === 'prev' && currentHighlightIndex > 0) {
+                currentHighlightIndex--;
             }
             
-            const text = originalContent;
-            const regex = new RegExp(`(${searchTerm})`, 'gi');
-            const highlightedText = text.replace(regex, '<span class="highlight">$1</span>');
-            
-            noteArea.innerHTML = highlightedText;
+            highlights[currentHighlightIndex].classList.add('current-highlight');
+            highlights[currentHighlightIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            updateNavButtons();
+        }
+
+        prevBtn.addEventListener('click', function() {
+            navigateHighlights('prev');
         });
-        
+
+        nextBtn.addEventListener('click', function() {
+            navigateHighlights('next');
+        });
+
         // Increase font size
         increaseBtn.addEventListener('click', function() {
             fontSize += 2;
             noteArea.style.fontSize = fontSize + 'px';
         });
-        
+
         // Decrease font size
         decreaseBtn.addEventListener('click', function() {
             if (fontSize > 10) {
@@ -318,7 +641,7 @@
                 noteArea.style.fontSize = fontSize + 'px';
             }
         });
-        
+
         // Edit note
         editBtn.addEventListener('click', function() {
             const password = prompt('සංස්කරණය කිරීම සඳහා මුරපදය ඇතුළත් කරන්න:');
@@ -337,24 +660,41 @@
             editBtn.style.display = 'none';
             saveBtn.style.display = 'inline-block';
             
-            // Clear search when editing
             searchBox.value = '';
-            if (originalContent) {
-                noteArea.textContent = originalContent;
-            }
+            searchInfo.textContent = '';
+            searchNavButtons.style.display = 'none';
+            highlights = [];
+            currentHighlightIndex = 0;
+            noteArea.innerHTML = originalHTML;
+            initializeGlossary();
         });
         
         // Save edit
-        saveBtn.addEventListener('click', function() {
-            isEditing = false;
-            noteArea.contentEditable = 'false';
-            noteArea.style.userSelect = 'none';
-            noteArea.style.webkitUserSelect = 'none';
-            noteArea.style.mozUserSelect = 'none';
-            originalContent = noteArea.textContent;
-            editBtn.style.display = 'inline-block';
-            saveBtn.style.display = 'none';
+        saveBtn.addEventListener('click', async function() {
+            const success = await saveArticle();
+            
+            if (success) {
+                isEditing = false;
+                noteArea.contentEditable = 'false';
+                noteArea.style.userSelect = 'none';
+                noteArea.style.webkitUserSelect = 'none';
+                noteArea.style.mozUserSelect = 'none';
+                originalHTML = noteArea.innerHTML;
+                originalContent = noteArea.textContent;
+                editBtn.style.display = 'inline-block';
+                saveBtn.style.display = 'none';
+                initializeGlossary();
+            }
         });
+
+        // IMPORTANT: Load article when DOM is ready - THIS MUST BE AT THE END
+        window.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const slug = urlParams.get('slug') || 'slhmul';
+            console.log('Loading article with slug:', slug); // Debug log
+            loadArticle(slug);
+        });
+      
     </script>
 </body>
 </html>
