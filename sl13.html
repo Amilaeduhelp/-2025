@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>දඹදෙණිය රාජධානි සමය</title>
+    <title>ශ්‍රී ලංකාවේ ප්‍රාග් ඓතිහාසික යුගය</title>
     <style>
         * {
             margin: 0;
@@ -253,12 +253,32 @@
             background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
             display: none;
         }
+		 .book-link {
+            display: block;
+            text-align: center;
+            padding: 15px 25px;
+            margin: 0 0 20px 0;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .book-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
         
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
             }
-            
+        
+                  
             h1 {
                 font-size: 1.5em;
             }
@@ -295,14 +315,20 @@
                 padding: 8px 15px;
                 font-size: 0.85em;
             }
+			
+			
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 id="pageTitle">දඹදෙණිය රාජධානි සමය</h1>
-        
-        <div class="search-container">
+   <div class="container">
+    <h1 id="pageTitle">ශ්‍රී ලංකාවේ ප්‍රාග් ඓතිහාසික යුගය</h1>
+    
+    <a href="https://amilaeduhelp.github.io/book-price/" target="_blank" class="book-link">
+        📚 මෙම සටහන ඇතුළු සම්පූර්ණ සටහන් ඇතුළත් මුද්‍රිත පොත ලබාගැනීම සඳහා මෙතැනින් පිවිසෙන්න
+    </a>
+    
+    <div class="search-container">
             <input type="text" id="searchBox" placeholder="සෙවීමට වචනයක් ඇතුලත් කරන්න...">
             <div class="search-results-info" id="searchInfo"></div>
             <div class="search-nav-buttons" id="searchNavButtons">
@@ -324,6 +350,7 @@
             <button id="saveBtn">S</button>
         </div>
     </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
@@ -360,11 +387,16 @@
 
         // Glossary definitions
         const glossary = {
-            'නරේන්ද්\u200dර': 'රජු, රජකුමාර, පාලකයා',
+            'sampleඋදා': 'කණ්ට්ඨතිස්ස රජු කරවූ පිරිවෙණකි.',
+			'sampleඋදා': 'කණ්ට්ඨතිස්ස රජු කරවූ පිරිවෙණකි.',
+			'sampleඋදා': 'කණ්ට්ඨතිස්ස රජු කරවූ පිරිවෙණකි.',
+			'sampleඋදා': 'කණ්ට්ඨතිස්ස රජු කරවූ පිරිවෙණකි.',
+			'කුක්කුටගිරි පිරිවෙණ': 'කණ්ට්ඨතිස්ස රජු කරවූ පිරිවෙණකි.',
             'මාඝ': 'කාලිංග රාජධානියෙන් පැමිණි ආක්‍රමණිකයා',
-            'මිලේච්ඡ': 'ජාතික අපරිස්කාරයින්, ප්‍රචණ්ඩකාරීන්',
-            'යෝධ': 'දැඩි සහ ප්‍රචණ්ඩකාරී සෙනඟ',
+            'මිලේච්ඡ': 'සිත් පිත් නැති දරුණු',
+            'යෝධයා': 'සෙන්පතියා',
             'රුහුණු රටට': 'රෝහණයට'
+			 
         };
 
         const searchBox = document.getElementById('searchBox');
@@ -641,7 +673,7 @@
             noteArea.innerHTML = originalHTML;
             initializeGlossary();
         });
-		
+        
         // Save edit
         saveBtn.addEventListener('click', async function() {
             const success = await saveArticle();
@@ -663,10 +695,11 @@
         // IMPORTANT: Load article when DOM is ready - THIS MUST BE AT THE END
         window.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
-            const slug = urlParams.get('slug') || 'slhdambadeniya';
+            const slug = urlParams.get('slug') || 'slhis013';
             console.log('Loading article with slug:', slug); // Debug log
             loadArticle(slug);
         });
+      
     </script>
 </body>
 </html>
