@@ -59,6 +59,11 @@
   button:active {
     transform: translateY(0);
   }
+  button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
   .error {
     color: #d32f2f;
     font-size: 0.9rem;
@@ -68,6 +73,16 @@
   .error.show {
     display: block;
   }
+  .loading {
+    text-align: center;
+    color: #667eea;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    display: none;
+  }
+  .loading.show {
+    display: block;
+  }
 </style>
 </head>
 <body>
@@ -75,59 +90,89 @@
   <h2>Login Page</h2>
   <form id="login-form">
     <input type="password" id="password" placeholder="Enter password" required>
-    <button type="submit">Login</button>
+    <button type="submit" id="login-btn">Login</button>
+    <div class="loading" id="loading-msg">Checking password...</div>
     <div class="error" id="error-msg">Invalid password. Please try again.</div>
   </form>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  const SUPABASE_URL = "https://uqgzlaxsnknheoerbfus.supabase.co";
-  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxZ3psYXhzbmtuaGVvZXJiZnVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ4MDQzMTEsImV4cCI6MjA2MDM4MDMxMX0.O5dNUizqZ5kfwTs0mHLEorqOAqjZFjWakp2Q484MKEk";
-  
-  // Supabase library එක load වෙනකම් wait කරන්න
-  const { createClient } = window.supabase;
-  const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  
-  const form = document.getElementById("login-form");
-  const errorMsg = document.getElementById("error-msg");
-  
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    errorMsg.classList.remove("show");
+  // Wait for Supabase to load
+  window.addEventListener('load', function() {
+    const SUPABASE_URL = "https://uqgzlaxsnknheoerbfus.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxZ3psYXhzbmtuaGVvZXJiZnVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ4MDQzMTEsImV4cCI6MjA2MDM4MDMxMX0.O5dNUizqZ5kfwTs0mHLEorqOAqjZFjWakp2Q484MKEk";
     
-    try {
-      const passwordInput = document.getElementById("password").value;
-      
-      console.log("Attempting login with password:", passwordInput);
-      
-      const { data, error } = await supabaseClient
-        .from("access_keys")
-        .select("*")
-        .eq("password", passwordInput);
-      
-      console.log("Database response - Data:", data);
-      console.log("Database response - Error:", error);
-      
-      if (error) {
-        console.error("Database error:", error);
-        alert("Error connecting to database: " + error.message);
-        return;
-      }
-      
-      if (data && data.length > 0) {
-        console.log("Login successful! Redirecting...");
-        // Password correct - redirect කරන්න
-        window.location.href = "https://amilaeduhelp.github.io/-2025/";
-      } else {
-        console.log("Invalid password - no matching records found");
-        // Password incorrect
-        errorMsg.classList.add("show");
-      }
-    } catch (err) {
-      console.error("Error:", err);
-      alert("An error occurred: " + err.message);
+    // Check if Supabase loaded
+    if (!window.supabase) {
+      console.error("Supabase library failed to load");
+      document.getElementById("error-msg").textContent = "Failed to load authentication system";
+      document.getElementById("error-msg").classList.add("show");
+      return;
     }
+    
+    const { createClient } = window.supabase;
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    
+    const form = document.getElementById("login-form");
+    const errorMsg = document.getElementById("error-msg");
+    const loadingMsg = document.getElementById("loading-msg");
+    const loginBtn = document.getElementById("login-btn");
+    
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      // Reset messages
+      errorMsg.classList.remove("show");
+      loadingMsg.classList.add("show");
+      loginBtn.disabled = true;
+      
+      try {
+        const passwordInput = document.getElementById("password").value.trim();
+        
+        console.log("Attempting login...");
+        
+        // Query database
+        const { data, error } = await supabaseClient
+          .from("access_keys")
+          .select("*")
+          .eq("password", passwordInput)
+          .limit(1);
+        
+        console.log("Database response - Data:", data);
+        console.log("Database response - Error:", error);
+        
+        if (error) {
+          console.error("Database error:", error);
+          errorMsg.textContent = "Error connecting to database: " + error.message;
+          errorMsg.classList.add("show");
+          loadingMsg.classList.remove("show");
+          loginBtn.disabled = false;
+          return;
+        }
+        
+        if (data && data.length > 0) {
+          console.log("Login successful! Redirecting...");
+          loadingMsg.textContent = "Success! Redirecting...";
+          // Redirect after short delay
+          setTimeout(() => {
+            window.location.href = "https://amilaeduhelp.github.io/-2025/";
+          }, 500);
+        } else {
+          console.log("Invalid password - no matching records found");
+          errorMsg.textContent = "Invalid password. Please try again.";
+          errorMsg.classList.add("show");
+          loadingMsg.classList.remove("show");
+          loginBtn.disabled = false;
+        }
+      } catch (err) {
+        console.error("Unexpected error:", err);
+        errorMsg.textContent = "An error occurred: " + err.message;
+        errorMsg.classList.add("show");
+        loadingMsg.classList.remove("show");
+        loginBtn.disabled = false;
+      }
+    });
   });
 </script>
 </body>
