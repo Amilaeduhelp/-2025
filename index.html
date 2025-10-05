@@ -174,9 +174,8 @@ var credentials = {
   "CUST002": "8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414",
   "ADMIN": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9",
   "CUST100": "dc658816b8b6be963b4ae5ae4c6befcceb8ac9a8f24b02b7ba1f2e33966137e7",
-  "LAK100": "fd3ae3b595e9df173e5ad2163b1053f7cc606df00629da74958b0acc7a1d32e3",
-  ,
-};
+  "LAK100": "fd3ae3b595e9df173e5ad2163b1053f7cc606df00629da74958b0acc7a1d32e3"
+  };
 
 function hash(str) {
   return CryptoJS.SHA256(str).toString();
@@ -241,6 +240,7 @@ if (auth === 'true' && exp && new Date().getTime() < parseInt(exp)) {
 
 </body>
 </html>
+
 
 
 
