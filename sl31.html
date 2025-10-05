@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>දෙවන පරාක්‍රමබාහු රජතුමා</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        body {
+            font-family: 'Noto Sans Sinhala', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 30px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 30px;
+            font-size: 2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2em;
+            color: #667eea;
+        }
+        
+        .error {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.1em;
+            color: #f5576c;
+            background: #ffe0e0;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .search-container {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 100;
+            padding: 20px 0 10px 0;
+            margin: -30px -30px 25px -30px;
+            padding-left: 30px;
+            padding-right: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 20px 20px 0 0;
+        }
+        
+        #searchBox {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1em;
+            border: 2px solid #667eea;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        #searchBox:focus {
+            border-color: #764ba2;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .search-results-info {
+            text-align: center;
+            margin: 10px 0;
+            font-size: 0.9em;
+            color: #4a5568;
+            font-weight: 500;
+        }
+        
+        .search-nav-buttons {
+            display: none;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        .search-nav-btn {
+            padding: 8px 14px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 45px;
+        }
+        
+        .search-nav-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .search-nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .note-area {
+            background: #f7fafc;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border: 2px solid #e2e8f0;
+            min-height: 300px;
+            line-height: 1.8;
+            font-size: 1em;
+        }
+        
+        .note-area[contenteditable="true"] {
+            background: #fff;
+            border-color: #667eea;
+            cursor: text;
+        }
+        
+        .highlight {
+            background-color: #ffd700;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .current-highlight {
+            background-color: #ff6b6b !important;
+            box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+        }
+        
+        .glossary-term {
+            color: #2563eb;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            text-underline-offset: 3px;
+            transition: all 0.2s;
+        }
+        
+        .glossary-term:hover {
+            color: #1d4ed8;
+            text-decoration-style: solid;
+        }
+        
+        .tooltip {
+            position: fixed;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 10000;
+            max-width: 300px;
+            font-size: 0.9em;
+            line-height: 1.5;
+            display: none;
+            animation: tooltipFadeIn 0.2s ease-out;
+            left: 10px !important;
+            right: 10px !important;
+            margin: 0 auto;
+        }
+        
+        @keyframes tooltipFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .button-container {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 5px 5px;
+            border-radius: 50px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        button {
+            padding: 5px;
+            width: 25px;
+            height: 25px;
+            font-size: 1.3em;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        #increaseBtn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        #decreaseBtn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        #editBtn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        #saveBtn {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            display: none;
+        }
+		 .book-link {
+            display: block;
+            text-align: center;
+            padding: 15px 25px;
+            margin: 0 0 20px 0;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .book-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+        
+                  
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .note-area {
+                padding: 15px;
+                font-size: 0.95em;
+            }
+            
+            button {
+                padding: 10px 18px;
+                font-size: 0.9em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.3em;
+            }
+            
+            .button-container {
+                gap: 8px;
+            }
+            
+            button {
+                padding: 8px 15px;
+                font-size: 0.85em;
+            }
+			
+			
+        }
+    </style>
+</head>
+<body>
+   <div class="container">
+    <h1 id="pageTitle">දෙවන පරාක්‍රමබාහු රජතුමා</h1>
+    
+    <a href="https://amilaeduhelp.github.io/book-price/" target="_blank" class="book-link">
+        📚 මෙම සටහන ඇතුළු සම්පූර්ණ සටහන් ඇතුළත් මුද්‍රිත පොත ලබාගැනීම සඳහා මෙතැනින් පිවිසෙන්න
+    </a>
+    
+    <div class="search-container">
+            <input type="text" id="searchBox" placeholder="සෙවීමට වචනයක් ඇතුලත් කරන්න...">
+            <div class="search-results-info" id="searchInfo"></div>
+            <div class="search-nav-buttons" id="searchNavButtons">
+                <button class="search-nav-btn" id="prevBtn">▲</button>
+                <button class="search-nav-btn" id="nextBtn">▼</button>
+            </div>
+        </div>
+        
+        <div class="tooltip" id="tooltip"></div>
+        
+        <div class="note-area" id="noteArea">
+            <div class="loading">පාඩම පූරණය වෙමින් පවතී...</div>
+        </div>
+        
+        <div class="button-container">
+            <button id="increaseBtn">+</button>
+            <button id="decreaseBtn">-</button>
+            <button id="editBtn">E</button>
+            <button id="saveBtn">S</button>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Supabase configuration
+        const SUPABASE_URL = 'https://uqgzlaxsnknheoerbfus.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxZ3psYXhzbmtuaGVvZXJiZnVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ4MDQzMTEsImV4cCI6MjA2MDM4MDMxMX0.O5dNUizqZ5kfwTs0mHLEorqOAqjZFjWakp2Q484MKEk';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Disable right-click
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // Disable text selection via keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'a' || e.key === 'c' || e.key === 'x' || e.key === 'A' || e.key === 'C' || e.key === 'X')) {
+                const noteArea = document.getElementById('noteArea');
+                if (!noteArea.isContentEditable || noteArea.contentEditable === 'false') {
+                    e.preventDefault();
+                    return false;
+                }
+            }
+        });
+
+        let fontSize = 16;
+        let isEditing = false;
+        let originalContent = '';
+        let currentHighlightIndex = 0;
+        let highlights = [];
+        let currentArticleId = null;
+        let originalHTML = '';
+
+        // Glossary definitions
+        const glossary = {
+            'ගෝණිස විහාරයක': 'විහාර වර්ගයක නාමයකි යි පරණවිතාන මහතා සඳහන් කර තිබේ',
+			'ලොවිච්චි': 'රේන්ද/ගෙතුම් විශේෂයකි',
+			'අගිල්': 'කළුවැල් නම් බෙහෙත් ශාක විශේෂය',
+			'ලවංග': 'කරාබුනැටි (ඇතැම් තැනෙක කුරුඳු ලෙස ද දක්වා තිබේ.ඇතැම් විට මෙය කුරුඳු වැනි කුළු බඩු විශේෂයක් වූ කැෂියා විය හැකි ය.)',
+			'කුක්කුටගිරි පිරිවෙණ': 'කණ්ට්ඨතිස්ස රජු කරවූ පිරිවෙණකි.',
+            'මාඝ': 'කාලිංග රාජධානියෙන් පැමිණි ආක්‍රමණිකයා',
+            'මිලේච්ඡ': 'සිත් පිත් නැති දරුණු',
+            'යෝධයා': 'සෙන්පතියා',
+            'රුහුණු රටට': 'රෝහණයට'
+			 
+        };
+
+        const searchBox = document.getElementById('searchBox');
+        const noteArea = document.getElementById('noteArea');
+        const increaseBtn = document.getElementById('increaseBtn');
+        const decreaseBtn = document.getElementById('decreaseBtn');
+        const editBtn = document.getElementById('editBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const searchInfo = document.getElementById('searchInfo');
+        const searchNavButtons = document.getElementById('searchNavButtons');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const tooltip = document.getElementById('tooltip');
+        const pageTitle = document.getElementById('pageTitle');
+
+        // Load article from Supabase
+        async function loadArticle(slug = null) {
+            try {
+                let query = supabase
+                    .from('Historynt')
+                    .select('*');
+                
+                if (slug) {
+                    query = query.eq('slug', slug);
+                } else {
+                    // Load first article if no slug specified
+                    query = query.order('created_at', { ascending: true }).limit(1);
+                }
+                
+                const { data, error } = await query;
+                
+                if (error) throw error;
+                
+                if (data && data.length > 0) {
+                    const article = data[0];
+                    currentArticleId = article.id;
+                    pageTitle.textContent = article.title;
+                    noteArea.innerHTML = article.content;
+                    originalHTML = article.content;
+                    originalContent = noteArea.textContent;
+                    initializeGlossary();
+                } else {
+                    noteArea.innerHTML = '<div class="error">පාඩම හමු නොවිණි. කරුණාකර Supabase database එක පරීක්ෂා කරන්න.</div>';
+                }
+            } catch (error) {
+                console.error('Error loading article:', error);
+                noteArea.innerHTML = `<div class="error">දෝෂයක්: ${error.message}</div>`;
+            }
+        }
+
+        // Save article to Supabase
+        async function saveArticle() {
+            if (!currentArticleId) {
+                alert('සුරැකීමට ලිපියක් නැත!');
+                return false;
+            }
+            
+            try {
+                const { error } = await supabase
+                    .from('Historynt')
+                    .update({ content: noteArea.innerHTML })
+                    .eq('id', currentArticleId);
+                
+                if (error) throw error;
+                
+                alert('ලිපිය සාර්ථකව සුරකින ලදී!');
+                return true;
+            } catch (error) {
+                console.error('Error saving article:', error);
+                alert(`දෝෂයක්: ${error.message}`);
+                return false;
+            }
+        }
+
+        // Initialize glossary terms
+        function initializeGlossary() {
+            let content = noteArea.innerHTML;
+            
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = content;
+            const existingGlossaryTerms = tempDiv.querySelectorAll('.glossary-term');
+            existingGlossaryTerms.forEach(term => {
+                term.outerHTML = term.textContent;
+            });
+            content = tempDiv.innerHTML;
+            
+            for (const [term, definition] of Object.entries(glossary)) {
+                const regex = new RegExp(`(?<!<[^>]*)(${term})(?![^<]*>)`, 'g');
+                content = content.replace(regex, `<span class="glossary-term" data-definition="${definition}">$1</span>`);
+            }
+            
+            noteArea.innerHTML = content;
+            attachGlossaryListeners();
+        }
+
+        function attachGlossaryListeners() {
+            const terms = document.querySelectorAll('.glossary-term');
+            terms.forEach(term => {
+                term.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    showTooltip(this, this.dataset.definition);
+                });
+            });
+        }
+
+        function showTooltip(element, text) {
+            const rect = element.getBoundingClientRect();
+            tooltip.textContent = text;
+            tooltip.style.display = 'block';
+            
+            let leftPos = rect.left + (rect.width / 2) - (tooltip.offsetWidth / 2);
+            
+            const margin = 10;
+            if (leftPos < margin) {
+                leftPos = margin;
+            } else if (leftPos + tooltip.offsetWidth > window.innerWidth - margin) {
+                leftPos = window.innerWidth - tooltip.offsetWidth - margin;
+            }
+            
+            tooltip.style.left = leftPos + 'px';
+            tooltip.style.top = rect.top - tooltip.offsetHeight - 10 + 'px';
+            
+            if (rect.top - tooltip.offsetHeight - 10 < 0) {
+                tooltip.style.top = rect.bottom + 10 + 'px';
+            }
+        }
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.classList.contains('glossary-term')) {
+                tooltip.style.display = 'none';
+            }
+        });
+
+        // Search functionality
+        searchBox.addEventListener('input', function() {
+            const searchTerm = this.value.trim();
+            
+            if (!searchTerm) {
+                noteArea.innerHTML = originalHTML;
+                initializeGlossary();
+                searchInfo.textContent = '';
+                searchNavButtons.style.display = 'none';
+                highlights = [];
+                currentHighlightIndex = 0;
+                return;
+            }
+            
+            const text = noteArea.textContent;
+            const regex = new RegExp(`(${searchTerm})`, 'gi');
+            const matches = text.match(regex);
+            
+            if (matches && matches.length > 0) {
+                let content = originalHTML;
+                
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = content;
+                
+                function highlightTextNodes(node) {
+                    if (node.nodeType === Node.TEXT_NODE) {
+                        const text = node.textContent;
+                        if (regex.test(text)) {
+                            const span = document.createElement('span');
+                            span.innerHTML = text.replace(regex, '<span class="highlight">$1</span>');
+                            node.parentNode.replaceChild(span, node);
+                            
+                            while (span.firstChild) {
+                                span.parentNode.insertBefore(span.firstChild, span);
+                            }
+                            span.remove();
+                        }
+                    } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'SCRIPT' && node.tagName !== 'STYLE') {
+                        Array.from(node.childNodes).forEach(child => highlightTextNodes(child));
+                    }
+                }
+                
+                highlightTextNodes(tempDiv);
+                noteArea.innerHTML = tempDiv.innerHTML;
+                
+                initializeGlossary();
+                
+                highlights = Array.from(document.querySelectorAll('.highlight'));
+                currentHighlightIndex = 0;
+                
+                if (highlights.length > 0) {
+                    highlights[0].classList.add('current-highlight');
+                    highlights[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                
+                searchInfo.textContent = `ප්‍රතිඵල ${highlights.length} ක් හමු විය`;
+                
+                if (highlights.length > 1) {
+                    searchNavButtons.style.display = 'flex';
+                    updateNavButtons();
+                } else {
+                    searchNavButtons.style.display = 'none';
+                }
+            } else {
+                noteArea.innerHTML = originalHTML;
+                initializeGlossary();
+                searchInfo.textContent = 'ප්‍රතිඵල හමු නොවිය';
+                searchNavButtons.style.display = 'none';
+                highlights = [];
+                currentHighlightIndex = 0;
+            }
+        });
+
+        // Navigation functions
+        function updateNavButtons() {
+            prevBtn.disabled = currentHighlightIndex === 0;
+            nextBtn.disabled = currentHighlightIndex === highlights.length - 1;
+        }
+
+        function navigateHighlights(direction) {
+            if (highlights.length === 0) return;
+            
+            highlights[currentHighlightIndex].classList.remove('current-highlight');
+            
+            if (direction === 'next' && currentHighlightIndex < highlights.length - 1) {
+                currentHighlightIndex++;
+            } else if (direction === 'prev' && currentHighlightIndex > 0) {
+                currentHighlightIndex--;
+            }
+            
+            highlights[currentHighlightIndex].classList.add('current-highlight');
+            highlights[currentHighlightIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            updateNavButtons();
+        }
+
+        prevBtn.addEventListener('click', function() {
+            navigateHighlights('prev');
+        });
+
+        nextBtn.addEventListener('click', function() {
+            navigateHighlights('next');
+        });
+
+        // Increase font size
+        increaseBtn.addEventListener('click', function() {
+            fontSize += 2;
+            noteArea.style.fontSize = fontSize + 'px';
+        });
+
+        // Decrease font size
+        decreaseBtn.addEventListener('click', function() {
+            if (fontSize > 10) {
+                fontSize -= 2;
+                noteArea.style.fontSize = fontSize + 'px';
+            }
+        });
+
+        // Edit note
+        editBtn.addEventListener('click', function() {
+            const password = prompt('සංස්කරණය කිරීම සඳහා මුරපදය ඇතුළත් කරන්න:');
+            
+            if (password !== 'Lakmini79') {
+                alert('වැරදි මුරපදයක්! සංස්කරණය කිරීමට ඉඩ නොදේ.');
+                return;
+            }
+            
+            isEditing = true;
+            noteArea.contentEditable = 'true';
+            noteArea.style.userSelect = 'text';
+            noteArea.style.webkitUserSelect = 'text';
+            noteArea.style.mozUserSelect = 'text';
+            noteArea.focus();
+            editBtn.style.display = 'none';
+            saveBtn.style.display = 'inline-block';
+            
+            searchBox.value = '';
+            searchInfo.textContent = '';
+            searchNavButtons.style.display = 'none';
+            highlights = [];
+            currentHighlightIndex = 0;
+            noteArea.innerHTML = originalHTML;
+            initializeGlossary();
+        });
+        
+        // Save edit
+        saveBtn.addEventListener('click', async function() {
+            const success = await saveArticle();
+            
+            if (success) {
+                isEditing = false;
+                noteArea.contentEditable = 'false';
+                noteArea.style.userSelect = 'none';
+                noteArea.style.webkitUserSelect = 'none';
+                noteArea.style.mozUserSelect = 'none';
+                originalHTML = noteArea.innerHTML;
+                originalContent = noteArea.textContent;
+                editBtn.style.display = 'inline-block';
+                saveBtn.style.display = 'none';
+                initializeGlossary();
+            }
+        });
+
+        // IMPORTANT: Load article when DOM is ready - THIS MUST BE AT THE END
+        window.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const slug = urlParams.get('slug') || 'slhis031';
+            console.log('Loading article with slug:', slug); // Debug log
+            loadArticle(slug);
+        });
+      
+    </script>
+</body>
+</html>
