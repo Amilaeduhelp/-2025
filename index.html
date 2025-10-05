@@ -240,38 +240,8 @@ if (auth === 'true' && exp && new Date().getTime() < parseInt(exp)) {
 </body>
 </html>
 
-<!-- 
-═══════════════════════════════════════════════════════
-PASSWORD GENERATOR TOOL - Admin use only
-═══════════════════════════════════════════════════════
 
-To generate new passwords, open browser console (F12) and run:
 
-function generatePassword(accessCode, password) {
-  var hash = CryptoJS.SHA256(password).toString();
-  console.log('\nAccess Code: ' + accessCode);
-  console.log('Password: ' + password);
-  console.log('Hash: ' + hash);
-  console.log('\nAdd to credentials object:');
-  console.log('"' + accessCode + '": "' + hash + '",');
-}
 
-Example usage:
-generatePassword("USER004", "MyPassword123");
-
-═══════════════════════════════════════════════════════
-DEFAULT CREDENTIALS (for testing):
-═══════════════════════════════════════════════════════
-
-Access Code: USER001    Password: password123
-Access Code: USER002    Password: pass456
-Access Code: USER003    Password: secure789
-Access Code: CUST001    Password: 1234
-Access Code: CUST002    Password: hello
-Access Code: ADMIN      Password: admin123
-
-NOTE: Change these in production!
-═══════════════════════════════════════════════════════
--->
 
 
