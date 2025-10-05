@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Protected Access</title>
+<title>Secure Login</title>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -14,16 +15,16 @@ body {
   align-items: center;
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 1rem;
 }
 
 .container {
   background: white;
-  padding: 2.5rem;
+  padding: 3rem;
   border-radius: 12px;
   box-shadow: 0 15px 35px rgba(0,0,0,0.3);
   width: 100%;
-  max-width: 420px;
+  max-width: 450px;
+  text-align: center;
   animation: slideIn 0.4s ease-out;
 }
 
@@ -32,243 +33,214 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-.logo {
-  text-align: center;
-  font-size: 3.5rem;
-  margin-bottom: 1rem;
-}
-
 h1 {
   color: #333;
-  text-align: center;
-  margin-bottom: 0.5rem;
-  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
   font-weight: 600;
 }
 
 .subtitle {
-  text-align: center;
   color: #666;
   margin-bottom: 2rem;
-  font-size: 0.95rem;
-}
-
-.input-group {
-  margin-bottom: 1rem;
-}
-
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #555;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-input {
-  width: 100%;
-  padding: 0.9rem 1rem;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
   font-size: 1rem;
-  transition: all 0.3s;
-  background: #f9f9f9;
 }
 
-input:focus {
-  outline: none;
-  border-color: #667eea;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-button {
+.login-btn {
   width: 100%;
-  padding: 0.9rem;
+  padding: 1rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
-  margin-top: 0.5rem;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); }
-button:active { transform: translateY(0); }
-
-.message {
-  margin-top: 1rem;
-  padding: 0.75rem;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  text-align: center;
-  display: none;
-  animation: fadeIn 0.3s;
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.message.show { display: block; }
-.message.error { background: #ffebee; color: #c62828; border: 1px solid #ef5350; }
-.message.success { background: #e8f5e9; color: #2e7d32; border: 1px solid #66bb6a; }
-
-.info {
+.status {
   margin-top: 1.5rem;
   padding: 1rem;
-  background: #f0f4ff;
-  border-left: 4px solid #667eea;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  color: #555;
-  line-height: 1.5;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  display: none;
 }
 
-.info strong { color: #667eea; }
+.status.show { display: block; }
+.status.loading { background: #e3f2fd; color: #1565c0; }
+.status.success { background: #e8f5e9; color: #2e7d32; }
+.status.error { background: #ffebee; color: #c62828; }
+
+.user-info {
+  display: none;
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.user-info.show { display: block; }
+
+.user-info h3 {
+  color: #667eea;
+  margin-bottom: 1rem;
+}
+
+.user-details {
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+
+.user-details p {
+  color: #555;
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.action-btn {
+  padding: 0.75rem 1.5rem;
+  margin: 0.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.continue-btn {
+  background: #4caf50;
+  color: white;
+}
+
+.logout-btn {
+  background: #f44336;
+  color: white;
+}
+
+.action-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.9;
+}
+
+.info-box {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #fff3e0;
+  border-left: 4px solid #ff9800;
+  border-radius: 4px;
+  text-align: left;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.lock-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
 </style>
 </head>
 <body>
 
 <div class="container">
-  <div class="logo">🔐</div>
-  <h1>Protected Access</h1>
-  <p class="subtitle">Enter your credentials to continue</p>
+  <div class="lock-icon">🔐</div>
+  <h1>Secure Access Portal</h1>
   
-  <div class="input-group">
-    <label for="username">Access Code</label>
-    <input type="text" id="username" placeholder="Enter access code" autocomplete="username" autofocus>
+  <div id="loginSection">
+    <p class="subtitle">Please log in to access the protected content</p>
+    <button class="login-btn" onclick="openLogin()">Login / Sign Up</button>
+    <div class="status" id="status"></div>
   </div>
   
-  <div class="input-group">
-    <label for="password">Password</label>
-    <input type="password" id="password" placeholder="Enter password" autocomplete="current-password">
+  <div class="user-info" id="userInfo">
+    <h3>Welcome!</h3>
+    <div class="user-details" id="userDetails"></div>
+    <button class="action-btn continue-btn" onclick="continueToSite()">Continue to Site</button>
+    <button class="action-btn logout-btn" onclick="logout()">Logout</button>
   </div>
   
-  <button onclick="verify()">Access Site</button>
-  
-  <div class="message" id="msg"></div>
-  
-  <div class="info">
-    <strong>ℹ️ Need access?</strong><br>
-    Contact the administrator to receive your access credentials.
+  <div class="info-box">
+    <strong>ℹ️ Note:</strong> If you don't have access credentials, please contact the administrator.
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 <script>
-var config = {
-  redirectUrl: "http://eduhelp.lk/main.html",
-  sessionTimeout: 24
-};
+var PROTECTED_SITE_URL = "https://github.com/Amilaeduhelp/-2025/blob/main/note.html";
 
-var credentials = {
-  "USER001": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
-  "USER002": "481f6cc0511143ccdd7e2d1b1b94faf0a700a8b49cd13922a70b5ae28acaa8c5",
-  "USER003": "5906ac361a137e2d286465cd6588ebb5ac3f5ae955001100bc41577c3d751764",
-  "CUST001": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
-  "CUST002": "8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414",
-  "ADMIN": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9"
-};
-
-function hash(str) {
-  return CryptoJS.SHA256(str).toString();
+function showStatus(msg, type) {
+  var status = document.getElementById('status');
+  status.textContent = msg;
+  status.className = 'status show ' + type;
 }
 
-function show(text, type) {
-  var m = document.getElementById('msg');
-  m.textContent = text;
-  m.className = 'message show ' + type;
+function showUserInfo(user) {
+  document.getElementById('loginSection').style.display = 'none';
+  document.getElementById('userInfo').classList.add('show');
+  
+  var details = document.getElementById('userDetails');
+  details.innerHTML = 
+    '<p><strong>Email:</strong> ' + user.email + '</p>' +
+    '<p><strong>User ID:</strong> ' + user.id.substring(0, 20) + '...</p>' +
+    '<p><strong>Status:</strong> <span style="color: #4caf50;">✓ Authenticated</span></p>';
 }
 
-function verify() {
-  var user = document.getElementById('username').value.trim().toUpperCase();
-  var pass = document.getElementById('password').value;
-  
-  if (!user || !pass) {
-    show('Please enter both access code and password', 'error');
-    return;
-  }
-  
-  var stored = credentials[user];
-  
-  if (!stored) {
-    show('Invalid access code or password', 'error');
-    document.getElementById('password').value = '';
-    return;
-  }
-  
-  if (hash(pass) === stored) {
-    show('✓ Access granted! Redirecting...', 'success');
-    
-    var expires = new Date();
-    expires.setHours(expires.getHours() + config.sessionTimeout);
-    
-    sessionStorage.setItem('auth', 'true');
-    sessionStorage.setItem('user', user);
-    sessionStorage.setItem('expires', expires.getTime());
-    
-    setTimeout(function() {
-      window.location.href = config.redirectUrl;
-    }, 1200);
-  } else {
-    show('Invalid access code or password', 'error');
-    document.getElementById('password').value = '';
-  }
+function openLogin() {
+  netlifyIdentity.open();
 }
 
-document.getElementById('username').addEventListener('keypress', function(e) {
-  if (e.key === 'Enter') document.getElementById('password').focus();
+function logout() {
+  netlifyIdentity.logout();
+  document.getElementById('userInfo').classList.remove('show');
+  document.getElementById('loginSection').style.display = 'block';
+  showStatus('Logged out successfully', 'success');
+}
+
+function continueToSite() {
+  showStatus('Redirecting to protected site...', 'loading');
+  setTimeout(function() {
+    window.location.href = PROTECTED_SITE_URL;
+  }, 1000);
+}
+
+netlifyIdentity.on('init', function(user) {
+  if (user) {
+    showUserInfo(user);
+  }
 });
 
-document.getElementById('password').addEventListener('keypress', function(e) {
-  if (e.key === 'Enter') verify();
+netlifyIdentity.on('login', function(user) {
+  showStatus('Login successful!', 'success');
+  setTimeout(function() {
+    showUserInfo(user);
+  }, 1000);
 });
 
-var auth = sessionStorage.getItem('auth');
-var exp = sessionStorage.getItem('expires');
-if (auth === 'true' && exp && new Date().getTime() < parseInt(exp)) {
-  window.location.href = config.redirectUrl;
-}
+netlifyIdentity.on('logout', function() {
+  showStatus('Logged out successfully', 'success');
+});
+
+netlifyIdentity.on('error', function(err) {
+  showStatus('Error: ' + err.message, 'error');
+});
+
+netlifyIdentity.on('close', function() {
+  var user = netlifyIdentity.currentUser();
+  if (user) {
+    showUserInfo(user);
+  }
+});
+
+window.addEventListener('load', function() {
+  netlifyIdentity.init();
+});
 </script>
 
 </body>
 </html>
-
-<!-- 
-═══════════════════════════════════════════════════════
-PASSWORD GENERATOR TOOL - Admin use only
-═══════════════════════════════════════════════════════
-
-To generate new passwords, open browser console (F12) and run:
-
-function generatePassword(accessCode, password) {
-  var hash = CryptoJS.SHA256(password).toString();
-  console.log('\nAccess Code: ' + accessCode);
-  console.log('Password: ' + password);
-  console.log('Hash: ' + hash);
-  console.log('\nAdd to credentials object:');
-  console.log('"' + accessCode + '": "' + hash + '",');
-}
-
-Example usage:
-generatePassword("USER004", "MyPassword123");
-
-═══════════════════════════════════════════════════════
-DEFAULT CREDENTIALS (for testing):
-═══════════════════════════════════════════════════════
-
-Access Code: USER001    Password: password123
-Access Code: USER002    Password: pass456
-Access Code: USER003    Password: secure789
-Access Code: CUST001    Password: 1234
-Access Code: CUST002    Password: hello
-Access Code: ADMIN      Password: admin123
-
-NOTE: Change these in production!
-═══════════════════════════════════════════════════════
--->
