@@ -1,419 +1,274 @@
 <!DOCTYPE html>
-<html lang="si">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>අමිල උඩවත්ත-ඉතිහාසය වාග්මාලාව</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protected Access</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            font-family: 'Noto Sans Sinhala', 'Iskoola Pota', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1rem;
+}
 
-        .container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 600px;
-            width: 100%;
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
+.container {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+  width: 100%;
+  max-width: 420px;
+  animation: slideIn 0.4s ease-out;
+}
 
-        h1 {
-            color: #2d3748;
-            margin-bottom: 40px;
-            font-size: 2em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-        }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-        .password-screen {
-            display: block;
-        }
+.logo {
+  text-align: center;
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
 
-        .main-screen {
-            display: none;
-        }
+h1 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
 
-        .password-container {
-            margin: 40px 0;
-        }
+.subtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+}
 
-        .password-input {
-            width: 100%;
-            padding: 15px;
-            font-size: 1.2em;
-            border: 2px solid #667eea;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-family: 'Noto Sans Sinhala', 'Iskoola Pota', sans-serif;
-        }
+.input-group {
+  margin-bottom: 1rem;
+}
 
-        .password-input:focus {
-            outline: none;
-            border-color: #764ba2;
-            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
-        }
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #555;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
 
-        .error-message {
-            color: #f5576c;
-            font-weight: bold;
-            margin: 15px 0;
-            display: none;
-        }
+input {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s;
+  background: #f9f9f9;
+}
 
-        .success-message {
-            color: #10b981;
-            font-weight: bold;
-            margin: 15px 0;
-        }
+input:focus {
+  outline: none;
+  border-color: #667eea;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
 
-        .main-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-bottom: 30px;
-        }
+button {
+  width: 100%;
+  padding: 0.9rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 0.5rem;
+}
 
-        .btn {
-            padding: 15px 30px;
-            font-size: 1.1em;
-            font-weight: bold;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
+button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); }
+button:active { transform: translateY(0); }
 
-        .main-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            flex: 1;
-        }
+.message {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  text-align: center;
+  display: none;
+  animation: fadeIn 0.3s;
+}
 
-        .main-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
-        .main-btn.active {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
+.message.show { display: block; }
+.message.error { background: #ffebee; color: #c62828; border: 1px solid #ef5350; }
+.message.success { background: #e8f5e9; color: #2e7d32; border: 1px solid #66bb6a; }
 
-        .verify-btn {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            width: 100%;
-        }
+.info {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: #f0f4ff;
+  border-left: 4px solid #667eea;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: #555;
+  line-height: 1.5;
+}
 
-        .verify-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .whatsapp-btn {
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            color: white;
-            width: 100%;
-            margin-top: 15px;
-        }
-
-        .whatsapp-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .sub-buttons {
-            display: none;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 20px;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .sub-buttons.show {
-            display: flex;
-        }
-
-        .sub-btn {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-            width: 100%;
-        }
-
-        .sub-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 2px solid #e2e8f0;
-            color: #718096;
-            font-size: 0.9em;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal.show {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-            animation: slideIn 0.3s ease;
-        }
-
-        .modal-content h2 {
-            color: #10b981;
-            margin-bottom: 20px;
-        }
-
-        .modal-content p {
-            margin-bottom: 25px;
-            color: #4a5568;
-            line-height: 1.6;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .main-buttons {
-                flex-direction: column;
-            }
-
-            h1 {
-                font-size: 1.5em;
-            }
-        }
-    </style>
+.info strong { color: #667eea; }
+</style>
 </head>
 <body>
-    <div class="container">
-        <!-- Password Screen -->
-        <div class="password-screen" id="passwordScreen">
-            <h1>අමිල උඩවත්ත-ඉතිහාසය වාග්මාලාව</h1>
-            
-            <div class="password-container">
-                <input type="text" 
-                       class="password-input" 
-                       id="passwordInput" 
-                       placeholder="මුරපදය ඇතුළත් කරන්න">
-                
-                <div class="error-message" id="errorMessage">
-                    වැරදි මුරපදයකි! නැවත උත්සාහ කරන්න.
-                </div>
-                
-                <button class="btn verify-btn" onclick="verifyPassword()">
-                    තහවුරු කරන්න
-                </button>
-            </div>
 
-            <div class="footer">
-                © Copyrights - අමිල උඩවත්ත-ඉතිහාසය
-            </div>
-        </div>
+<div class="container">
+  <div class="logo">🔐</div>
+  <h1>Protected Access</h1>
+  <p class="subtitle">Enter your credentials to continue</p>
+  
+  <div class="input-group">
+    <label for="username">Access Code</label>
+    <input type="text" id="username" placeholder="Enter access code" autocomplete="username" autofocus>
+  </div>
+  
+  <div class="input-group">
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Enter password" autocomplete="current-password">
+  </div>
+  
+  <button onclick="verify()">Access Site</button>
+  
+  <div class="message" id="msg"></div>
+  
+  <div class="info">
+    <strong>ℹ️ Need access?</strong><br>
+    Contact the administrator to receive your access credentials.
+  </div>
+</div>
 
-        <!-- Main Screen -->
-        <div class="main-screen" id="mainScreen">
-            <h1>අමිල උඩවත්ත-ඉතිහාසය වාග්මාලාව</h1>
-            
-            <div class="main-buttons">
-                <button class="btn main-btn" id="advancedBtn">උසස් පෙළ</button>
-                <button class="btn main-btn" id="ordinaryBtn">සාමාන්‍ය පෙළ</button>
-            </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script>
+var config = {
+  redirectUrl: "http://eduhelp.lk/main.html",
+  sessionTimeout: 24
+};
 
-            <div class="sub-buttons" id="advancedSub">
-                <button class="btn sub-btn" onclick="window.location.href='slpedia.html'">ශ්‍රී ලංකා ඉතිහාසය</button>
-                <button class="btn sub-btn" onclick="window.location.href='erppedia.html'">යුරෝපා ඉතිහාසය</button>
-                <button class="btn sub-btn" onclick="window.location.href='indpedia.html'">ඉන්දියා ඉතිහාසය</button>
-                <button class="btn sub-btn" onclick="window.location.href='මෙතෙක් ආ ප්‍රශ්න.html'">මෙතෙක් ආ ප්‍රශ්න</button>
-                <button class="btn sub-btn" onclick="window.location.href='joinclass.html'">පන්තියට සම්බන්ධ වෙන්න</button>
-                <button class="btn sub-btn" onclick="window.location.href='note.html'">සටහන් පොත</button>
-            </div>
+var credentials = {
+  "USER001": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+  "USER002": "481f6cc0511143ccdd7e2d1b1b94faf0a700a8b49cd13922a70b5ae28acaa8c5",
+  "USER003": "5906ac361a137e2d286465cd6588ebb5ac3f5ae955001100bc41577c3d751764",
+  "CUST001": "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4",
+  "CUST002": "8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414",
+  "ADMIN": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9"
+};
 
-            <div class="sub-buttons" id="ordinarySub">
-                <button class="btn sub-btn" onclick="window.location.href='10pedia.html'">10 ශ්‍රේණිය</button>
-                <button class="btn sub-btn" onclick="window.location.href='11pedia.html'">11 ශ්‍රේණිය</button>
-            </div>
+function hash(str) {
+  return CryptoJS.SHA256(str).toString();
+}
 
-            <div class="footer">
-                © Copyrights - අමිල උඩවත්ත-ඉතිහාසය
-            </div>
-        </div>
-    </div>
+function show(text, type) {
+  var m = document.getElementById('msg');
+  m.textContent = text;
+  m.className = 'message show ' + type;
+}
 
-    <!-- Success Modal -->
-    <div class="modal" id="successModal">
-        <div class="modal-content">
-            <h2>✅ නිවැරදි මුරපදයකි!</h2>
-            <p>ඔබේ මුරපදය WhatsApp හරහා යවන ලදී. කරුණාකර අනුමැතිය රැඳී සිටින්න.</p>
-            <button class="btn whatsapp-btn" onclick="sendWhatsAppNotification()">
-                📱 WhatsApp හරහා දන්වන්න
-            </button>
-        </div>
-    </div>
+function verify() {
+  var user = document.getElementById('username').value.trim().toUpperCase();
+  var pass = document.getElementById('password').value;
+  
+  if (!user || !pass) {
+    show('Please enter both access code and password', 'error');
+    return;
+  }
+  
+  var stored = credentials[user];
+  
+  if (!stored) {
+    show('Invalid access code or password', 'error');
+    document.getElementById('password').value = '';
+    return;
+  }
+  
+  if (hash(pass) === stored) {
+    show('✓ Access granted! Redirecting...', 'success');
+    
+    var expires = new Date();
+    expires.setHours(expires.getHours() + config.sessionTimeout);
+    
+    sessionStorage.setItem('auth', 'true');
+    sessionStorage.setItem('user', user);
+    sessionStorage.setItem('expires', expires.getTime());
+    
+    setTimeout(function() {
+      window.location.href = config.redirectUrl;
+    }, 1200);
+  } else {
+    show('Invalid access code or password', 'error');
+    document.getElementById('password').value = '';
+  }
+}
 
-    <script>
-        // 100 valid passwords
-        const validPasswords = [
-            'ජයග්‍රහණය', 'විජයබාහු', 'පරාක්‍රමබාහු', 'දුටුගැමුණු', 'මහින්ද', 'දෙවනම්පියතිස්ස',
-            'සේනරත්', 'ආනන්ද', 'අනුරුද්ධ', 'බුද්ධදාස', 'ධාතුසේන', 'කස්සප', 'මෝග්ගල්ලාන',
-            'කළිඟ්ග', 'නිස්සංකමල්ල', 'විජයබාහු', 'සප්පුමල්', 'වීරපරාක්‍රම', 'භුවනෙක', 'වික්‍රමබාහු',
-            'සිරිසංඝබෝ', 'කිත්සිරිමේවන්', 'රාජසිංහ', 'වීරසුන්දර', 'බුවනෙකබාහු', 'පඬු', 'පරාක්‍රම',
-            'විජය', 'සංඝමිත්තා', 'මහාවංශය', 'දීපවංශය', 'චූළවංශය', 'රජරට', 'මයාරට', 'රුහුණු',
-            'යාපනය', 'කොට්ටේ', 'සීතාවක', 'දඹදෙණිය', 'කුරුණෑගල', 'ගම්පොල', 'කැලණිය', 'රාජගල',
-            'සිගිරිය', 'පොළොන්නරුව', 'අනුරාධපුර', 'යාපහුව', 'පන්දුවස්නුවර', 'රිටිගල', 'මිහින්තලේ',
-            'දඹුල්ල', 'මුලකිරිගල', 'බුද්ධගය', 'සාරනාථ්', 'කුසිනාර', 'ලුම්බිණිය', 'රාජගිරිය',
-            'වෙසාලිය', 'පාවා', 'උජේනි', 'තක්ෂශීලා', 'මද්‍රාස්', 'මහාජනපද', 'මෞර්ය', 'ගුප්ත',
-            'හර්ෂවර්ධන', 'අශෝක', 'චන්ද්‍රගුප්ත', 'සමුද්‍රගුප්ත', 'බින්දුසාර', 'කනිෂ්ක', 'රුද්‍රදාමන්',
-            'හූණ', 'පුෂ්‍යමිත්‍ර', 'දේවපාල', 'ධර්මපාල', 'ගෝපාල', 'හර්ෂ', 'ශශාංක', 'පුලකේශි',
-            'විජයාලය', 'රාජරාජ', 'රාජේන්ද්‍ර', 'කෘෂ්ණදේව', 'බුක්කරාය', 'හරිහර', 'දේවරාය',
-            'ගජපති', 'කපිලේන්ද්‍ර', 'පුරුෂොත්තම', 'නරසිංහ', 'බාබර්', 'හුමායුන්', 'අක්බර්', 'ජහාන්ගීර්',
-            'ෂාජහාන්', 'ඕරංසීබ්', 'බහාදුර්ෂා', 'ටිපූ', 'සිරාජ්', 'මීර්ජාෆර්', 'රණජිත්සිං'
-        ];
+document.getElementById('username').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') document.getElementById('password').focus();
+});
 
-        const adminWhatsApp = '94716637804'; // Your WhatsApp number
+document.getElementById('password').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') verify();
+});
 
-        // Check if user has valid session
-        function checkSession() {
-            const lastLogin = localStorage.getItem('lastLogin');
-            const currentTime = new Date().getTime();
-            const fortyEightHours = 48 * 60 * 60 * 1000;
+var auth = sessionStorage.getItem('auth');
+var exp = sessionStorage.getItem('expires');
+if (auth === 'true' && exp && new Date().getTime() < parseInt(exp)) {
+  window.location.href = config.redirectUrl;
+}
+</script>
 
-            if (lastLogin && (currentTime - lastLogin) < fortyEightHours) {
-                showMainScreen();
-            }
-        }
-
-        function verifyPassword() {
-            const input = document.getElementById('passwordInput').value.trim();
-            const errorMsg = document.getElementById('errorMessage');
-
-            if (validPasswords.includes(input)) {
-                // Save login time
-                localStorage.setItem('lastLogin', new Date().getTime());
-                localStorage.setItem('userPassword', input);
-                
-                // Hide error, show modal
-                errorMsg.style.display = 'none';
-                document.getElementById('successModal').classList.add('show');
-            } else {
-                errorMsg.style.display = 'block';
-            }
-        }
-
-        function sendWhatsAppNotification() {
-            const password = localStorage.getItem('userPassword');
-            const timestamp = new Date().toLocaleString('si-LK', { timeZone: 'Asia/Colombo' });
-            
-            // Create WhatsApp message
-            const message = `🔐 නව ප්‍රවේශය\n\n` +
-                          `මුරපදය: ${password}\n` +
-                          `වේලාව: ${timestamp}\n\n` +
-                          `අමිල උඩවත්ත-ඉතිහාසය වාග්මාලාව`;
-            
-            // Encode message for URL
-            const encodedMessage = encodeURIComponent(message);
-            
-            // Open WhatsApp with pre-filled message
-            window.open(`https://wa.me/${adminWhatsApp}?text=${encodedMessage}`, '_blank');
-            
-            // Show main screen after sending
-            setTimeout(() => {
-                document.getElementById('successModal').classList.remove('show');
-                showMainScreen();
-            }, 1000);
-        }
-
-        function showMainScreen() {
-            document.getElementById('passwordScreen').style.display = 'none';
-            document.getElementById('mainScreen').style.display = 'block';
-        }
-
-        // Main screen buttons
-        const advancedBtn = document.getElementById('advancedBtn');
-        const ordinaryBtn = document.getElementById('ordinaryBtn');
-        const advancedSub = document.getElementById('advancedSub');
-        const ordinarySub = document.getElementById('ordinarySub');
-
-        if (advancedBtn) {
-            advancedBtn.addEventListener('click', function() {
-                advancedBtn.classList.add('active');
-                ordinaryBtn.classList.remove('active');
-                advancedSub.classList.add('show');
-                ordinarySub.classList.remove('show');
-            });
-        }
-
-        if (ordinaryBtn) {
-            ordinaryBtn.addEventListener('click', function() {
-                ordinaryBtn.classList.add('active');
-                advancedBtn.classList.remove('active');
-                ordinarySub.classList.add('show');
-                advancedSub.classList.remove('show');
-            });
-        }
-
-        // Allow Enter key to submit password
-        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                verifyPassword();
-            }
-        });
-
-        // Check session on page load
-        checkSession();
-    </script>
 </body>
 </html>
+
+<!-- 
+═══════════════════════════════════════════════════════
+PASSWORD GENERATOR TOOL - Admin use only
+═══════════════════════════════════════════════════════
+
+To generate new passwords, open browser console (F12) and run:
+
+function generatePassword(accessCode, password) {
+  var hash = CryptoJS.SHA256(password).toString();
+  console.log('\nAccess Code: ' + accessCode);
+  console.log('Password: ' + password);
+  console.log('Hash: ' + hash);
+  console.log('\nAdd to credentials object:');
+  console.log('"' + accessCode + '": "' + hash + '",');
+}
+
+Example usage:
+generatePassword("USER004", "MyPassword123");
+
+═══════════════════════════════════════════════════════
+DEFAULT CREDENTIALS (for testing):
+═══════════════════════════════════════════════════════
+
+Access Code: USER001    Password: password123
+Access Code: USER002    Password: pass456
+Access Code: USER003    Password: secure789
+Access Code: CUST001    Password: 1234
+Access Code: CUST002    Password: hello
+Access Code: ADMIN      Password: admin123
+
+NOTE: Change these in production!
+═══════════════════════════════════════════════════════
+-->
