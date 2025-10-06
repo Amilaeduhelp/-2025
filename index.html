@@ -130,6 +130,93 @@ button:active { transform: translateY(0); }
 }
 
 .info strong { color: #667eea; }
+
+.action-buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.secondary-btn {
+  background: white;
+  color: #667eea;
+  border: 2px solid #667eea;
+  font-size: 0.95rem;
+  padding: 0.8rem;
+  font-weight: 500;
+}
+
+.secondary-btn:hover {
+  background: #667eea;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.whatsapp-btn:hover {
+  background: #25D366;
+  border-color: #25D366;
+  color: white;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  animation: slideIn 0.4s ease-out;
+}
+
+.modal-content h2 {
+  color: #c62828;
+  margin-bottom: 1rem;
+}
+
+.modal-content p {
+  color: #555;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.modal-btn {
+  padding: 0.8rem 2rem;
+  margin: 0.5rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-primary {
+  background: #667eea;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #5568d3;
+}
 </style>
 </head>
 <body>
@@ -157,13 +244,31 @@ button:active { transform: translateY(0); }
     <strong>ℹ️ Need access?</strong><br>
     Contact the administrator to receive your access credentials.
   </div>
+  
+  <div class="action-buttons">
+    <button class="secondary-btn" onclick="window.location.href='price.html'">
+      Password එකක් හා Access Code එකක් ලබා ගන්නේ කෙසේ ද?
+    </button>
+    <button class="secondary-btn whatsapp-btn" onclick="window.open('https://wa.me/94716637804', '_blank')">
+      📱 Contact
+    </button>
+  </div>
+</div>
+
+<div class="modal" id="logoutModal">
+  <div class="modal-content">
+    <h2>⚠️ Session Expired</h2>
+    <p>Another device has logged in with your credentials. Your session has been terminated for security reasons.</p>
+    <button class="modal-btn btn-primary" onclick="closeModal()">OK</button>
+  </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 <script>
 var config = {
   redirectUrl: "https://amilaeduhelp.github.io/-2025/note.html",
-  sessionTimeout: 24
+  sessionTimeout: 24,
+  checkInterval: 3000
 };
 
 var credentials = {
@@ -175,16 +280,68 @@ var credentials = {
   "ADMIN": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9",
   "CUST100": "dc658816b8b6be963b4ae5ae4c6befcceb8ac9a8f24b02b7ba1f2e33966137e7",
   "LAK100": "fd3ae3b595e9df173e5ad2163b1053f7cc606df00629da74958b0acc7a1d32e3"
-  };
+};
 
 function hash(str) {
   return CryptoJS.SHA256(str).toString();
+}
+
+function generateSessionId() {
+  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
+
+function getSessionKey(user) {
+  return 'session_' + user;
 }
 
 function show(text, type) {
   var m = document.getElementById('msg');
   m.textContent = text;
   m.className = 'message show ' + type;
+}
+
+function showLogoutModal() {
+  document.getElementById('logoutModal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('logoutModal').classList.remove('show');
+  sessionStorage.clear();
+  window.location.reload();
+}
+
+function setActiveSession(user, sessionId) {
+  var sessionData = {
+    sessionId: sessionId,
+    timestamp: Date.now(),
+    expires: Date.now() + (config.sessionTimeout * 60 * 60 * 1000)
+  };
+  sessionStorage.setItem(getSessionKey(user), JSON.stringify(sessionData));
+}
+
+function getActiveSession(user) {
+  var data = sessionStorage.getItem(getSessionKey(user));
+  return data ? JSON.parse(data) : null;
+}
+
+function isSessionValid(user, sessionId) {
+  var activeSession = getActiveSession(user);
+  if (!activeSession) return false;
+  if (activeSession.sessionId !== sessionId) return false;
+  if (Date.now() > activeSession.expires) return false;
+  return true;
+}
+
+function checkSessionStatus() {
+  var user = sessionStorage.getItem('user');
+  var sessionId = sessionStorage.getItem('sessionId');
+  var auth = sessionStorage.getItem('auth');
+  
+  if (auth === 'true' && user && sessionId) {
+    if (!isSessionValid(user, sessionId)) {
+      showLogoutModal();
+    }
+  }
 }
 
 function verify() {
@@ -205,14 +362,26 @@ function verify() {
   }
   
   if (hash(pass) === stored) {
+    var activeSession = getActiveSession(user);
+    
+    if (activeSession && Date.now() < activeSession.expires) {
+      show('⚠️ This account is already logged in on another device', 'error');
+      document.getElementById('password').value = '';
+      return;
+    }
+    
     show('✓ Access granted! Redirecting...', 'success');
     
+    var sessionId = generateSessionId();
     var expires = new Date();
     expires.setHours(expires.getHours() + config.sessionTimeout);
     
     sessionStorage.setItem('auth', 'true');
     sessionStorage.setItem('user', user);
+    sessionStorage.setItem('sessionId', sessionId);
     sessionStorage.setItem('expires', expires.getTime());
+    
+    setActiveSession(user, sessionId);
     
     setTimeout(function() {
       window.location.href = config.redirectUrl;
@@ -232,19 +401,20 @@ document.getElementById('password').addEventListener('keypress', function(e) {
 });
 
 var auth = sessionStorage.getItem('auth');
+var user = sessionStorage.getItem('user');
+var sessionId = sessionStorage.getItem('sessionId');
 var exp = sessionStorage.getItem('expires');
+
 if (auth === 'true' && exp && new Date().getTime() < parseInt(exp)) {
-  window.location.href = config.redirectUrl;
+  if (user && sessionId && isSessionValid(user, sessionId)) {
+    window.location.href = config.redirectUrl;
+  } else {
+    sessionStorage.clear();
+  }
 }
+
+setInterval(checkSessionStatus, config.checkInterval);
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
