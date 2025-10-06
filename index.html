@@ -257,8 +257,8 @@ button:active { transform: translateY(0); }
 
 <div class="modal" id="logoutModal">
   <div class="modal-content">
-    <h2>⚠️ Session Expired</h2>
-    <p>Another device has logged in with your credentials. Your session has been terminated for security reasons.</p>
+    <h2>⚠️ Session Terminated</h2>
+    <p>Another user has logged in with your credentials. Your session has been terminated for security reasons.</p>
     <button class="modal-btn btn-primary" onclick="closeModal()">OK</button>
   </div>
 </div>
@@ -268,7 +268,7 @@ button:active { transform: translateY(0); }
 var config = {
   redirectUrl: "https://amilaeduhelp.github.io/-2025/note.html",
   sessionTimeout: 24,
-  checkInterval: 3000
+  checkInterval: 2000
 };
 
 var credentials = {
@@ -287,11 +287,11 @@ function hash(str) {
 }
 
 function generateSessionId() {
-  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+  return Date.now().toString(36) + Math.random().toString(36).substr(2) + Math.random().toString(36).substr(2);
 }
 
 function getSessionKey(user) {
-  return 'session_' + user;
+  return 'active_session_' + user;
 }
 
 function show(text, type) {
@@ -306,6 +306,7 @@ function showLogoutModal() {
 
 function closeModal() {
   document.getElementById('logoutModal').classList.remove('show');
+  localStorage.clear();
   sessionStorage.clear();
   window.location.reload();
 }
@@ -314,22 +315,23 @@ function setActiveSession(user, sessionId) {
   var sessionData = {
     sessionId: sessionId,
     timestamp: Date.now(),
-    expires: Date.now() + (config.sessionTimeout * 60 * 60 * 1000)
+    expires: Date.now() + (config.sessionTimeout * 60 * 60 * 1000),
+    lastHeartbeat: Date.now()
   };
-  sessionStorage.setItem(getSessionKey(user), JSON.stringify(sessionData));
+  localStorage.setItem(getSessionKey(user), JSON.stringify(sessionData));
 }
 
 function getActiveSession(user) {
-  var data = sessionStorage.getItem(getSessionKey(user));
+  var data = localStorage.getItem(getSessionKey(user));
   return data ? JSON.parse(data) : null;
 }
 
-function isSessionValid(user, sessionId) {
-  var activeSession = getActiveSession(user);
-  if (!activeSession) return false;
-  if (activeSession.sessionId !== sessionId) return false;
-  if (Date.now() > activeSession.expires) return false;
-  return true;
+function updateHeartbeat(user) {
+  var sessionData = getActiveSession(user);
+  if (sessionData) {
+    sessionData.lastHeartbeat = Date.now();
+    localStorage.setItem(getSessionKey(user), JSON.stringify(sessionData));
+  }
 }
 
 function checkSessionStatus() {
@@ -338,9 +340,24 @@ function checkSessionStatus() {
   var auth = sessionStorage.getItem('auth');
   
   if (auth === 'true' && user && sessionId) {
-    if (!isSessionValid(user, sessionId)) {
+    var activeSession = getActiveSession(user);
+    
+    if (!activeSession) {
       showLogoutModal();
+      return;
     }
+    
+    if (activeSession.sessionId !== sessionId) {
+      showLogoutModal();
+      return;
+    }
+    
+    if (Date.now() > activeSession.expires) {
+      showLogoutModal();
+      return;
+    }
+    
+    updateHeartbeat(user);
   }
 }
 
@@ -365,9 +382,12 @@ function verify() {
     var activeSession = getActiveSession(user);
     
     if (activeSession && Date.now() < activeSession.expires) {
-      show('⚠️ This account is already logged in on another device', 'error');
-      document.getElementById('password').value = '';
-      return;
+      var timeSinceLastHeartbeat = Date.now() - activeSession.lastHeartbeat;
+      if (timeSinceLastHeartbeat < 10000) {
+        show('⚠️ This account is already active on another device', 'error');
+        document.getElementById('password').value = '';
+        return;
+      }
     }
     
     show('✓ Access granted! Redirecting...', 'success');
@@ -400,13 +420,21 @@ document.getElementById('password').addEventListener('keypress', function(e) {
   if (e.key === 'Enter') verify();
 });
 
+window.addEventListener('beforeunload', function() {
+  var user = sessionStorage.getItem('user');
+  if (user) {
+    localStorage.removeItem(getSessionKey(user));
+  }
+});
+
 var auth = sessionStorage.getItem('auth');
 var user = sessionStorage.getItem('user');
 var sessionId = sessionStorage.getItem('sessionId');
 var exp = sessionStorage.getItem('expires');
 
-if (auth === 'true' && exp && new Date().getTime() < parseInt(exp)) {
-  if (user && sessionId && isSessionValid(user, sessionId)) {
+if (auth === 'true' && user && sessionId && exp && new Date().getTime() < parseInt(exp)) {
+  var activeSession = getActiveSession(user);
+  if (activeSession && activeSession.sessionId === sessionId) {
     window.location.href = config.redirectUrl;
   } else {
     sessionStorage.clear();
