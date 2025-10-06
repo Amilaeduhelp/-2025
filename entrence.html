@@ -41,6 +41,116 @@ body {
   opacity: 0.9;
 }
 
+.instructions-box {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.instructions-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.info-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.instructions-header h2 {
+  color: #667eea;
+  font-size: 1.3rem;
+  line-height: 1.4;
+}
+
+.instructions-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin: 1.5rem 0;
+}
+
+.platform {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 2px solid #667eea;
+}
+
+.platform h3 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.platform ol {
+  margin-left: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.platform li {
+  color: #444;
+  margin: 0.7rem 0;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.platform strong {
+  color: #667eea;
+}
+
+.open-btn {
+  display: block;
+  text-align: center;
+  padding: 0.9rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.android-btn {
+  background: linear-gradient(135deg, #34a853 0%, #0f9d58 100%);
+  color: white;
+}
+
+.android-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(52,168,83,0.4);
+}
+
+.ios-btn {
+  background: linear-gradient(135deg, #007aff 0%, #0051d5 100%);
+  color: white;
+}
+
+.ios-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0,122,255,0.4);
+}
+
+.instructions-footer {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.instructions-footer p {
+  color: white;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -150,6 +260,19 @@ body {
     font-size: 1rem;
   }
   
+  .instructions-box {
+    padding: 1.5rem;
+  }
+  
+  .instructions-header h2 {
+    font-size: 1.1rem;
+  }
+  
+  .instructions-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
   .grid {
     grid-template-columns: 1fr;
     gap: 1rem;
@@ -163,6 +286,45 @@ body {
   <div class="header">
     <h1>LearnX</h1>
     <p>ඔබට අවශ්‍ය සම්පත තෝරන්න</p>
+  </div>
+
+  <div class="instructions-box">
+    <div class="instructions-header">
+      <span class="info-icon">📱</span>
+      <h2>මෙම වෙබ් පිටුව ඔබේ දුරකථනයේ App එකක් මෙන් එකතු කරන්න!</h2>
+    </div>
+    
+    <div class="instructions-content">
+      <div class="platform">
+        <h3>🤖 Android Phone:</h3>
+        <ol>
+          <li><strong>Chrome Browser</strong> භාවිතා කර මෙම page එක විවෘත කරන්න</li>
+          <li>Menu (⋮) එක tap කරන්න</li>
+          <li>"Add to Home screen" හෝ "Install app" තෝරන්න</li>
+          <li>නමක් ලබා දී "Add" click කරන්න</li>
+        </ol>
+        <a href="https://amilaeduhelp.github.io/-2025/" class="open-btn android-btn" target="_blank">
+          Chrome ඔස්සේ විවෘත කරන්න 🌐
+        </a>
+      </div>
+
+      <div class="platform">
+        <h3>🍎 iPhone (iOS):</h3>
+        <ol>
+          <li><strong>Safari Browser</strong> භාවිතා කර මෙම page එක විවෘත කරන්න</li>
+          <li>Share button (□↑) එක tap කරන්න</li>
+          <li>"Add to Home Screen" තෝරන්න</li>
+          <li>"Add" click කරන්න</li>
+        </ol>
+        <a href="https://amilaeduhelp.github.io/-2025/" class="open-btn ios-btn" target="_blank">
+          Safari ඔස්සේ විවෘත කරන්න 🌐
+        </a>
+      </div>
+    </div>
+
+    <div class="instructions-footer">
+      <p>✨ මෙසේ කිරීමෙන් ඔබේ phone එකේ තිරයේ app icon එකක් මෙන් මෙම shortcut එක එකතු වේ. එය click කළ විට කෙළින්ම LearnX page එක විවෘත වනු ඇත.</p>
+    </div>
   </div>
 
   <div class="grid">
@@ -258,5 +420,4 @@ body {
 </div>
 
 </body>
-
 </html>
