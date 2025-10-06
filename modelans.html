@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ආදර්ශ පිළිතුරු</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans Sinhala', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .copyright {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .category-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .category-btn.lanka {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .category-btn.europe {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .category-btn.india {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .category-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-overlay.active {
+            display: flex;
+        }
+
+        .popup {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .popup h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .popup-close {
+            float: right;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #999;
+            line-height: 1;
+        }
+
+        .popup-close:hover {
+            color: #333;
+        }
+
+        .question-list {
+            list-style: none;
+        }
+
+        .question-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid #667eea;
+        }
+
+        .question-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .content-area {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            min-height: 400px;
+        }
+
+        .content-area.empty {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #999;
+            font-size: 1.2em;
+        }
+
+        .answer-header {
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .answer-header h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .answer-content {
+            line-height: 1.8;
+            font-size: 1.1em;
+            color: #333;
+            white-space: pre-wrap;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .error {
+            text-align: center;
+            padding: 40px;
+            color: #f5576c;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ආදර්ශ පිළිතුරු</h1>
+            <p class="copyright">© Amila Udawattha</p>
+        </header>
+
+        <div class="category-buttons">
+            <button class="category-btn lanka" onclick="openCategory('lanka')">ලංකා ඉතිහාසය</button>
+            <button class="category-btn europe" onclick="openCategory('europe')">යුරෝපා ඉතිහාසය</button>
+            <button class="category-btn india" onclick="openCategory('india')">ඉන්දියා ඉතිහාසය</button>
+        </div>
+
+        <div class="content-area empty" id="contentArea">
+            <p>ප්‍රශ්නයක් තෝරන්න</p>
+        </div>
+    </div>
+
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup">
+            <span class="popup-close" onclick="closePopup()">&times;</span>
+            <h2 id="popupTitle">ප්‍රශ්න</h2>
+            <ul class="question-list" id="questionList"></ul>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://uqgzlaxsnknheoerbfus.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxZ3psYXhzbmtuaGVvZXJiZnVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ4MDQzMTEsImV4cCI6MjA2MDM4MDMxMX0.O5dNUizqZ5kfwTs0mHLEorqOAqjZFjWakp2Q484MKEk';
+
+        // ප්‍රශ්න web පිටුවේ ම තබා ඇත
+        const questions = {
+            'lanka': [
+                { id: 1, question: 'ශ්‍රී ලංකාවේ භූගෝලීය සාධක ලංකා ඉතිහාසයට ඇති කළ බලපෑම', slug: 'slans001' },
+                // ඉදිරියේදී තවත් ප්‍රශ්න එකතු කළ හැක
+            ],
+            'europe': [
+                { id: 2, question: 'යුරෝපයේ තිස් අවුරුදු යුද්ධය', slug: 'erpans001' },
+                // ඉදිරියේදී තවත් ප්‍රශ්න එකතු කළ හැක
+            ],
+            'india': [
+                { id: 3, question: 'ඉන්දුනිම්න ශිෂ්ටාචාරය', slug: 'indans001' },
+                // ඉදිරියේදී තවත් ප්‍රශ්න එකතු කළ හැක
+            ]
+        };
+
+        const categoryTitles = {
+            'lanka': 'ලංකා ඉතිහාසය',
+            'europe': 'යුරෝපා ඉතිහාසය',
+            'india': 'ඉන්දියා ඉතිහාසය'
+        };
+
+        function openCategory(category) {
+            console.log('Opening category:', category);
+            const overlay = document.getElementById('popupOverlay');
+            const title = document.getElementById('popupTitle');
+            const list = document.getElementById('questionList');
+
+            title.textContent = categoryTitles[category];
+            
+            const categoryQuestions = questions[category] || [];
+            console.log('Questions for category:', categoryQuestions);
+            
+            if (categoryQuestions.length === 0) {
+                list.innerHTML = '<li style="text-align: center; padding: 20px; color: #999;">ප්‍රශ්න නොමැත</li>';
+            } else {
+                list.innerHTML = '';
+                categoryQuestions.forEach(q => {
+                    const li = document.createElement('li');
+                    li.className = 'question-item';
+                    li.textContent = q.question;
+                    li.onclick = () => {
+                        console.log('Question clicked:', q);
+                        loadAnswer(q);
+                    };
+                    list.appendChild(li);
+                });
+            }
+            
+            overlay.classList.add('active');
+        }
+
+        function closePopup() {
+            document.getElementById('popupOverlay').classList.remove('active');
+        }
+
+        async function loadAnswer(question) {
+            closePopup();
+            const contentArea = document.getElementById('contentArea');
+            contentArea.classList.remove('empty');
+            
+            // පූරණය වෙමින් පණිවිඩය
+            contentArea.innerHTML = `
+                <div class="answer-header">
+                    <h2>${question.question}</h2>
+                    <button class="back-btn" onclick="clearContent()">← නව ප්‍රශ්නයක් තෝරන්න</button>
+                </div>
+                <div class="loading">පිළිතුර පූරණය වෙමින්...<br><small>Slug: ${question.slug}</small></div>
+            `;
+
+            try {
+                console.log('Fetching answer for slug:', question.slug);
+                
+                // Supabase එකෙන් පිළිතුර ගැනීම
+                const url = `${SUPABASE_URL}/rest/v1/answers?slug=eq.${question.slug}&select=answer`;
+                console.log('Request URL:', url);
+                
+                const response = await fetch(url, {
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                console.log('Response status:', response.status);
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Response error:', errorText);
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
+                }
+
+                const data = await response.json();
+                console.log('Received data:', data);
+                
+                let answerText = 'පිළිතුර database එකේ නොමැත';
+                if (data.length > 0 && data[0].answer) {
+                    answerText = data[0].answer;
+                } else if (data.length === 0) {
+                    answerText = `slug "${question.slug}" සඳහා දත්ත නොමැත. Database එක පරීක්ෂා කරන්න.`;
+                }
+
+                // පිළිතුර දර්ශනය
+                contentArea.innerHTML = `
+                    <div class="answer-header">
+                        <h2>${question.question}</h2>
+                        <button class="back-btn" onclick="clearContent()">← නව ප්‍රශ්නයක් තෝරන්න</button>
+                    </div>
+                    <div class="answer-content">${answerText}</div>
+                `;
+            } catch (error) {
+                console.error('Error loading answer:', error);
+                contentArea.innerHTML = `
+                    <div class="answer-header">
+                        <h2>${question.question}</h2>
+                        <button class="back-btn" onclick="clearContent()">← නව ප්‍රශ්නයක් තෝරන්න</button>
+                    </div>
+                    <div class="error">පිළිතුර ලබා ගැනීමේ දෝෂයක් සිදුවිය<br><small>${error.message}</small></div>
+                `;
+            }
+        }
+
+        function clearContent() {
+            const contentArea = document.getElementById('contentArea');
+            contentArea.classList.add('empty');
+            contentArea.innerHTML = '<p>ප්‍රශ්නයක් තෝරන්න</p>';
+        }
+
+        // Popup එකෙන් පිටත click කළ විට වසා දමයි
+        document.getElementById('popupOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePopup();
+            }
+        });
+    </script>
+</body>
+</html>
