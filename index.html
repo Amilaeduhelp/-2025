@@ -264,6 +264,9 @@ button:active { transform: translateY(0); }
     <button class="secondary-btn" onclick="window.location.href='price.html'">
       Password එකක් හා Access Code එකක් ලබා ගන්නේ කෙසේ ද?
     </button>
+    <button class="secondary-btn" onclick="showContentModal()">
+       මෙහි අන්තර්ගත වන්නේ මොනවා ද?
+    </button>
     <button class="secondary-btn whatsapp-btn" onclick="window.open('https://wa.me/94716637804', '_blank')">
       📱 Contact
     </button>
@@ -275,6 +278,31 @@ button:active { transform: translateY(0); }
     <h2>⚠️ Session Terminated</h2>
     <p>Another user has logged in with your credentials. Your session has been terminated for security reasons.</p>
     <button class="modal-btn btn-primary" onclick="closeModal()">OK</button>
+  </div>
+</div>
+
+<div class="modal" id="contentModal">
+  <div class="modal-content" style="max-width: 500px; max-height: 80vh; overflow-y: auto;">
+    <h2 style="color: #667eea; margin-bottom: 1.5rem;">📚 මෙහි අන්තර්ගත වන්නේ මොනවා ද?</h2>
+    <div style="text-align: left; color: #555; line-height: 1.8;">
+      <ul style="list-style: none; padding: 0;">
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ අර්ථ සහිතව ඉතිහාසය වාග් මාලාව (සාමාන්‍ය පෙළ හා උසස් පෙළට අදාළව)</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ උසස් පෙළ ඉතිහාසය සටහන් (ශ්‍රී ලංකා ඉතිහාසය, යුරෝපා ඉතිහාසය, ඉන්දියා ඉතිහාසය)</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ ආදර්ශ පිළිතුරු පොත (සාමාන්‍ය පෙළ හා උසස් පෙළ)</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ edupoints (සාමාන්‍ය පෙළ හා උසස් පෙළ සඳහා රචනාමය ප්‍රශ්න ලිවීමට මගපෙන්වීම)</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ විශ්වවිද්‍යාල පාඨමාලා විස්තර</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ Z-Score (පසුගිය වසර කිහිපයක)</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ Job mart (රැකියා විස්තර)</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ රාජකාරී ලේඛන</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ මෙතෙක් ආ ප්‍රශ්න ක්ෂේත්‍ර (උසස් පෙළ ඉතිහාසය සඳහා)</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ Smart සිතියම් පොත (උසස් පෙළ හා සාමාන්‍ය පෙළ සඳහා)</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ MCQ test එකකින් ඔබේ ලකුණු බලා ගන්න</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ වෘත්තීය ළැදියා පරීක්ෂණය</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ පොත්හල</li>
+        <li style="padding: 0.6rem 0;">✓ Y-Sub (විවිධ විෂයයන් හැදෑරීමේ වැදගත්කම්)</li>
+      </ul>
+    </div>
+    <button class="modal-btn btn-primary" onclick="closeContentModal()" style="margin-top: 1.5rem; width: 100%;">හරි</button>
   </div>
 </div>
 
@@ -328,6 +356,14 @@ function closeModal() {
   }
   sessionStorage.clear();
   window.location.reload();
+}
+
+function showContentModal() {
+  document.getElementById('contentModal').classList.add('show');
+}
+
+function closeContentModal() {
+  document.getElementById('contentModal').classList.remove('show');
 }
 
 function initBroadcastChannel() {
