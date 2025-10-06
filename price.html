@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Access Code ලබා ගන්නේ කෙසේද</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans Sinhala', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem 1rem;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  overflow: hidden;
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+
+.header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.header p {
+  font-size: 1.1rem;
+  opacity: 0.95;
+}
+
+.content {
+  padding: 2.5rem 2rem;
+}
+
+.warning-box {
+  background: #fff3cd;
+  border-left: 5px solid #ffc107;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.warning-box h2 {
+  color: #856404;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.warning-box p {
+  color: #856404;
+  line-height: 1.8;
+  font-size: 1rem;
+  text-align: justify;
+}
+
+.price-box {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  border-left: 5px solid #4caf50;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.price-box h3 {
+  color: #2e7d32;
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1b5e20;
+  margin: 0.5rem 0;
+}
+
+.price-note {
+  color: #2e7d32;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.bank-section {
+  margin-bottom: 2rem;
+}
+
+.bank-section h3 {
+  color: #333;
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.bank-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.bank-card {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 2px solid #e0e0e0;
+  transition: all 0.3s;
+}
+
+.bank-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  border-color: #667eea;
+}
+
+.bank-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.account-info {
+  background: white;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 0.8rem;
+}
+
+.account-label {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.3rem;
+}
+
+.account-number {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.copy-btn {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.3s;
+}
+
+.copy-btn:hover {
+  background: #5568d3;
+  transform: scale(1.05);
+}
+
+.account-name {
+  font-size: 0.95rem;
+  color: #555;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.instructions {
+  background: #e3f2fd;
+  border-left: 5px solid #2196f3;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.instructions h3 {
+  color: #1565c0;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.instructions ol {
+  margin-left: 1.5rem;
+  color: #1565c0;
+}
+
+.instructions li {
+  margin-bottom: 0.8rem;
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
+.whatsapp-box {
+  background: linear-gradient(135deg, #dcf8c6 0%, #25d366 100%);
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.whatsapp-box h3 {
+  color: #075e54;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.whatsapp-btn {
+  background: #25d366;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.whatsapp-btn:hover {
+  background: #128c7e;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+}
+
+.note-box {
+  background: #f3e5f5;
+  border-left: 5px solid #9c27b0;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.note-box p {
+  color: #6a1b9a;
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.back-btn {
+  display: inline-block;
+  background: #667eea;
+  color: white;
+  padding: 0.9rem 2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s;
+  margin-top: 1rem;
+}
+
+.back-btn:hover {
+  background: #764ba2;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #4caf50;
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  display: none;
+  animation: slideIn 0.3s ease-out;
+}
+
+.toast.show {
+  display: block;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(400px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .header h1 { font-size: 1.5rem; }
+  .header p { font-size: 1rem; }
+  .content { padding: 1.5rem 1rem; }
+  .price { font-size: 2rem; }
+  .bank-cards { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>🔐 Access Code ලබා ගන්නේ කෙසේද?</h1>
+    <p>පහත විස්තර හොඳින් කියවා ගන්න</p>
+  </div>
+
+  <div class="content">
+    <div class="warning-box">
+      <h2>⚠️ අවවාදය</h2>
+      <p>
+        මේ වෙබ් අඩවියේ ඇතුළත් සියළු පාඩම් මාලා වල පූර්ණ අයිතිය කතුවරයා සතු ය. කතු හිමිකම් උල්ලංඝනය වන ආකාරයේ කිසියම් හෝ කාර්යයක් සඳහා යොදාගැනීම පූර්ණ වශයෙන් තහනම් වේ. මෙය ඉතා සාධාරණ මුදලකට ලබා ගැනීමට ඔබට හැකි වන අතර ඔබට ලැබෙන password එක හා access code එක සුරැකිව තබා ගැනීම ඔබ සතු වගකීමකි. එය අන්‍ය සතු කිරීමෙන් ඔබගේ ප්‍රවේශය ද ස්වයංක්‍රීය ව අහෝසි විය හැකි අතර ඒ පිළිබඳ අපගේ වගකීමක් නැත.
+      </p>
+    </div>
+
+    <div class="price-box">
+      <h3>💰 මිල ගණන්</h3>
+      <div class="price">රු. 650.00</div>
+      <p class="price-note">
+        මෙය මෙම අඩවියේ සියළු පහසුකම් සඳහා අදාල වන අතර මුද්‍රිත පොත් ආදිය පමණක් අවශ්‍යතාව අනුව මිල දී ගත හැකි ය.
+      </p>
+    </div>
+
+    <div class="bank-section">
+      <h3>🏦 මුදල් ගෙවියයුතු ගිණුම් විස්තර</h3>
+      
+      <div class="bank-cards">
+        <div class="bank-card">
+          <div class="bank-name">🏦 PEOPLE'S BANK - Mathugama</div>
+          <div class="account-info">
+            <div class="account-label">ගිණුම් අංකය</div>
+            <div class="account-number">
+              <span id="acc1">070-2-001-6-23-28-309</span>
+              <button class="copy-btn" onclick="copyAccount('acc1')">Copy</button>
+            </div>
+          </div>
+          <div class="account-name">👤 UKDA KOSALA</div>
+        </div>
+
+        <div class="bank-card">
+          <div class="bank-name">🏦 BANK OF CEYLON - Kalutara</div>
+          <div class="account-info">
+            <div class="account-label">ගිණුම් අංකය</div>
+            <div class="account-number">
+              <span id="acc2">89-32-36-00</span>
+              <button class="copy-btn" onclick="copyAccount('acc2')">Copy</button>
+            </div>
+          </div>
+          <div class="account-name">👤 RG LAKMINI</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="instructions">
+      <h3>📝 මුදල් ගෙවීමෙන් පසු</h3>
+      <ol>
+        <li>Receipt පතේ පැහැදිලි ඡායාරූපයක් ගන්න</li>
+        <li>Online Transfer එකක දී බැංකුවෙන් ලැබෙන Message එක හෝ අදාළ PDF එක සූදානම් කරන්න</li>
+        <li>ඔබේ නම හා පදිංචි දිස්ත්‍රික්කය ඇතුළත් කරන්න</li>
+        <li>පහත WhatsApp අංකයට යොමු කරන්න</li>
+        <li>ඔබ පණිවිඩය යොමු කරන WhatsApp අංකය ඉදිරි විමසීම් සඳහා ද යොදාගන්න</li>
+      </ol>
+    </div>
+
+    <div class="whatsapp-box">
+      <h3>📱 WhatsApp මගින් යොමු කරන්න</h3>
+      <a href="https://wa.me/94716637804" target="_blank" class="whatsapp-btn">
+        <span style="font-size: 1.5rem;">📱</span>
+        <span>0716637804</span>
+      </a>
+    </div>
+
+    <div class="note-box">
+      <p>
+        💜 ඉදිරියේ දී මීට වඩා පහසු ගෙවීමේ ක්‍රමයක් හඳුන්වා දෙනු ලබන අතර එතෙක් මේ ක්‍රමය තුළ යම් අපහසුවත් ඇති වේ නම් අපගේ කණගාටුව පළකර සිටිමු.
+      </p>
+    </div>
+
+    <center>
+      <a href="javascript:history.back()" class="back-btn">⬅️ ආපසු යන්න</a>
+    </center>
+  </div>
+</div>
+
+<div class="toast" id="toast">✓ Account number copied!</div>
+
+<script>
+function copyAccount(id) {
+  var text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    showToast();
+  }).catch(function() {
+    // Fallback method
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    showToast();
+  });
+}
+
+function showToast() {
+  var toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(function() {
+    toast.classList.remove('show');
+  }, 2000);
+}
+</script>
+
+</body>
+</html>
