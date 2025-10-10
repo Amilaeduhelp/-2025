@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>learnX NEWS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            color: #666;
+            font-size: 16px;
+            font-style: italic;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .news-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .category {
+            display: inline-block;
+            padding: 6px 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .headline {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .date {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .summary {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        .details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            color: #444;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .details.active {
+            max-height: 1000px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #eee;
+        }
+
+        .read-more-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .read-more-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.5);
+        }
+
+        .read-more-btn:active {
+            transform: scale(0.98);
+        }
+
+        .external-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .external-link:hover {
+            text-decoration: underline;
+        }
+
+        .back-button-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.95);
+            color: #667eea;
+            text-decoration: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+            background: white;
+        }
+
+        @media (max-width: 768px) {
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .logo {
+                font-size: 36px;
+            }
+
+            header {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">learnX NEWS</div>
+            <div class="tagline">ඔබේ දැනුම පුළුල් කරන පුවත්</div>
+        </header>
+
+        <div class="news-grid">
+            <div class="news-card">
+                <span class="category">තාක්ෂණය</span>
+                <h2 class="headline">කෘතිම බුද්ධිය අධ්‍යාපනයේ නව යුගයක් ආරම්භ කරයි</h2>
+                <div class="date">📅 2025 ඔක්තෝබර් 08</div>
+                <p class="summary">AI තාක්ෂණය පාසල් හා විශ්ව විද්‍යාල වල ඉගැන්වීම් ක්‍රම රීති වෙනස් කරමින් පවතී.</p>
+                <div class="details">
+                    <p>නවීන AI මෙවලම් භාවිතයෙන් ශිෂ්‍යයන්ට පුද්ගලීකරණය වූ ඉගෙනුම් අත්දැකීම් ලබා දීමට හැකි වී ඇත. මෙය සෑම ශිෂ්‍යයෙකුගේම ඉගෙනුම් වේගයට හා විලාසයට අනුකූලව පාඩම් සැලසුම් කිරීමට ඉඩ සලසයි.</p>
+                    <p>ප්‍රමුඛ අධ්‍යාපන ආයතන දැනටමත් AI සහායක භාවිතා කරමින්, ගුරුවරුන්ගේ කාර්යභාරය සරල කර ශිෂ්‍යයන්ගේ ප්‍රගතිය නිරීක්ෂණය කර ගනී.</p>
+                    <a href="https://www.edutopia.org" class="external-link" target="_blank">වැඩිදුර කියවන්න →</a>
+                </div>
+                <button class="read-more-btn" onclick="toggleDetails(this)">තව කියවන්න</button>
+            </div>
+
+            <div class="news-card">
+                <span class="category">විද්‍යාව</span>
+                <h2 class="headline">සූර්ය බලශක්තියේ නව සොයාගැනීම් ලෝකය වෙනස් කරයි</h2>
+                <div class="date">📅 2025 ඔක්තෝබර් 07</div>
+                <p class="summary">විද්‍යාඥයන් වඩා කාර්යක්ෂම සූර්ය පැනල තාක්ෂණයක් නිර්මාණය කර ඇත.</p>
+                <div class="details">
+                    <p>නව perovskite සූර්ය සෛල 30% කට වැඩි කාර්යක්ෂමතාවයක් ලබා ගන්නා අතර, එය පරම්පරාගත සිලිකන් පැනල් වලට වඩා ලාභදායී වේ.</p>
+                    <p>මෙම නවෝත්පාදනය පුනර්ජනනීය බලශක්ති ක්ෂේත්‍රයේ විශාල පෙරළියක් ඇති කරන අතර, ගෝලීය කාබන් විමෝචනය අඩු කිරීමට දායක වේ.</p>
+                    <a href="https://www.nature.com" class="external-link" target="_blank">වැඩිදුර කියවන්න →</a>
+                </div>
+                <button class="read-more-btn" onclick="toggleDetails(this)">තව කියවන්න</button>
+            </div>
+
+            <div class="news-card">
+                <span class="category">සෞඛ්‍යය</span>
+                <h2 class="headline">නව එන්නතක් මගින් පිළිකා ප්‍රතිකාර වෙනස් වේ</h2>
+                <div class="date">📅 2025 ඔක්තෝබර් 06</div>
+                <p class="summary">පර්යේෂකයන් පිළිකා සඳහා පෞද්ගලික එන්නතක් සංවර්ධනය කර ඇත.</p>
+                <div class="details">
+                    <p>මෙම mRNA තාක්ෂණය මත පදනම් වූ එන්නත, සෑම රෝගියෙකුගේම විශේෂ පිළිකා සඳහා ප්‍රතිශක්තිකරණ පද්ධතිය පුහුණු කරයි.</p>
+                    <p>ප්‍රාථමික අත්හදා බැලීම් වලදී 70% කට වැඩි සාර්ථකත්ව අනුපාතයක් පෙන්නුම් කර ඇති අතර, මෙය පිළිකා ප්‍රතිකාර වල නව යුගයක ආරම්භය විය හැක.</p>
+                    <a href="https://www.nejm.org" class="external-link" target="_blank">වැඩිදුර කියවන්න →</a>
+                </div>
+                <button class="read-more-btn" onclick="toggleDetails(this)">තව කියවන්න</button>
+            </div>
+
+            <div class="news-card">
+                <span class="category">අභ්‍යවකාශය</span>
+                <h2 class="headline">චන්ද්‍රයාගේ ජල සොයාගැනීම් අභ්‍යවකාශ ගවේෂණයට නව මාර්ග විවෘත කරයි</h2>
+                <div class="date">📅 2025 ඔක්තෝබර් 05</div>
+                <p class="summary">චන්ද්‍රයාගේ දකුණු ධ්‍රැවයේ විශාල ජල සංචිත සොයාගෙන ඇත.</p>
+                <div class="details">
+                    <p>NASA හි නවීන සැටලයිට් දත්ත මගින් චන්ද්‍රයාගේ ස්ථිර සෙවණැලි ප්‍රදේශවල අපේක්ෂිත ප්‍රමාණයට වඩා වැඩි අයිස් ඇති බව අනාවරණය විය.</p>
+                    <p>මෙම සොයාගැනීම චන්ද්‍ර තලයේ ස්ථිර කඳවුරු සඳහා අවශ්‍ය සම්පත් සපයන අතර, ගැඹුරු අභ්‍යවකාශ මෙහෙයුම් සඳහා ඉන්ධන නිෂ්පාදනයට භාවිතා කළ හැක.</p>
+                    <a href="https://www.nasa.gov" class="external-link" target="_blank">වැඩිදුර කියවන්න →</a>
+                </div>
+                <button class="read-more-btn" onclick="toggleDetails(this)">තව කියවන්න</button>
+            </div>
+
+            <div class="news-card">
+                <span class="category">පරිසරය</span>
+                <h2 class="headline">නව ජෛව ප්‍රතිකර්ෂණ ප්‍රතිතාවයක් සාගර දූෂණය අඩු කරයි</h2>
+                <div class="date">📅 2025 ඔක්තෝබර් 04</div>
+                <p class="summary">විද්‍යාඥයන් ප්ලාස්ටික් කා දැමිය හැකි ජීවී ගී වර්ගයක් සංවර්ධනය කර ඇත.</p>
+                <div class="details">
+                    <p>ජානමය ඉංජිනේරු විද්‍යාව භාවිතයෙන් නිර්මිත මෙම ජීව ප්‍රතිකර්ෂණය මාස කිහිපයක් තුළ සාගරයේ ප්ලාස්ටික් වර්ග භාගයක් බිඳ දැමීමට හැකියාව ඇත.</p>
+                    <p>ආරක්ෂිතභාවය හා පාරිසරික බලපෑම විස්තීර්ණව පරීක්ෂා කළ මෙම තාක්ෂණය, ප්‍රශාන්ත සාගරයේ මහා ප්ලාස්ටික් පැල්ලම හමුවේ යෙදීමට සැලසුම් කර ඇත.</p>
+                    <a href="https://www.sciencedirect.com" class="external-link" target="_blank">වැඩිදුර කියවන්න →</a>
+                </div>
+                <button class="read-more-btn" onclick="toggleDetails(this)">තව කියවන්න</button>
+            </div>
+
+            <div class="news-card">
+                <span class="category">ඉතිහාසය</span>
+                <h2 class="headline">පුරාතන ශිෂ්ඨාචාරයක් පිළිබඳ නව සොයාගැනීම්</h2>
+                <div class="date">📅 2025 ඔක්තෝබර් 03</div>
+                <p class="summary">පුරාවිද්‍යාඥයන් ඇමසන් වනාන්තරයේ අහිමි වූ නගරයක් සොයා ගෙන ඇත.</p>
+                <div class="details">
+                    <p>LIDAR තාක්ෂණය භාවිතයෙන් සොයාගත් මෙම පුරාණ නගරය වසර 2000කට පෙර සංකීර්ණ සමාජයක් පිළිබඳ සාක්ෂි දරයි.</p>
+                    <p>විශාල පිරමීඩ ව්‍යුහයන්, සංකීර්ණ ජල කළමනාකරණ පද්ධති සහ සංවර්ධිත කෘෂිකර්ම තාක්ෂණයන් මෙම ශිෂ්ඨාචාරයේ දියුණු බව පෙන්වයි.</p>
+                    <a href="https://www.archaeology.org" class="external-link" target="_blank">වැඩිදුර කියවන්න →</a>
+                </div>
+                <button class="read-more-btn" onclick="toggleDetails(this)">තව කියවන්න</button>
+            </div>
+        </div>
+
+        <div class="back-button-container">
+            <a href="index.html" class="back-btn">← මුල් පිටුවට පිවිසෙන්න</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleDetails(btn) {
+            const card = btn.closest('.news-card');
+            const details = card.querySelector('.details');
+            
+            if (details.classList.contains('active')) {
+                details.classList.remove('active');
+                btn.textContent = 'තව කියවන්න';
+            } else {
+                details.classList.add('active');
+                btn.textContent = 'අඩු කරන්න';
+            }
+        }
+    </script>
+</body>
+</html>
