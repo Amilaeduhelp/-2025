@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papers and Maps</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .home-btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .home-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .sections-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .link-btn {
+            display: block;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .link-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .sections-container {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Papers and Maps</h1>
+            <a href="entrence.html" class="home-btn">🏠 Back to Home</a>
+        </header>
+
+        <div class="sections-container">
+            <!-- ප්‍රශ්නපත්‍ර Section -->
+            <div class="section">
+                <h2>📝 ප්‍රශ්නපත්‍ර (Question Papers)</h2>
+                
+                <div class="buttons-container">
+                    <a href="https://drive.google.com/file/d/1ozyxF2sW3SIalOG8_VH7iij5u9IEQXnU/view?usp=sharing" target="_blank" class="link-btn">
+                        📄 Sample Question Paper
+                    </a>
+                    <!-- මෙතන තවත් papers add කරන්න -->
+                </div>
+            </div>
+
+            <!-- සිතියම් Section -->
+            <div class="section">
+                <h2>🗺️ සිතියම් (Maps)</h2>
+                
+                <div class="buttons-container">
+                    <a href="https://www.eduhelp.lk/index.php/uncategorized/36818/" target="_blank" class="link-btn">
+                        🗺️ Sample Map
+                    </a>
+                    <!-- මෙතන තවත් maps add කරන්න -->
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Amila Udawattha History. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
