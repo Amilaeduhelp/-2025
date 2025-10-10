@@ -283,4 +283,43 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('contentBtn').addEventListener('click', showContentModal);
   
   document.getElementById('newsBtn').addEventListener('click', function() {
-    window.
+    window.open('https://example.com/news', '_blank');
+  });
+  
+  document.getElementById('priceBtn').addEventListener('click', function() {
+    window.open('https://example.com/pricing', '_blank');
+  });
+  
+  document.getElementById('contactBtn').addEventListener('click', function() {
+    window.open('https://wa.me/1234567890', '_blank');
+  });
+  
+  // Initialize broadcast channel
+  initBroadcastChannel();
+  
+  // Update news badge
+  updateNewsBadge();
+  
+  // Check if user is already logged in
+  var auth = sessionStorage.getItem('auth');
+  var expires = sessionStorage.getItem('expires');
+  var user = sessionStorage.getItem('user');
+  var accountExpiry = sessionStorage.getItem('accountExpiry');
+  
+  if (auth === 'true' && expires && user) {
+    var now = Date.now();
+    if (now < parseInt(expires)) {
+      myUser = user;
+      mySessionId = sessionStorage.getItem('sessionId') || generateSessionId();
+      
+      if (accountExpiry) {
+        var expiryDate = new Date(parseInt(accountExpiry));
+        startCountdown(expiryDate);
+      }
+      
+      window.location.href = config.redirectUrl;
+    } else {
+      sessionStorage.clear();
+    }
+  }
+});
