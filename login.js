@@ -22,6 +22,8 @@ var credentials = {
   "LAK": { hash: "399c05ddb63bb9d98019a09df13d76d18a8b6e5d4a4a321bff5fda0a48876d8d", created: "2025-10-14" },
   "NISHA": { hash: "c86beae4e0324c4cb3f1d1922e691eaa128933e66e808d3cb0b311eca9a88f28", created: "2025-10-14" },
   "AAA": { hash: "f6543e952ecb93fba1fa65c547c5073a5d25aba46611fe6cc76c1d2645deb3ff", created: "2025-10-14" },
+  "CTK": { hash: "0b07032d262b660373a7487ac16d3505286fe2e02621e3c5054a61039e17e367", created: "2025-10-14" },
+  "PUNSARA": { hash: "0b07032d262b660373a7487ac16d3505286fe2e02621e3c5054a61039e17e367", created: "2025-10-14" },
   "USER003": { hash: "5906ac361a137e2d286465cd6588ebb5ac3f5d5a86aff3ca12020c923adc6c92", created: "2025-02-01" }
 };
 
