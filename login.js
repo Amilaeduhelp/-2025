@@ -1,9 +1,11 @@
+// Configuration
 var config = {
   redirectUrl: "https://amilaeduhelp.github.io/-2025/entrence.html",
   sessionTimeout: 24,
   accountValidityDays: 365
 };
 
+// Credentials database
 var credentials = {
   "ADMIN": { hash: "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9", created: "2024-10-11" },
   "CCAC": { hash: "8f49fc41262fc025774655f2cf0dc8b795a5b492f69ce4566c6c11cc58ba202d", created: "2025-10-10" },
@@ -19,11 +21,13 @@ var credentials = {
   "USER003": { hash: "5906ac361a137e2d286465cd6588ebb5ac3f5d5a86aff3ca12020c923adc6c92", created: "2025-02-01" }
 };
 
+// Global variables
 var mySessionId = generateSessionId();
 var myUser = null;
 var channel = null;
 var countdownInterval = null;
 
+// Utility Functions
 function hash(str) {
   return CryptoJS.SHA256(str).toString();
 }
@@ -38,6 +42,7 @@ function show(text, type) {
   m.className = 'message show ' + type;
 }
 
+// Modal Functions
 function showLogoutModal() {
   document.getElementById('logoutModal').classList.add('show');
 }
@@ -72,6 +77,7 @@ function closeExpiredModal() {
   window.location.reload();
 }
 
+// Account Expiry Functions
 function checkAccountExpiry(user) {
   var userCred = credentials[user];
   if (!userCred || !userCred.created) {
@@ -122,6 +128,7 @@ function startCountdown(expiryDate) {
   }, 60000);
 }
 
+// News Badge Functions
 function getNewsCount() {
   return 0;
 }
@@ -137,6 +144,7 @@ function updateNewsBadge() {
   }
 }
 
+// Broadcast Channel Functions
 function initBroadcastChannel() {
   if (typeof BroadcastChannel === 'undefined') {
     console.warn('BroadcastChannel not supported');
@@ -173,7 +181,6 @@ function checkForExistingSessions(user) {
     }
     
     var responses = [];
-    var checkTimeout;
     
     var responseHandler = function(event) {
       var data = event.data;
@@ -189,7 +196,7 @@ function checkForExistingSessions(user) {
       user: user
     });
     
-    checkTimeout = setTimeout(function() {
+    setTimeout(function() {
       channel.removeEventListener('message', responseHandler);
       resolve(responses.length > 0);
     }, 500);
@@ -207,6 +214,7 @@ function notifyNewLogin(user) {
   }
 }
 
+// Main Verification Function
 async function verify() {
   var user = document.getElementById('username').value.trim().toUpperCase();
   var pass = document.getElementById('password').value;
@@ -266,34 +274,75 @@ async function verify() {
   }
 }
 
-// Event Listeners
+// Event Listeners - Run after DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('loginBtn').addEventListener('click', verify);
+  // Login button
+  var loginBtn = document.getElementById('loginBtn');
+  if (loginBtn) {
+    loginBtn.addEventListener('click', verify);
+  }
   
-  document.getElementById('username').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') document.getElementById('password').focus();
-  });
+  // Enter key on username field
+  var usernameInput = document.getElementById('username');
+  if (usernameInput) {
+    usernameInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        var passwordInput = document.getElementById('password');
+        if (passwordInput) passwordInput.focus();
+      }
+    });
+  }
   
-  document.getElementById('password').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') verify();
-  });
+  // Enter key on password field
+  var passwordInput = document.getElementById('password');
+  if (passwordInput) {
+    passwordInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') verify();
+    });
+  }
   
-  document.getElementById('closeLogoutBtn').addEventListener('click', closeModal);
-  document.getElementById('closeContentBtn').addEventListener('click', closeContentModal);
-  document.getElementById('closeExpiredBtn').addEventListener('click', closeExpiredModal);
-  document.getElementById('contentBtn').addEventListener('click', showContentModal);
+  // Modal close buttons
+  var closeLogoutBtn = document.getElementById('closeLogoutBtn');
+  if (closeLogoutBtn) {
+    closeLogoutBtn.addEventListener('click', closeModal);
+  }
   
-  document.getElementById('newsBtn').addEventListener('click', function() {
-    window.location.href = 'news.html';
-  });
+  var closeContentBtn = document.getElementById('closeContentBtn');
+  if (closeContentBtn) {
+    closeContentBtn.addEventListener('click', closeContentModal);
+  }
   
-  document.getElementById('priceBtn').addEventListener('click', function() {
-    window.location.href = 'price.html';
-  });
+  var closeExpiredBtn = document.getElementById('closeExpiredBtn');
+  if (closeExpiredBtn) {
+    closeExpiredBtn.addEventListener('click', closeExpiredModal);
+  }
   
-  document.getElementById('contactBtn').addEventListener('click', function() {
-    window.open('https://wa.me/94716637804', '_blank');
-  });
+  // Action buttons
+  var contentBtn = document.getElementById('contentBtn');
+  if (contentBtn) {
+    contentBtn.addEventListener('click', showContentModal);
+  }
+  
+  var newsBtn = document.getElementById('newsBtn');
+  if (newsBtn) {
+    newsBtn.addEventListener('click', function() {
+      window.location.href = 'news.html';
+    });
+  }
+  
+  var priceBtn = document.getElementById('priceBtn');
+  if (priceBtn) {
+    priceBtn.addEventListener('click', function() {
+      window.location.href = 'price.html';
+    });
+  }
+  
+  var contactBtn = document.getElementById('contactBtn');
+  if (contactBtn) {
+    contactBtn.addEventListener('click', function() {
+      window.open('https://wa.me/94716637804', '_blank');
+    });
+  }
   
   // Check existing session
   var auth = sessionStorage.getItem('auth');
@@ -328,6 +377,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
+// Cleanup on page unload
 window.addEventListener('beforeunload', function() {
   if (channel && myUser) {
     channel.postMessage({
