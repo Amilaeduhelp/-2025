@@ -20,6 +20,7 @@ var credentials = {
   "NAVODI": { hash: "1d2b158b3ce0c3251f7398b9516db4e60c6fa3b2037179bfe45239688a856261", created: "2025-10-14" },
   "PND27": { hash: "17b77803568c0146a6fc029a255419f98c3ca9f0b2802ea5f4ae9a0e000ac317", created: "2025-10-14" },
   "LAK": { hash: "399c05ddb63bb9d98019a09df13d76d18a8b6e5d4a4a321bff5fda0a48876d8d", created: "2025-10-14" },
+  "NISHA": { hash: "c86beae4e0324c4cb3f1d1922e691eaa128933e66e808d3cb0b311eca9a88f28", created: "2025-10-14" },
   "USER003": { hash: "5906ac361a137e2d286465cd6588ebb5ac3f5d5a86aff3ca12020c923adc6c92", created: "2025-02-01" }
 };
 
