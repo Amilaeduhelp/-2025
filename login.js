@@ -7,7 +7,7 @@ var config = {
 
 // Credentials database
 var credentials = {
-  "ADMIN": { hash: "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9", created: "2024-10-11" },
+  "NADMIN": { hash: "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9", created: "2025-10-14" },
   "CCAC": { hash: "8f49fc41262fc025774655f2cf0dc8b795a5b492f69ce4566c6c11cc58ba202d", created: "2025-10-10" },
   "CUST001": { hash: "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4", created: "2024-11-29" },
   "CUST002": { hash: "8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414", created: "2025-03-01" },
@@ -21,6 +21,7 @@ var credentials = {
   "PND27": { hash: "17b77803568c0146a6fc029a255419f98c3ca9f0b2802ea5f4ae9a0e000ac317", created: "2025-10-14" },
   "LAK": { hash: "399c05ddb63bb9d98019a09df13d76d18a8b6e5d4a4a321bff5fda0a48876d8d", created: "2025-10-14" },
   "NISHA": { hash: "c86beae4e0324c4cb3f1d1922e691eaa128933e66e808d3cb0b311eca9a88f28", created: "2025-10-14" },
+  "AAA": { hash: "f6543e952ecb93fba1fa65c547c5073a5d25aba46611fe6cc76c1d2645deb3ff", created: "2025-10-14" },
   "USER003": { hash: "5906ac361a137e2d286465cd6588ebb5ac3f5d5a86aff3ca12020c923adc6c92", created: "2025-02-01" }
 };
 
