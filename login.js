@@ -284,4 +284,55 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('contentBtn').addEventListener('click', showContentModal);
   
   document.getElementById('newsBtn').addEventListener('click', function() {
-    window.
+    window.location.href = 'news.html';
+  });
+  
+  document.getElementById('priceBtn').addEventListener('click', function() {
+    window.location.href = 'price.html';
+  });
+  
+  document.getElementById('contactBtn').addEventListener('click', function() {
+    window.open('https://wa.me/94716637804', '_blank');
+  });
+  
+  // Check existing session
+  var auth = sessionStorage.getItem('auth');
+  var user = sessionStorage.getItem('user');
+  var sessionId = sessionStorage.getItem('sessionId');
+  var exp = sessionStorage.getItem('expires');
+  var accountExp = sessionStorage.getItem('accountExpiry');
+  
+  if (auth === 'true' && user && sessionId && exp && new Date().getTime() < parseInt(exp)) {
+    myUser = user;
+    mySessionId = sessionId;
+    initBroadcastChannel();
+    
+    if (accountExp) {
+      var expiryDate = new Date(parseInt(accountExp));
+      var now = new Date();
+      
+      if (now >= expiryDate) {
+        sessionStorage.clear();
+        showExpiredModal();
+      } else {
+        startCountdown(expiryDate);
+      }
+    }
+    
+    updateNewsBadge();
+    setInterval(updateNewsBadge, 60000);
+  } else {
+    initBroadcastChannel();
+    updateNewsBadge();
+    setInterval(updateNewsBadge, 60000);
+  }
+});
+
+window.addEventListener('beforeunload', function() {
+  if (channel && myUser) {
+    channel.postMessage({
+      type: 'logout',
+      user: myUser
+    });
+  }
+});
