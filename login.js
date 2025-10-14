@@ -18,6 +18,7 @@ var credentials = {
   "USER001": { hash: "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92", created: "2025-01-01" },
   "USER002": { hash: "481f6cc0511143ccdd7e2d1b1b94faf0a700a8b49cd13922a70b5ae28acaa8c5", created: "2025-01-15" },
   "NAVODI": { hash: "1d2b158b3ce0c3251f7398b9516db4e60c6fa3b2037179bfe45239688a856261", created: "2025-10-14" },
+  "PND27": { hash: "17b77803568c0146a6fc029a255419f98c3ca9f0b2802ea5f4ae9a0e000ac317", created: "2025-10-14" },
   "USER003": { hash: "5906ac361a137e2d286465cd6588ebb5ac3f5d5a86aff3ca12020c923adc6c92", created: "2025-02-01" }
 };
 
