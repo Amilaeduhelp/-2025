@@ -20,6 +20,7 @@ var credentials = {
   "CTK": { hash: "0b07032d262b660373a7487ac16d3505286fe2e02621e3c5054a61039e17e367", created: "2025-10-14" },
   "PUNSARA": { hash: "0b07032d262b660373a7487ac16d3505286fe2e02621e3c5054a61039e17e367", created: "2025-10-14" },
   "UTHUNI": { hash: "aa31cb5b67ae93ba8e6c46666273108ac830fd2a6d97f7d0d19194ccfc85f3de", created: "2025-10-16" },
+  "MADHU": { hash: "a15601df9c9728e329ea287b94f9e87d7497b0e1b5cbb3219c55d091b7919684", created: "2025-10-17" },
   "USER003": { hash: "5906ac361a137e2d286465cd6588ebb5ac3f5d5a86aff3ca12020c923adc6c92", created: "2025-02-01" }
 };
 
