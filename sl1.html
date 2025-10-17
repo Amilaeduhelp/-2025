@@ -176,6 +176,8 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             z-index: 10000;
             max-width: 350px;
+            max-height: 70vh;
+            overflow-y: auto;
             font-size: 0.9em;
             line-height: 1.5;
             display: none;
@@ -184,6 +186,24 @@
             right: 10px !important;
             margin: 0 auto;
             cursor: pointer;
+        }
+        
+        .tooltip::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .tooltip::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        .tooltip::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+        }
+        
+        .tooltip::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.7);
         }
         
         @keyframes tooltipFadeIn {
