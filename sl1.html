@@ -169,27 +169,49 @@
         
         .tooltip {
             position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 12px 16px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            z-index: 10000;
-            max-width: 350px;
-            max-height: 70vh;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            z-index: 10001;
+            max-width: 90vw;
+            width: 400px;
+            max-height: 80vh;
             overflow-y: auto;
-            font-size: 0.9em;
-            line-height: 1.5;
+            font-size: 0.95em;
+            line-height: 1.6;
             display: none;
-            animation: tooltipFadeIn 0.2s ease-out;
-            left: 10px !important;
-            right: 10px !important;
-            margin: 0 auto;
+            animation: tooltipFadeIn 0.3s ease-out;
             cursor: pointer;
         }
         
+        .tooltip-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            display: none;
+            animation: overlayFadeIn 0.3s ease-out;
+        }
+        
+        @keyframes overlayFadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
         .tooltip::-webkit-scrollbar {
-            width: 6px;
+            width: 8px;
         }
         
         .tooltip::-webkit-scrollbar-track {
@@ -204,6 +226,15 @@
         
         .tooltip::-webkit-scrollbar-thumb:hover {
             background: rgba(255, 255, 255, 0.7);
+        }
+        
+        @media (max-width: 768px) {
+            .tooltip {
+                max-width: 85vw;
+                width: auto;
+                padding: 18px;
+                font-size: 0.9em;
+            }
         }
         
         @keyframes tooltipFadeIn {
@@ -334,6 +365,7 @@
         </div>
     </div>
     
+    <div class="tooltip-overlay" id="tooltipOverlay"></div>
     <div class="tooltip" id="tooltip"></div>
     
     <div class="note-area" id="noteArea">
@@ -390,6 +422,7 @@
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         const tooltip = document.getElementById('tooltip');
+        const tooltipOverlay = document.getElementById('tooltipOverlay');
         const pageTitle = document.getElementById('pageTitle');
 
         async function loadLearnXTerms() {
@@ -514,36 +547,30 @@
         }
 
         function showTooltip(element, text, slug) {
-            const rect = element.getBoundingClientRect();
             tooltip.textContent = text;
             tooltip.style.display = 'block';
+            tooltipOverlay.style.display = 'block';
+            
+            document.body.style.overflow = 'hidden';
             
             tooltip.onclick = function() {
                 if (slug) {
                     window.location.href = '?slug=' + slug;
                 }
             };
-            
-            let leftPos = rect.left + (rect.width / 2) - (tooltip.offsetWidth / 2);
-            
-            const margin = 10;
-            if (leftPos < margin) {
-                leftPos = margin;
-            } else if (leftPos + tooltip.offsetWidth > window.innerWidth - margin) {
-                leftPos = window.innerWidth - tooltip.offsetWidth - margin;
-            }
-            
-            tooltip.style.left = leftPos + 'px';
-            tooltip.style.top = (rect.top - tooltip.offsetHeight - 10) + 'px';
-            
-            if (rect.top - tooltip.offsetHeight - 10 < 0) {
-                tooltip.style.top = (rect.bottom + 10) + 'px';
-            }
         }
 
+        function hideTooltip() {
+            tooltip.style.display = 'none';
+            tooltipOverlay.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        tooltipOverlay.addEventListener('click', hideTooltip);
+
         document.addEventListener('click', function(e) {
-            if (!e.target.classList.contains('cross-ref-term')) {
-                tooltip.style.display = 'none';
+            if (!e.target.classList.contains('cross-ref-term') && !tooltip.contains(e.target)) {
+                hideTooltip();
             }
         });
 
