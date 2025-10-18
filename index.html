@@ -396,6 +396,18 @@ button:active {
   </div>
 </div>
 
+<!-- News Modal (Shows on page load) -->
+<div class="modal" id="newsModal">
+  <div class="modal-content" style="max-width: 500px;">
+    <h2 style="color: #667eea; margin-bottom: 1rem;">නවතම දැන්වීම</h2>
+    <div style="text-align: left; color: #555; line-height: 1.8; padding: 1rem; background: #f8f9ff; border-radius: 8px; margin-bottom: 1.5rem;">
+      <p style="font-weight: 600; color: #667eea; margin-bottom: 0.5rem;">නොවැම්බර් මස අග වාර විභාග ප්‍රශ්න පත්‍රය</p>
+      <p>නොවැම්බර් මස අග දී උසස් පෙළ දරුවන්ට වාර විභාග ප්‍රශ්න පත්‍රයක් හා පිළිතුරු පත්‍රය අප විසින් නිකුත් කෙරේ.-LearnX</p>
+    </div>
+    <button class="modal-btn btn-primary" id="closeNewsModalBtn" style="width: 100%;">හරි</button>
+  </div>
+</div>
+
 <div class="modal" id="logoutModal">
   <div class="modal-content">
     <h2>⚠️ Session Terminated</h2>
@@ -409,19 +421,20 @@ button:active {
     <h2 style="color: #667eea; margin-bottom: 1.5rem;">📚 මෙහි අන්තර්ගත වන්නේ මොනව ද?</h2>
     <div style="text-align: left; color: #555; line-height: 1.8;">
       <ul style="list-style: none; padding: 0;">
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ ඔබගේ විස්තර එකතු කිරීමේ හැකියාව</li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ අධ්‍යයන පොත් එකතු කිරීම</li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ ඔබගේ පොත්පත්</li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ edupoints ලැබීමේ පහසුව</li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ විශ්ව විද්‍යාල පොතමාලා</li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ Z-Score ගණනය</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ විෂයානුබද්ධ වාග්මාලාව</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ සටහන් පොත්</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ ප්‍රශ්නපත්‍ර හා පිළිතුරු පත්‍ර</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ edupoints </li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ විශ්වවිද්‍යාල පාඨමාලා</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ Z-Score </li>
         <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ Job mart</li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ රොජර් ලාංඡන</li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ මාතෘකා අභ්‍යාස</li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ Smart සටහන් පොත</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ සිතියම්</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ මෙතෙක් ආ ප්‍රශ්න</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ Smart සිතියම්</li>
         <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ MCQ tests</li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ විභාග සහතික පරීක්ෂණ</li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ පොත්පල</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ රාජකාරී ලේඛන</li>
+        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ පොත්හල</li>
+		<li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ easy bibliographies</li>
         <li style="padding: 0.6rem 0;">✓ Y-Sub විශේෂාංග</li>
       </ul>
     </div>
@@ -438,7 +451,43 @@ button:active {
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-<script src="login.js"></script>
+<script>
+// Show news popup on page load
+window.addEventListener('DOMContentLoaded', function() {
+  const newsModal = document.getElementById('newsModal');
+  newsModal.classList.add('show');
+});
+
+// Close news modal
+document.getElementById('closeNewsModalBtn').addEventListener('click', function() {
+  document.getElementById('newsModal').classList.remove('show');
+});
+
+// Close other modals
+document.getElementById('closeLogoutBtn').addEventListener('click', function() {
+  document.getElementById('logoutModal').classList.remove('show');
+});
+
+document.getElementById('closeContentBtn').addEventListener('click', function() {
+  document.getElementById('contentModal').classList.remove('show');
+});
+
+document.getElementById('closeExpiredBtn').addEventListener('click', function() {
+  document.getElementById('expiredModal').classList.remove('show');
+});
+
+// Show content modal
+document.getElementById('contentBtn').addEventListener('click', function() {
+  document.getElementById('contentModal').classList.add('show');
+});
+
+// Show news modal from button
+document.getElementById('newsBtn').addEventListener('click', function() {
+  document.getElementById('newsModal').classList.add('show');
+});
+
+// Add your login.js functionality here or keep it as external file
+</script>
 
 </body>
 </html>
