@@ -394,7 +394,8 @@
         const termCache=new Map();
         document.addEventListener('contextmenu',e=>e.preventDefault());
         document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&['a','c','x','A','C','X'].includes(e.key)){if(!noteArea.isContentEditable||noteArea.contentEditable==='false'){e.preventDefault();}}});
-        document.addEventListener('touchmove',function(e){if(e.target.closest('.lesson-dropdown')){e.stopPropagation();}},{passive:true});
+        document.addEventListener('touchmove',function(e){if(e.target.closest('.lesson-dropdown')){e.preventDefault();}},{passive:false});
+        document.body.addEventListener('touchmove',function(e){if(!e.target.closest('.lesson-dropdown')){e.preventDefault();}},{passive:false});
         async function loadLearnXTerms(){try{const{data,error}=await supabase.from('learnX pedia').select('id, word, meaning, slug');if(error)throw error;if(data){data.forEach(item=>{learnXTerms[item.word]={meaning:item.meaning,slug:item.slug,id:item.id};});}}catch(error){console.error('Error loading LearnX terms:',error);}}
         async function loadLessonTitles(){try{const{data,error}=await supabase.from('Historynt').select('slug, title');if(error)throw error;if(data){data.forEach(item=>{lessonTitles[item.slug]=item.title;});populateDropdowns();}}catch(error){console.error('Error loading lesson titles:',error);}}
         function populateDropdowns(){Object.keys(categoryRanges).forEach(category=>{const range=categoryRanges[category];const dropdown=document.getElementById(`dropdown-${category}`);dropdown.innerHTML='';for(let i=range.start;i<=range.end;i++){const slug=getSlugFromNumber(category,i);const title=lessonTitles[slug]||`පාඩම ${i}`;const item=document.createElement('div');item.className='lesson-item';item.textContent=`${i}. ${title}`;item.onclick=()=>{loadArticle(slug);closeAllDropdowns();};dropdown.appendChild(item);}});}
