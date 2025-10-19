@@ -392,9 +392,9 @@
     <div class="container">
         <h1 id="pageTitle">සටහන් පොත</h1>
         <div class="category-tabs">
-            <button class="category-tab slhis active" onclick="switchCategory('slhis')">ශ්‍රී ලංකා ඉතිහාසය</button>
-            <button class="category-tab erphis" onclick="switchCategory('erphis')">යුරෝපා ඉතිහාසය</button>
-            <button class="category-tab indhis" onclick="switchCategory('indhis')">ඉන්දීය ඉතිහාසය</button>
+            <button class="category-tab slhis active" onclick="switchCategory('slhis')">ශ්‍රී ලංකාව</button>
+            <button class="category-tab erphis" onclick="switchCategory('erphis')">යුරෝපය</button>
+            <button class="category-tab indhis" onclick="switchCategory('indhis')">ඉන්දියාව</button>
         </div>
         <div class="lesson-list" id="lessonList"></div>
         <a href="https://amilaeduhelp.github.io/book-price/" target="_blank" class="book-link">
@@ -425,7 +425,7 @@
         const SUPABASE_URL='https://uqgzlaxsnknheoerbfus.supabase.co';
         const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxZ3psYXhzbmtuaGVvZXJiZnVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ4MDQzMTEsImV4cCI6MjA2MDM4MDMxMX0.O5dNUizqZ5kfwTs0mHLEorqOAqjZFjWakp2Q484MKEk';
         const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
-        const categoryRanges={'slhis':{start:1,end:51,name:'ශ්‍රී ලංකා ඉතිහාසය'},'erphis':{start:1,end:20,name:'යුරෝපා ඉතිහාසය'},'indhis':{start:1,end:12,name:'ඉන්දීය ඉතිහාසය'}};
+        const categoryRanges={'slhis':{start:1,end:51,name:'ශ්‍රී ලංකාව'},'erphis':{start:1,end:20,name:'යුරෝපය'},'indhis':{start:1,end:12,name:'ඉන්දියාව'}};
         let currentCategory='slhis',currentLessonNumber=null,currentArticleId=null,fontSize=16,originalHTML='',learnXTerms={},highlights=[],currentHighlightIndex=0,lessonTitles={};
         const searchBox=document.getElementById('searchBox'),noteArea=document.getElementById('noteArea'),searchInfo=document.getElementById('searchInfo'),searchNavButtons=document.getElementById('searchNavButtons'),prevSearchBtn=document.getElementById('prevSearchBtn'),nextSearchBtn=document.getElementById('nextSearchBtn'),tooltip=document.getElementById('tooltip'),tooltipOverlay=document.getElementById('tooltipOverlay'),pageTitle=document.getElementById('pageTitle'),prevLessonBtn=document.getElementById('prevLessonBtn'),nextLessonBtn=document.getElementById('nextLessonBtn'),increaseBtn=document.getElementById('increaseBtn'),decreaseBtn=document.getElementById('decreaseBtn'),lessonList=document.getElementById('lessonList');
         document.addEventListener('contextmenu',e=>e.preventDefault());
