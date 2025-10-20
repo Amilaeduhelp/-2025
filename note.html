@@ -282,10 +282,26 @@
             max-height: 80vh;
             overflow-y: auto;
             font-size: 1em;
-            line-height: 1.6;
+            line-height: 1.8;
             display: none;
             animation: tooltipFadeIn 0.3s ease-out;
             cursor: pointer;
+        }
+        .tooltip-meaning {
+            padding: 12px 0;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            margin-bottom: 12px;
+        }
+        .tooltip-meaning:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .tooltip-meaning:before {
+            content: "• ";
+            font-size: 1.3em;
+            margin-right: 8px;
+            color: #43e97b;
         }
         .tooltip-overlay {
             position: fixed;
@@ -445,7 +461,26 @@
         nextLessonBtn.addEventListener('click',function(){if(currentCategory&&currentLessonNumber<categoryRanges[currentCategory].end){const slug=getSlugFromNumber(currentCategory,currentLessonNumber+1);loadArticle(slug);}});
         function applyCrossReferences(){let content=noteArea.innerHTML;const tempDiv=document.createElement('div');tempDiv.innerHTML=content;tempDiv.querySelectorAll('.cross-ref-term').forEach(term=>{term.outerHTML=term.textContent;});content=tempDiv.innerHTML;const sortedTerms=Object.keys(learnXTerms).sort((a,b)=>b.length-a.length);let processedCount=0;function processTermBatch(){if(processedCount>=sortedTerms.length)return;const batchSize=5;for(let b=0;b<batchSize&&processedCount<sortedTerms.length;b++){const term=sortedTerms[processedCount++];const termData=learnXTerms[term];const escapedTerm=term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');const tempContainer=document.createElement('div');tempContainer.innerHTML=content;function replaceInNodes(node){if(node.nodeType===Node.TEXT_NODE){const text=node.textContent;const regex=new RegExp('(^|\\s|[.,;:!?()\\-])'+escapedTerm+'(?=\\s|[.,;:!?()\\-]|$)','gi');const matches=text.match(regex);if(matches){const span=document.createElement('span');span.innerHTML=text.replace(regex,function(match,prefix){return prefix+'<span class="cross-ref-term" data-meaning="'+termData.meaning.replace(/"/g,'&quot;')+'" data-slug="'+termData.slug.replace(/"/g,'&quot;')+'">'+term+'</span>';});node.parentNode.replaceChild(span,node);}}else if(node.nodeType===Node.ELEMENT_NODE&&node.className!=='cross-ref-term'&&node.tagName!=='SCRIPT'&&node.tagName!=='STYLE'){Array.from(node.childNodes).forEach(child=>replaceInNodes(child));}}Array.from(tempContainer.childNodes).forEach(child=>replaceInNodes(child));content=tempContainer.innerHTML;}if(processedCount<sortedTerms.length){requestAnimationFrame(processTermBatch);}else{noteArea.innerHTML=content;attachCrossRefListeners();}}processTermBatch();}
         function attachCrossRefListeners(){document.querySelectorAll('.cross-ref-term').forEach(term=>{term.addEventListener('click',function(e){e.stopPropagation();const meaning=this.getAttribute('data-meaning');const slug=this.getAttribute('data-slug');showTooltip(meaning,slug);});});}
-        function showTooltip(text,slug){tooltip.textContent=text;tooltip.style.display='block';tooltipOverlay.style.display='block';document.body.style.overflow='hidden';tooltip.onclick=function(){if(slug){loadArticle(slug);hideTooltip();}};}
+        function showTooltip(text,slug){
+            const cleanText = text.replace(/<br\s*\/?>/gi, '|||BREAK|||');
+            const meanings = cleanText.split('|||BREAK|||').filter(m => m.trim());
+            
+            if(meanings.length > 1) {
+                tooltip.innerHTML = meanings.map(m => '<div class="tooltip-meaning">' + m.trim() + '</div>').join('');
+            } else {
+                tooltip.innerHTML = '<div class="tooltip-meaning">' + text + '</div>';
+            }
+            
+            tooltip.style.display = 'block';
+            tooltipOverlay.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            tooltip.onclick = function() {
+                if(slug) {
+                    loadArticle(slug);
+                    hideTooltip();
+                }
+            };
+        }
         function hideTooltip(){tooltip.style.display='none';tooltipOverlay.style.display='none';document.body.style.overflow='';}
         tooltipOverlay.addEventListener('click',hideTooltip);
         let searchTimeout;
