@@ -2,864 +2,363 @@
 <html lang="si">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LearnX</title>
+<title>LearnX - Login</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  font-family: 'Noto Sans Sinhala', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 1rem;
 }
 
-.container {
+.login-container {
   background: white;
+  border-radius: 16px;
   padding: 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
-  width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
   max-width: 420px;
-  animation: slideIn 0.4s ease-out;
+  width: 100%;
+  animation: slideUp 0.5s ease;
 }
 
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .logo {
   text-align: center;
-  font-size: 3.5rem;
-  margin-bottom: 1rem;
-}
-
-h1 {
-  color: #333;
-  text-align: center;
-  margin-bottom: 0.5rem;
-  font-size: 1.8rem;
-  font-weight: 600;
-}
-
-.subtitle {
-  text-align: center;
-  color: #666;
   margin-bottom: 2rem;
+}
+
+.logo h1 {
+  color: #667eea;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.logo p {
+  color: #666;
   font-size: 0.95rem;
 }
 
-.countdown-box {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 1rem;
-  border-radius: 8px;
+.form-group {
   margin-bottom: 1.5rem;
-  text-align: center;
-  display: none;
-  animation: fadeIn 0.5s;
-}
-
-.countdown-box.show {
-  display: block;
-}
-
-.countdown-box h3 {
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
-  opacity: 0.9;
-}
-
-.countdown-timer {
-  font-size: 1.5rem;
-  font-weight: 700;
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 0.5rem;
-}
-
-.time-unit {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.time-value {
-  font-size: 1.8rem;
-  font-weight: 700;
-}
-
-.time-label {
-  font-size: 0.7rem;
-  opacity: 0.8;
-  margin-top: 0.2rem;
-}
-
-.input-group {
-  margin-bottom: 1rem;
 }
 
 label {
   display: block;
   margin-bottom: 0.5rem;
-  color: #555;
-  font-size: 0.9rem;
-  font-weight: 500;
+  color: #333;
+  font-weight: 600;
+  font-size: 0.95rem;
 }
 
 input {
   width: 100%;
-  padding: 0.9rem 1rem;
+  padding: 0.875rem;
   border: 2px solid #e0e0e0;
   border-radius: 8px;
   font-size: 1rem;
   transition: all 0.3s;
-  background: #f9f9f9;
 }
 
 input:focus {
   outline: none;
   border-color: #667eea;
-  background: white;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-button {
+.btn-login {
   width: 100%;
-  padding: 0.9rem;
+  padding: 1rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
-  margin-top: 0.5rem;
-  font-family: 'Noto Sans Sinhala', 'Segoe UI', sans-serif;
+  margin-top: 1rem;
 }
 
-button:hover { 
-  transform: translateY(-2px); 
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); 
+.btn-login:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
 }
 
-button:active { 
-  transform: translateY(0); 
+.btn-login:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .message {
-  margin-top: 1rem;
-  padding: 0.75rem;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  text-align: center;
-  display: none;
-  animation: fadeIn 0.3s;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.message.show { display: block; }
-.message.error { 
-  background: #ffebee; 
-  color: #c62828; 
-  border: 1px solid #ef5350; 
-}
-.message.success { 
-  background: #e8f5e9; 
-  color: #2e7d32; 
-  border: 1px solid #66bb6a; 
-}
-
-.info {
-  margin-top: 1.5rem;
   padding: 1rem;
-  background: #f0f4ff;
-  border-left: 4px solid #667eea;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  color: #555;
-  line-height: 1.5;
-}
-
-.info strong { color: #667eea; }
-
-.action-buttons {
-  margin-top: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.secondary-btn {
-  background: white;
-  color: #667eea;
-  border: 2px solid #667eea;
-  font-size: 0.95rem;
-  padding: 0.8rem;
-  font-weight: 500;
-  position: relative;
-}
-
-.secondary-btn:hover {
-  background: #667eea;
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-}
-
-.whatsapp-btn:hover {
-  background: #25D366;
-  border-color: #25D366;
-  color: white;
-}
-
-.news-btn {
-  background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
-  color: white;
-  border: none;
-}
-
-.news-btn:hover {
-  background: linear-gradient(135deg, #FF5252 0%, #FF7043 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-}
-
-.notification-badge {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background: #FF3838;
-  color: white;
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 0.25rem 0.5rem;
-  border-radius: 12px;
-  min-width: 22px;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(255, 56, 56, 0.4);
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.7);
-  z-index: 1000;
-  justify-content: center;
-  align-items: center;
-  animation: fadeIn 0.3s;
-}
-
-.modal.show {
-  display: flex;
-}
-
-.modal-content {
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  max-width: 400px;
-  width: 90%;
-  text-align: center;
-  animation: slideIn 0.4s ease-out;
-}
-
-.modal-content h2 {
-  color: #c62828;
-  margin-bottom: 1rem;
-}
-
-.modal-content p {
-  color: #555;
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-}
-
-.modal-btn {
-  padding: 0.8rem 2rem;
-  margin: 0.5rem;
   border-radius: 8px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  font-family: 'Noto Sans Sinhala', 'Segoe UI', sans-serif;
+  margin-bottom: 1.5rem;
+  display: none;
+  animation: slideIn 0.3s;
 }
 
-.btn-primary {
-  background: #667eea;
-  color: white;
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-.btn-primary:hover {
-  background: #5568d3;
+.message.show {
+  display: block;
 }
 
-.warning-box {
-  margin-top: 1.5rem;
-  padding: 1rem;
-  background: #fff3e0;
-  border-left: 4px solid #ff9800;
-  border-radius: 4px;
+.message.error {
+  background: #fee;
+  color: #c33;
+  border: 1px solid #fcc;
+}
+
+.message.success {
+  background: #efe;
+  color: #3c3;
+  border: 1px solid #cfc;
+}
+
+.message.info {
+  background: #e7f3ff;
+  color: #1976D2;
+  border: 1px solid #90caf9;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 2rem;
+  color: #999;
   font-size: 0.85rem;
-  color: #e65100;
-  line-height: 1.5;
+}
+
+.redirect-message {
+  text-align: center;
+  padding: 2rem;
+}
+
+.redirect-message h2 {
+  color: #667eea;
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+}
+
+.redirect-message p {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: 2rem auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="logo">📚</div>
-  <h1>LearnX</h1>
-  <p class="subtitle">Enter your credentials to continue</p>
-  
-  <div class="countdown-box" id="countdownBox">
-    <h3>⏱️ ඔබගේ ගිණුම කල් ඉකුත් වන්නේ:</h3>
-    <div class="countdown-timer">
-      <div class="time-unit">
-        <div class="time-value" id="days">0</div>
-        <div class="time-label">දින</div>
+<div class="login-container">
+  <div id="loginSection">
+    <div class="logo">
+      <h1>📚 LearnX</h1>
+      <p>පුරනය වන්න</p>
+    </div>
+    
+    <div class="message" id="message"></div>
+    
+    <!-- Login Form -->
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="accessCode">Access Code</label>
+        <input type="text" id="accessCode" placeholder="ඔබගේ access code එක ඇතුළත් කරන්න" required>
       </div>
-      <div class="time-unit">
-        <div class="time-value" id="hours">0</div>
-        <div class="time-label">පැය</div>
+      
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="ඔබගේ password එක ඇතුළත් කරන්න" required>
       </div>
-      <div class="time-unit">
-        <div class="time-value" id="minutes">0</div>
-        <div class="time-label">මිනිත්තු</div>
-      </div>
+      
+      <button type="submit" class="btn-login" id="loginBtn">
+        🔐 පුරනය වන්න
+      </button>
+    </form>
+    
+    <div class="footer">
+      <p>© 2025 LearnX - අමිල උඩවත්ත</p>
     </div>
   </div>
   
-  <div class="input-group">
-    <label for="username">Access Code</label>
-    <input type="text" id="username" placeholder="Enter access code" autocomplete="username" autofocus>
-  </div>
-  
-  <div class="input-group">
-    <label for="password">Password</label>
-    <input type="password" id="password" placeholder="Enter password" autocomplete="current-password">
-  </div>
-  
-  <button id="loginBtn">Access Site</button>
-  
-  <div class="message" id="msg"></div>
-  
-  <div class="info">
-    <strong>ℹ️ Need access?</strong><br>
-    Contact the administrator to receive your access credentials.
-  </div>
-  
-  <div class="warning-box">
-    <strong>⚠️ Important:</strong> Only one active session per account is allowed. If you login from another device/browser, your current session will be terminated.
-  </div>
-  <div class="warning-box">
-    <strong>⚠️ අවවාදය:</strong> ඔබගේ access code එක හෝ password එක අන්‍ය සතු කිරීමෙන් ඔබගේ ගිණුම පූර්ව දැනුම්දීමකින් තොර ඉවත් කළ හැක. මෙම වෙබ් අඩවිය සහ එහි සියළු අන්තර්ගතයන් LearnX සතු වන අතර කිසියම් කතු හිමිකම් උල්ලංඝනයක් සිදු කිරීම තහනම් වේ.
-  </div>
-  
-  <div class="action-buttons">
-    <button class="secondary-btn news-btn" id="newsBtn" style="position: relative;">
-      📰 ඊළඟ දැන්වීම
-      <span class="notification-badge" id="newsBadge" style="display: none;">0</span>
-    </button>
-    <button class="secondary-btn" id="priceBtn">
-      Password එකක් හා Access Code එකක් ලබා ගන්නේ කෙසේ ද?
-    </button>
-    <button class="secondary-btn" id="contentBtn">
-       මෙහි අන්තර්ගත වන්නේ මොනව ද?
-    </button>
-    <button class="secondary-btn whatsapp-btn" id="contactBtn">
-      📱 Contact
-    </button>
-  </div>
-</div>
-
-<!-- News Modal (Shows on page load) -->
-<div class="modal" id="newsModal">
-  <div class="modal-content" style="max-width: 500px;">
-    <h2 style="color: #667eea; margin-bottom: 1rem;">නවතම දැන්වීම</h2>
-    <div style="text-align: left; color: #555; line-height: 1.8; padding: 1rem; background: #f8f9ff; border-radius: 8px; margin-bottom: 1.5rem;">
-      <p style="font-weight: 600; color: #667eea; margin-bottom: 0.5rem;">නොවැම්බර් මස අග වාර විභාග ප්‍රශ්න පත්‍රය</p>
-      <p>නොවැම්බර් මස අග දී උසස් පෙළ දරුවන්ට වාර විභාග ප්‍රශ්න පත්‍රයක් හා පිළිතුරු පත්‍රය අප විසින් නිකුත් කෙරේ.-LearnX</p>
-       <p>මීට අමතරව උසස්පෙළ හා සාමානපෙළ සඳහා ඉතිහාසය වාර විභාග ප්‍රශ්න පත්‍ර හා පිළිතුරු පත්‍රය අප විසින් නිකුත් කෙරේ.-LearnX</p>
-    </div>
-    <button class="modal-btn btn-primary" id="closeNewsModalBtn" style="width: 100%;">හරි</button>
-  </div>
-</div>
-
-<div class="modal" id="logoutModal">
-  <div class="modal-content">
-    <h2>⚠️ Session Terminated</h2>
-    <p>Another user has logged in with your credentials. Your session has been terminated for security reasons.</p>
-    <button class="modal-btn btn-primary" id="closeLogoutBtn">OK</button>
-  </div>
-</div>
-
-<div class="modal" id="contentModal">
-  <div class="modal-content" style="max-width: 500px; max-height: 80vh; overflow-y: auto;">
-    <h2 style="color: #667eea; margin-bottom: 1.5rem;">📚 මෙහි අන්තර්ගත වන්නේ මොනව ද?</h2>
-    <div style="text-align: left; color: #555; line-height: 1.8;">
-      <ul style="list-style: none; padding: 0;">
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ විෂයානුබද්ධ වාග්මාලාව</li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ සටහන් පොත්</li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ ප්‍රශ්නපත්‍ර හා පිළිතුරු පත්‍ර</li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ edupoints </li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ විශ්වවිද්‍යාල පාඨමාලා</li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ Z-Score </li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ Job mart</li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ සිතියම්</li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ මෙතෙක් ආ ප්‍රශ්න</li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ Smart සිතියම්</li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ MCQ tests</li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ රාජකාරී ලේඛන</li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ පොත්හල</li>
-        <li style="padding: 0.6rem 0; border-bottom: 1px solid #eee;">✓ easy bibliographies</li>
-        <li style="padding: 0.6rem 0;">✓ Y-Sub විශේෂාංග</li>
-      </ul>
-    </div>
-    <button class="modal-btn btn-primary" id="closeContentBtn" style="margin-top: 1.5rem; width: 100%;">හරි</button>
-  </div>
-</div>
-
-<div class="modal" id="expiredModal">
-  <div class="modal-content">
-    <h2 style="color: #c62828;">⚠️ ගිණුම කල් ඉකුත් වී ඇත</h2>
-    <p>ඔබගේ access code එක දින 365 කාලය ඉකුත් වී ඇත. කරුණාකර නව access code එකක් ලබා ගන්න.</p>
-    <button class="modal-btn btn-primary" id="closeExpiredBtn">හරි</button>
+  <!-- Redirect Screen (shown after successful login) -->
+  <div class="redirect-message" id="redirectSection" style="display: none;">
+    <h2>✅ සාර්ථකයි!</h2>
+    <p>ඔබ සාර්ථකව පුරනය වී ඇත</p>
+    <div class="spinner"></div>
+    <p>පිටුව විවෘත කරමින්...</p>
   </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// Configuration
-var config = {
-  redirectUrl: "https://amilaeduhelp.github.io/-2025/entrence.html",
-  sessionTimeout: 24,
-  accountValidityDays: 365
-};
+let supabase = null;
 
-// Credentials database
-var credentials = {
-  "NADMIN": { hash: "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9", created: "2025-10-14" },
-  "CCAC": { hash: "8f49fc41262fc025774655f2cf0dc8b795a5b492f69ce4566c6c11cc58ba202d", created: "2025-10-10" },
-  "GAMINI": { hash: "f654e1e4e711d898a37fb539d53fe41b71d15f0e6090aa0ba2090084f5da140b", created: "2025-10-10" },
-  "LAK100": { hash: "fd3ae3b595e9df173e5ad2163b1053f7cc606df00629da74958b0acc7a1d32e3", created: "2025-02-10" },
-  "RUKSHI": { hash: "9d980933f27f5763decdc1879ade71901aca981c1467feb55d1aaf0b4b4c4f5b", created: "2025-10-10" },
-  "NAVODI": { hash: "1d2b158b3ce0c3251f7398b9516db4e60c6fa3b2037179bfe45239688a856261", created: "2025-10-14" },
-  "PND27": { hash: "17b77803568c0146a6fc029a255419f98c3ca9f0b2802ea5f4ae9a0e000ac317", created: "2025-10-14" },
-  "LAK": { hash: "399c05ddb63bb9d98019a09df13d76d18a8b6e5d4a4a321bff5fda0a48876d8d", created: "2025-10-14" },
-  "NISHA": { hash: "c86beae4e0324c4cb3f1d1922e691eaa128933e66e808d3cb0b311eca9a88f28", created: "2025-10-14" },
-  "AAA": { hash: "f6543e952ecb93fba1fa65c547c5073a5d25aba46611fe6cc76c1d2645deb3ff", created: "2024-11-29" },
-  "CTK": { hash: "0b07032d262b660373a7487ac16d3505286fe2e02621e3c5054a61039e17e367", created: "2025-10-14" },
-  "PUNSARA": { hash: "0b07032d262b660373a7487ac16d3505286fe2e02621e3c5054a61039e17e367", created: "2025-10-14" },
-  "UTHUNI": { hash: "aa31cb5b67ae93ba8e6c46666273108ac830fd2a6d97f7d0d19194ccfc85f3de", created: "2025-10-16" },
-  "MADHU": { hash: "a15601df9c9728e329ea287b94f9e87d7497b0e1b5cbb3219c55d091b7919684", created: "2025-10-17" },
-  "2514366": { hash: "de0eb7955a4da589585762bc532a680b0897454d8c6316bc36d352bd10bbe7a1", created: "2025-10-21" },
-  "USER003": { hash: "5906ac361a137e2d286465cd6588ebb5ac3f5d5a86aff3ca12020c923adc6c92", created: "2025-02-01" }
-};
+// Supabase Configuration - ස්ථිරව සකසා ඇත
+const SUPABASE_URL = 'https://uqgzlaxsnknheoerbfus.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxZ3psYXhzbmtuaGVvZXJiZnVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ4MDQzMTEsImV4cCI6MjA2MDM4MDMxMX0.O5dNUizqZ5kfwTs0mHLEorqOAqjZFjWakp2Q484MKEk';
 
-// Global variables
-var mySessionId = generateSessionId();
-var myUser = null;
-var channel = null;
-var countdownInterval = null;
+// Redirect URL - මෙම URL එක ඔබගේ අවශ්‍යතාවයට අනුව වෙනස් කරන්න
+const REDIRECT_URL = 'https://amilaeduhelp.github.io/-2025/entrence.html';
 
-// Utility Functions
 function hash(str) {
   return CryptoJS.SHA256(str).toString();
 }
 
-function generateSessionId() {
-  return Date.now().toString(36) + Math.random().toString(36).substr(2) + Math.random().toString(36).substr(2);
+function showMessage(message, type) {
+  const msgEl = document.getElementById('message');
+  msgEl.textContent = message;
+  msgEl.className = `message show ${type}`;
+  
+  setTimeout(() => {
+    msgEl.classList.remove('show');
+  }, 5000);
 }
 
-function show(text, type) {
-  var m = document.getElementById('msg');
-  m.textContent = text;
-  m.className = 'message show ' + type;
-}
-
-// Modal Functions
-function showLogoutModal() {
-  document.getElementById('logoutModal').classList.add('show');
-}
-
-function closeModal() {
-  document.getElementById('logoutModal').classList.remove('show');
-  if (channel) {
-    channel.postMessage({
-      type: 'logout',
-      user: myUser
-    });
+function initSupabase() {
+  try {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    return true;
+  } catch (error) {
+    showMessage('❌ Supabase සම්බන්ධ කිරීමේ දෝෂයක්: ' + error.message, 'error');
+    return false;
   }
-  sessionStorage.clear();
-  window.location.reload();
 }
 
-function showContentModal() {
-  document.getElementById('contentModal').classList.add('show');
+function redirectToPage(userData) {
+  // User data එක sessionStorage එකට save කරන්න (optional)
+  sessionStorage.setItem('learnx_user', JSON.stringify({
+    access_code: userData.access_code,
+    created_at: userData.created_at,
+    last_login: userData.last_login
+  }));
+  
+  // Redirect screen එක පෙන්වන්න
+  document.getElementById('loginSection').style.display = 'none';
+  document.getElementById('redirectSection').style.display = 'block';
+  
+  // 2 seconds පසු redirect කරන්න
+  setTimeout(() => {
+    window.location.href = REDIRECT_URL;
+  }, 2000);
 }
 
-function closeContentModal() {
-  document.getElementById('contentModal').classList.remove('show');
-}
-
-function showExpiredModal() {
-  document.getElementById('expiredModal').classList.add('show');
-}
-
-function closeExpiredModal() {
-  document.getElementById('expiredModal').classList.remove('show');
-  sessionStorage.clear();
-  window.location.reload();
-}
-
-// Account Expiry Functions
-function checkAccountExpiry(user) {
-  var userCred = credentials[user];
-  if (!userCred || !userCred.created) {
-    return { expired: false, daysLeft: 365 };
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  if (!supabase) {
+    initSupabase();
   }
   
-  var createdDate = new Date(userCred.created);
-  var expiryDate = new Date(createdDate);
-  expiryDate.setDate(expiryDate.getDate() + config.accountValidityDays);
+  const accessCode = document.getElementById('accessCode').value.trim().toUpperCase();
+  const password = document.getElementById('password').value;
   
-  var now = new Date();
-  var timeLeft = expiryDate - now;
-  var daysLeft = Math.ceil(timeLeft / (1000 * 60 * 60 * 24));
-  
-  return {
-    expired: timeLeft <= 0,
-    expiryDate: expiryDate,
-    daysLeft: daysLeft,
-    timeLeft: timeLeft
-  };
-}
-
-function updateCountdown(expiryDate) {
-  var now = new Date();
-  var timeLeft = expiryDate - now;
-  
-  if (timeLeft <= 0) {
-    clearInterval(countdownInterval);
-    document.getElementById('countdownBox').classList.remove('show');
-    showExpiredModal();
+  if (!accessCode || !password) {
+    showMessage('⚠️ කරුණාකර සියලු තොරතුරු පුරවන්න', 'error');
     return;
   }
   
-  var days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+  const loginBtn = document.getElementById('loginBtn');
+  loginBtn.disabled = true;
+  loginBtn.textContent = '🔄 පරීක්ෂා කරමින්...';
   
-  document.getElementById('days').textContent = days;
-  document.getElementById('hours').textContent = hours;
-  document.getElementById('minutes').textContent = minutes;
-}
-
-function startCountdown(expiryDate) {
-  document.getElementById('countdownBox').classList.add('show');
-  updateCountdown(expiryDate);
-  countdownInterval = setInterval(function() {
-    updateCountdown(expiryDate);
-  }, 60000);
-}
-
-// News Badge Functions
-function getNewsCount() {
-  return 0;
-}
-
-function updateNewsBadge() {
-  var count = getNewsCount();
-  var badge = document.getElementById('newsBadge');
-  if (count > 0) {
-    badge.textContent = count > 99 ? '99+' : count;
-    badge.style.display = 'block';
-  } else {
-    badge.style.display = 'none';
-  }
-}
-
-// Broadcast Channel Functions
-function initBroadcastChannel() {
-  if (typeof BroadcastChannel === 'undefined') {
-    console.warn('BroadcastChannel not supported');
-    return null;
-  }
-  
-  channel = new BroadcastChannel('auth_channel');
-  
-  channel.onmessage = function(event) {
-    var data = event.data;
+  try {
+    const passwordHash = hash(password);
     
-    if (data.type === 'new_login' && data.user === myUser && data.sessionId !== mySessionId) {
-      showLogoutModal();
-    }
+    const { data, error } = await supabase
+      .from('credentials')
+      .select('*')
+      .eq('access_code', accessCode)
+      .eq('password_hash', passwordHash)
+      .single();
     
-    if (data.type === 'check_session' && data.user === myUser) {
-      channel.postMessage({
-        type: 'session_response',
-        user: myUser,
-        sessionId: mySessionId,
-        timestamp: Date.now()
-      });
-    }
-  };
-  
-  return channel;
-}
-
-function checkForExistingSessions(user) {
-  return new Promise(function(resolve) {
-    if (!channel) {
-      resolve(false);
+    if (error || !data) {
+      showMessage('❌ වැරදි Access Code හෝ Password', 'error');
+      loginBtn.disabled = false;
+      loginBtn.textContent = '🔐 පුරනය වන්න';
       return;
     }
     
-    var responses = [];
-    
-    var responseHandler = function(event) {
-      var data = event.data;
-      if (data.type === 'session_response' && data.user === user) {
-        responses.push(data);
-      }
-    };
-    
-    channel.addEventListener('message', responseHandler);
-    
-    channel.postMessage({
-      type: 'check_session',
-      user: user
-    });
-    
-    setTimeout(function() {
-      channel.removeEventListener('message', responseHandler);
-      resolve(responses.length > 0);
-    }, 500);
-  });
-}
-
-function notifyNewLogin(user) {
-  if (channel) {
-    channel.postMessage({
-      type: 'new_login',
-      user: user,
-      sessionId: mySessionId,
-      timestamp: Date.now()
-    });
-  }
-}
-
-// Main Verification Function
-async function verify() {
-  var user = document.getElementById('username').value.trim().toUpperCase();
-  var pass = document.getElementById('password').value;
-  
-  if (!user || !pass) {
-    show('Please enter both access code and password', 'error');
-    return;
-  }
-  
-  var stored = credentials[user];
-  
-  if (!stored) {
-    show('Invalid access code or password', 'error');
-    document.getElementById('password').value = '';
-    return;
-  }
-  
-  var expiryCheck = checkAccountExpiry(user);
-  
-  if (expiryCheck.expired) {
-    show('⚠️ Your account has expired. Please contact admin for renewal.', 'error');
-    document.getElementById('password').value = '';
-    showExpiredModal();
-    return;
-  }
-  
-  if (hash(pass) === stored.hash) {
-    var hasActiveSession = await checkForExistingSessions(user);
-    
-    if (hasActiveSession) {
-      show('⚠️ This account is already active on another tab/window', 'error');
-      document.getElementById('password').value = '';
+    if (!data.is_active) {
+      showMessage('⚠️ මෙම ගිණුම අක්‍රීය කර ඇත', 'error');
+      loginBtn.disabled = false;
+      loginBtn.textContent = '🔐 පුරනය වන්න';
       return;
     }
     
-    show('✓ Access granted! Redirecting...', 'success');
+    const createdDate = new Date(data.created_at);
+    const expiryDate = new Date(createdDate);
+    expiryDate.setDate(expiryDate.getDate() + 365);
     
-    myUser = user;
-    
-    var expires = new Date();
-    expires.setHours(expires.getHours() + config.sessionTimeout);
-    
-    sessionStorage.setItem('auth', 'true');
-    sessionStorage.setItem('user', user);
-    sessionStorage.setItem('sessionId', mySessionId);
-    sessionStorage.setItem('expires', expires.getTime());
-    sessionStorage.setItem('accountExpiry', expiryCheck.expiryDate.getTime());
-    
-    notifyNewLogin(user);
-    
-    setTimeout(function() {
-      window.location.href = config.redirectUrl;
-    }, 1200);
-  } else {
-    show('Invalid access code or password', 'error');
-    document.getElementById('password').value = '';
-  }
-}
-
-// Show news popup on page load
-window.addEventListener('DOMContentLoaded', function() {
-  const newsModal = document.getElementById('newsModal');
-  newsModal.classList.add('show');
-});
-
-// Close news modal
-document.getElementById('closeNewsModalBtn').addEventListener('click', function() {
-  document.getElementById('newsModal').classList.remove('show');
-});
-
-// Event Listeners - Run after DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-  // Login button
-  var loginBtn = document.getElementById('loginBtn');
-  if (loginBtn) {
-    loginBtn.addEventListener('click', verify);
-  }
-  
-  // Enter key on username field
-  var usernameInput = document.getElementById('username');
-  if (usernameInput) {
-    usernameInput.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        var passwordInput = document.getElementById('password');
-        if (passwordInput) passwordInput.focus();
-      }
-    });
-  }
-  
-  // Enter key on password field
-  var passwordInput = document.getElementById('password');
-  if (passwordInput) {
-    passwordInput.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') verify();
-    });
-  }
-  
-  // Modal close buttons
-  var closeLogoutBtn = document.getElementById('closeLogoutBtn');
-  if (closeLogoutBtn) {
-    closeLogoutBtn.addEventListener('click', closeModal);
-  }
-  
-  var closeContentBtn = document.getElementById('closeContentBtn');
-  if (closeContentBtn) {
-    closeContentBtn.addEventListener('click', closeContentModal);
-  }
-  
-  var closeExpiredBtn = document.getElementById('closeExpiredBtn');
-  if (closeExpiredBtn) {
-    closeExpiredBtn.addEventListener('click', closeExpiredModal);
-  }
-  
-  // Action buttons
-  var contentBtn = document.getElementById('contentBtn');
-  if (contentBtn) {
-    contentBtn.addEventListener('click', showContentModal);
-  }
-  
-  var newsBtn = document.getElementById('newsBtn');
-  if (newsBtn) {
-    newsBtn.addEventListener('click', function() {
-      document.getElementById('newsModal').classList.add('show');
-    });
-  }
-  
-  var priceBtn = document.getElementById('priceBtn');
-  if (priceBtn) {
-    priceBtn.addEventListener('click', function() {
-      window.location.href = 'price.html';
-    });
-  }
-  
-  var contactBtn = document.getElementById('contactBtn');
-  if (contactBtn) {
-    contactBtn.addEventListener('click', function() {
-      window.open('https://wa.me/94716637804', '_blank');
-    });
-  }
-  
-  // Check existing session
-  var auth = sessionStorage.getItem('auth');
-  var user = sessionStorage.getItem('user');
-  var sessionId = sessionStorage.getItem('sessionId');
-  var exp = sessionStorage.getItem('expires');
-  var accountExp = sessionStorage.getItem('accountExpiry');
-  
-  if (auth === 'true' && user && sessionId && exp && new Date().getTime() < parseInt(exp)) {
-    myUser = user;
-    mySessionId = sessionId;
-    initBroadcastChannel();
-    
-    if (accountExp) {
-      var expiryDate = new Date(parseInt(accountExp));
-      var now = new Date();
-      
-      if (now >= expiryDate) {
-        sessionStorage.clear();
-        showExpiredModal();
-      } else {
-        startCountdown(expiryDate);
-      }
+    if (new Date() > expiryDate) {
+      showMessage('⚠️ ඔබගේ ගිණුම කල් ඉකුත් වී ඇත', 'error');
+      loginBtn.disabled = false;
+      loginBtn.textContent = '🔐 පුරනය වන්න';
+      return;
     }
     
-    updateNewsBadge();
-    setInterval(updateNewsBadge, 60000);
-  } else {
-    initBroadcastChannel();
-    updateNewsBadge();
-    setInterval(updateNewsBadge, 60000);
+    // Last login update කරන්න
+    await supabase
+      .from('credentials')
+      .update({ last_login: new Date().toISOString() })
+      .eq('access_code', accessCode);
+    
+    // සාර්ථක පුරනයෙන් පසු redirect කරන්න
+    redirectToPage(data);
+    
+  } catch (error) {
+    console.error('Login error:', error);
+    showMessage('❌ දෝෂයක් ඇතිවිය: ' + error.message, 'error');
+    loginBtn.disabled = false;
+    loginBtn.textContent = '🔐 පුරනය වන්න';
   }
 });
 
-// Cleanup on page unload
-window.addEventListener('beforeunload', function() {
-  if (channel && myUser) {
-    channel.postMessage({
-      type: 'logout',
-      user: myUser
-    });
-  }
+// Page load වෙද්දී Supabase initialize කරන්න
+window.addEventListener('DOMContentLoaded', () => {
+  initSupabase();
 });
 </script>
 
 </body>
 </html>
-
-
-
