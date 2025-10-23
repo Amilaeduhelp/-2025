@@ -1,6 +1,14 @@
+// Supabase Configuration
 const SUPABASE_URL = 'https://uqgzlaxsnknheoerbfus.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxZ3psYXhzbmtuaGVvZXJiZnVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ4MDQzMTEsImV4cCI6MjA2MDM4MDMxMX0.O5dNUizqZ5kfwTs0mHLEorqOAqjZFjWakp2Q484MKEk';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Initialize Supabase client
+let supabase;
+try {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+} catch (error) {
+    console.error('Supabase initialization error:', error);
+}
 
 const categoryRanges = {
     'slhis': { start: 1, end: 51, name: 'ශ්‍රී ලංකාව' },
@@ -37,35 +45,83 @@ document.addEventListener('contextmenu', e => e.preventDefault());
 
 async function loadLearnXTerms() {
     try {
-        const { data, error } = await supabase
-            .from('learnX pedia')
-            .select('id, word, meaning, slug');
+        if (!supabase) {
+            throw new Error('Supabase client not initialized');
+        }
         
-        if (error) throw error;
+        // වචන ගණන වැඩි නිසා batch වලින් load කරමු
+        let allData = [];
+        let from = 0;
+        const batchSize = 1000;
+        let hasMore = true;
         
-        if (data) {
-            data.forEach(item => {
-                learnXTerms[item.word] = {
+        while (hasMore) {
+            const { data, error } = await supabase
+                .from('learnX pedia')
+                .select('id, word, meaning, slug')
+                .order('id', { ascending: true })
+                .range(from, from + batchSize - 1);
+            
+            if (error) {
+                console.error('LearnX terms load error:', error);
+                throw error;
+            }
+            
+            if (data && data.length > 0) {
+                allData = allData.concat(data);
+                from += batchSize;
+                hasMore = data.length === batchSize;
+            } else {
+                hasMore = false;
+            }
+        }
+        
+        console.log('LearnX terms loaded:', allData.length);
+        
+        if (allData.length > 0) {
+            allData.forEach(item => {
+                // Normalize the word (trim whitespace)
+                const normalizedWord = item.word.trim();
+                learnXTerms[normalizedWord] = {
                     meaning: item.meaning,
                     slug: item.slug,
-                    id: item.id
+                    id: item.id,
+                    originalWord: item.word
                 };
             });
+            
+            // Debug: ධර්මපාල තිබේද බලමු
+            if (learnXTerms['ධර්මපාල']) {
+                console.log('✅ ධර්මපාල found in terms:', learnXTerms['ධර්මපාල']);
+            } else {
+                console.warn('❌ ධර්මපාල still not found');
+            }
+            
+            console.log('Total unique terms:', Object.keys(learnXTerms).length);
         }
     } catch (error) {
         console.error('Error loading LearnX terms:', error);
+        noteArea.innerHTML = '<div class="error">Database සම්බන්ධතා ගැටළුවක්: ' + error.message + '</div>';
     }
 }
 
 async function loadLessonTitles() {
     try {
+        if (!supabase) {
+            throw new Error('Supabase client not initialized');
+        }
+        
         const { data, error } = await supabase
             .from('Historynt')
             .select('slug, title');
         
-        if (error) throw error;
+        if (error) {
+            console.error('Lesson titles load error:', error);
+            throw error;
+        }
         
         if (data) {
+            console.log('Lesson titles loaded:', data.length);
             data.forEach(item => {
                 lessonTitles[item.slug] = item.title;
             });
@@ -73,6 +129,7 @@ async function loadLessonTitles() {
         }
     } catch (error) {
         console.error('Error loading lesson titles:', error);
+        noteArea.innerHTML = '<div class="error">Database සම්බන්ධතා ගැටළුවක්: ' + error.message + '</div>';
     }
 }
 
@@ -119,6 +176,10 @@ function getCategoryFromSlug(slug) {
 
 async function loadArticle(slug) {
     try {
+        if (!supabase) {
+            throw new Error('Supabase client not initialized');
+        }
+        
         noteArea.innerHTML = '<div class="loading">පාඩම පූරණය වෙමින් පවතී...</div>';
         
         const { data, error } = await supabase
@@ -127,7 +188,10 @@ async function loadArticle(slug) {
             .eq('slug', slug)
             .single();
         
-        if (error) throw error;
+        if (error) {
+            console.error('Article load error:', error);
+            throw error;
+        }
         
         if (data) {
             currentArticleId = data.id;
@@ -149,7 +213,7 @@ async function loadArticle(slug) {
         }
     } catch (error) {
         console.error('Error loading article:', error);
-        noteArea.innerHTML = '<div class="error">දෝෂයක්: ' + error.message + '</div>';
+        noteArea.innerHTML = '<div class="error">දෝෂයක්: ' + error.message + '<br><br>කරුණාකර Supabase credentials පරීක්ෂා කරන්න.</div>';
     }
 }
 
@@ -217,8 +281,24 @@ function applyCrossReferences() {
     const sortedTerms = Object.keys(learnXTerms).sort((a, b) => b.length - a.length);
     let processedCount = 0;
     
+    console.log('Processing cross-references for', sortedTerms.length, 'terms');
+    
+    // Debug: First 10 terms බලමු
+    console.log('First 10 terms:', sortedTerms.slice(0, 10));
+    
+    // Debug: ධර්මපාල process වෙනවද බලමු
+    const dharmapaalaIndex = sortedTerms.findIndex(t => t.includes('ධර්මපාල'));
+    if (dharmapaalaIndex >= 0) {
+        console.log('✅ ධර්මපාල will be processed at index:', dharmapaalaIndex);
+    } else {
+        console.warn('❌ ධර්මපාල not in processing list');
+    }
+    
     function processTermBatch() {
-        if (processedCount >= sortedTerms.length) return;
+        if (processedCount >= sortedTerms.length) {
+            console.log('Cross-reference processing complete');
+            return;
+        }
         
         const batchSize = 5;
         for (let b = 0; b < batchSize && processedCount < sortedTerms.length; b++) {
@@ -232,26 +312,45 @@ function applyCrossReferences() {
             function replaceInNodes(node) {
                 if (node.nodeType === Node.TEXT_NODE) {
                     const text = node.textContent;
-                    // වැඩිදියුණු කළ regex - Sinhala විරාම ලකුණු සහ word boundaries සඳහා
-                    const regex = new RegExp('(?:^|[\\s.,;:!?()\\-්෴។\\u200B\\u200D])(' + escapedTerm + ')(?=[\\s.,;:!?()\\-්෴။\\u200B\\u200D]|$)', 'gi');
+                    // Word boundary regex - වචනය හුදෙකලාව තිබේද කියා පරීක්ෂා කරනවා
+                    const regex = new RegExp('(?:^|[\\s,.:;!?()\\-"\'\\u200B\\u200D])(' + escapedTerm + ')(?=[\\s,.:;!?()\\-"\'\\u200B\\u200D]|$)', 'gi');
                     
-                    if (regex.test(text)) {
-                        const span = document.createElement('span');
-                        span.innerHTML = text.replace(regex, function(match, capturedTerm, offset, string) {
-                            // පෙර character එක සොයන්න
-                            const prefix = offset > 0 ? string[offset - 1] : '';
-                            const isAtStart = offset === 0;
-                            const hasSeparator = /[\s.,;:!?()\\-්෴။\u200B\u200D]/.test(prefix);
-                            
-                            if (isAtStart || hasSeparator) {
-                                return (isAtStart ? '' : prefix) + '<span class="cross-ref-term" data-meaning="' + 
-                                       termData.meaning.replace(/"/g, '&quot;') + 
-                                       '" data-slug="' + termData.slug.replace(/"/g, '&quot;') + 
-                                       '">' + capturedTerm + '</span>';
+                    const matches = text.match(regex);
+                    if (matches && matches.length > 0) {
+                        const fragment = document.createDocumentFragment();
+                        let lastIndex = 0;
+                        
+                        regex.lastIndex = 0;
+                        let match;
+                        while ((match = regex.exec(text)) !== null) {
+                            // පෙර කොටස add කරන්න
+                            if (match.index > lastIndex) {
+                                fragment.appendChild(document.createTextNode(text.substring(lastIndex, match.index)));
                             }
-                            return match;
-                        });
-                        node.parentNode.replaceChild(span, node);
+                            
+                            // Separator character එක add කරන්න (space, comma, etc.)
+                            const beforeChar = match[0].charAt(0);
+                            if (/[\s,.:;!?()\-"'\u200B\u200D]/.test(beforeChar)) {
+                                fragment.appendChild(document.createTextNode(beforeChar));
+                            }
+                            
+                            // Cross-reference span එක add කරන්න
+                            const span = document.createElement('span');
+                            span.className = 'cross-ref-term';
+                            span.setAttribute('data-meaning', termData.meaning);
+                            span.setAttribute('data-slug', termData.slug);
+                            span.textContent = match[1]; // captured term එක පමණයි
+                            fragment.appendChild(span);
+                            
+                            lastIndex = match.index + match[0].length;
+                        }
+                        
+                        // ඉතිරි කොටස add කරන්න
+                        if (lastIndex < text.length) {
+                            fragment.appendChild(document.createTextNode(text.substring(lastIndex)));
+                        }
+                        
+                        node.parentNode.replaceChild(fragment, node);
                     }
                 } else if (node.nodeType === Node.ELEMENT_NODE && 
                           node.className !== 'cross-ref-term' && 
@@ -285,6 +384,7 @@ function attachCrossRefListeners() {
             showTooltip(meaning, slug);
         });
     });
+    console.log('Cross-ref listeners attached to', document.querySelectorAll('.cross-ref-term').length, 'terms');
 }
 
 function showTooltip(text, slug) {
@@ -429,6 +529,7 @@ decreaseBtn.addEventListener('click', function() {
 });
 
 window.addEventListener('DOMContentLoaded', async function() {
+    console.log('Page loaded, initializing...');
     await loadLearnXTerms();
     await loadLessonTitles();
     
