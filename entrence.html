@@ -3,215 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LearnX</title>
+<title>LearnX - අධ්‍යාපන මධ්‍යස්ථානය</title>
+<script src="https://cdn.tailwindcss.com"></script>
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  padding: 2rem 1rem;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.header {
-  text-align: center;
-  color: white;
-  margin-bottom: 3rem;
-  animation: fadeInDown 0.6s ease-out;
-}
-
-.header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-
-.header p {
-  font-size: 1.1rem;
-  opacity: 0.9;
-}
-
-.instructions-box {
-  background: white;
-  border-radius: 16px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  animation: fadeInUp 0.6s ease-out;
-}
-
-.instructions-header {
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.info-icon {
-  font-size: 3rem;
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.instructions-header h2 {
-  color: #667eea;
-  font-size: 1.3rem;
-  line-height: 1.4;
-}
-
-.instructions-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  margin: 1.5rem 0;
-}
-
-.platform {
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  padding: 1.5rem;
-  border-radius: 12px;
-  border: 2px solid #667eea;
-}
-
-.platform h3 {
-  color: #333;
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
-}
-
-.platform ol {
-  margin-left: 1.2rem;
-  margin-bottom: 1rem;
-}
-
-.platform li {
-  color: #444;
-  margin: 0.7rem 0;
-  line-height: 1.6;
-  font-size: 0.95rem;
-}
-
-.platform strong {
-  color: #667eea;
-}
-
-.open-btn {
-  display: block;
-  text-align: center;
-  padding: 0.9rem 1.5rem;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  margin-top: 1rem;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
-
-.android-btn {
-  background: linear-gradient(135deg, #34a853 0%, #0f9d58 100%);
-  color: white;
-}
-
-.android-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 15px rgba(52,168,83,0.4);
-}
-
-.ios-btn {
-  background: linear-gradient(135deg, #007aff 0%, #0051d5 100%);
-  color: white;
-}
-
-.ios-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 15px rgba(0,122,255,0.4);
-}
-
-.instructions-footer {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 1rem;
-  border-radius: 8px;
-  text-align: center;
-  margin-top: 1.5rem;
-}
-
-.instructions-footer p {
-  color: white;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin: 0;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.card {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  text-decoration: none;
-  color: inherit;
-  display: block;
-  animation: fadeInUp 0.6s ease-out;
-  animation-fill-mode: both;
-}
-
-.card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.3);
-}
-
-.card-icon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  display: block;
-}
-
-.card-title {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 0.5rem;
-}
-
-.card-description {
-  font-size: 0.9rem;
-  color: #666;
-  line-height: 1.5;
-}
-
-.footer {
-  text-align: center;
-  color: white;
-  padding: 2rem 0;
-  margin-top: 3rem;
-  border-top: 1px solid rgba(255,255,255,0.2);
-}
-
-.footer p {
-  margin: 0.3rem 0;
-  font-size: 0.95rem;
-}
-
-.copyright {
-  font-weight: 600;
-  margin-top: 1rem;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeInDown {
@@ -225,214 +28,261 @@ body {
   }
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
 }
 
-.card:nth-child(1) { animation-delay: 0.1s; }
-.card:nth-child(2) { animation-delay: 0.15s; }
-.card:nth-child(3) { animation-delay: 0.2s; }
-.card:nth-child(4) { animation-delay: 0.25s; }
-.card:nth-child(5) { animation-delay: 0.3s; }
-.card:nth-child(6) { animation-delay: 0.35s; }
-.card:nth-child(7) { animation-delay: 0.4s; }
-.card:nth-child(8) { animation-delay: 0.45s; }
-.card:nth-child(9) { animation-delay: 0.5s; }
-.card:nth-child(10) { animation-delay: 0.55s; }
-.card:nth-child(11) { animation-delay: 0.6s; }
-.card:nth-child(12) { animation-delay: 0.65s; }
-.card:nth-child(13) { animation-delay: 0.7s; }
-.card:nth-child(14) { animation-delay: 0.75s; }
-.card:nth-child(15) { animation-delay: 0.8s; }
-.card:nth-child(16) { animation-delay: 0.85s; }
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s ease-out;
+  animation-fill-mode: both;
+}
 
-@media (max-width: 768px) {
-  .header h1 {
-    font-size: 1.8rem;
-  }
-  
-  .header p {
-    font-size: 1rem;
-  }
-  
-  .instructions-box {
-    padding: 1.5rem;
-  }
-  
-  .instructions-header h2 {
-    font-size: 1.1rem;
-  }
-  
-  .instructions-content {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  .grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
+.animate-fadeInDown {
+  animation: fadeInDown 0.6s ease-out;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.card:nth-child(1) { animation-delay: 0.05s; }
+.card:nth-child(2) { animation-delay: 0.1s; }
+.card:nth-child(3) { animation-delay: 0.15s; }
+.card:nth-child(4) { animation-delay: 0.2s; }
+.card:nth-child(5) { animation-delay: 0.25s; }
+.card:nth-child(6) { animation-delay: 0.3s; }
+.card:nth-child(7) { animation-delay: 0.35s; }
+.card:nth-child(8) { animation-delay: 0.4s; }
+.card:nth-child(9) { animation-delay: 0.45s; }
+.card:nth-child(10) { animation-delay: 0.5s; }
+.card:nth-child(11) { animation-delay: 0.55s; }
+.card:nth-child(12) { animation-delay: 0.6s; }
+.card:nth-child(13) { animation-delay: 0.65s; }
+.card:nth-child(14) { animation-delay: 0.7s; }
+.card:nth-child(15) { animation-delay: 0.75s; }
+.card:nth-child(16) { animation-delay: 0.8s; }
+
+.gradient-text {
+  background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 </style>
 </head>
-<body>
+<body class="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">
 
-<div class="container">
-  <div class="header">
-    <h1>LearnX</h1>
-    <p>ඔබට අවශ්‍ය සම්පත තෝරන්න</p>
-  </div>
-
-  <div class="grid">
-    <a href="indpedia.html" class="card">
-      <span class="card-icon">📖</span>
-      <div class="card-title">ඉතිහාසය විශ්ව කෝෂය</div>
-      <div class="card-description">අර්ථ සහිතව ඉතිහාසය වාග් මාලාව - සාමාන්‍ය පෙළ හා උසස් පෙළ</div>
-    </a>
-
-    <a href="note.html" class="card">
-      <span class="card-icon">📝</span>
-      <div class="card-title">සටහන් පොත</div>
-      <div class="card-description">උසස් පෙළ ඉතිහාසය සටහන් - ශ්‍රී ලංකා, යුරෝපා, ඉන්දියා</div>
-    </a>
-
-    <a href="papers.html" class="card">
-      <span class="card-icon">📚</span>
-      <div class="card-title">ප්‍රශ්නපත්‍ර හා සිිතියම්</div>
-      <div class="card-description">ප්‍රශ්නපත්‍ර හා සිිතියම්</div>
-    </a>
-
-    <a href="modelans.html" class="card">
-      <span class="card-icon">✍️</span>
-      <div class="card-title">ආදර්ශ පිළිතුරු පොත</div>
-      <div class="card-description">සාමාන්‍ය පෙළ හා උසස් පෙළ ආදර්ශ පිළිතුරු</div>
-    </a>
-
-    <a href="https://amilaeduhelp.github.io/edupoints/" class="card" target="_blank">
-      <span class="card-icon">🎯</span>
-      <div class="card-title">edupoint</div>
-      <div class="card-description">රචනාමය ප්‍රශ්න ලිවීමට මගපෙන්වීම</div>
-    </a>
-
-    <a href="මෙතෙක් ආ ප්‍රශ්න.html" class="card">
-      <span class="card-icon">❓</span>
-      <div class="card-title">මෙතෙක් ආ ප්‍රශ්න</div>
-      <div class="card-description">උසස් පෙළ ඉතිහාසය - මෙතෙක් ආ ප්‍රශ්න ක්ෂේත්‍ර</div>
-    </a>
-
-    <a href="https://amilaeduhelp.github.io/smart-map/" class="card" target="_blank">
-      <span class="card-icon">🗺️</span>
-      <div class="card-title">Smart Map</div>
-      <div class="card-description">Smart සිතියම් පොත - උසස් පෙළ හා සාමාන්‍ය පෙළ</div>
-    </a>
-
-    <a href="https://amilaeduhelp.github.io/HISTORY-MCQ-/" class="card" target="_blank">
-      <span class="card-icon">✅</span>
-      <div class="card-title">MCQ Test (History)</div>
-      <div class="card-description">ඉතිහාසය MCQ පරීක්ෂණ - ඔබේ ලකුණු බලා ගන්න</div>
-    </a>
-
-    <a href="https://www.eduhelp.lk/index.php/pusthakalaya/46024/" class="card" target="_blank">
-      <span class="card-icon">🎓</span>
-      <div class="card-title">විශ්වවිද්‍යාල පාඨමාලා</div>
-      <div class="card-description">විශ්වවිද්‍යාල පාඨමාලා විස්තර</div>
-    </a>
-
-    <a href="https://www.eduhelp.lk/index.php/uncategorized/40872/" class="card" target="_blank">
-      <span class="card-icon">📊</span>
-      <div class="card-title">Z-Score</div>
-      <div class="card-description">පසුගිය වසර කිහිපයක Z-Score දත්ත</div>
-    </a>
-
-    <a href="https://www.eduhelp.lk/index.php/uncategorized/edu/41476/" class="card" target="_blank">
-      <span class="card-icon">💼</span>
-      <div class="card-title">Job Mart</div>
-      <div class="card-description">රැකියා විස්තර සහ අවස්ථා</div>
-    </a>
-
-    <a href="https://www.eduhelp.lk/index.php/uncategorized/36586/" class="card" target="_blank">
-      <span class="card-icon">📄</span>
-      <div class="card-title">රාජකාරී ලේඛන</div>
-      <div class="card-description">වැදගත් රාජකාරී ලේඛන සහ ආකෘති</div>
-    </a>
-
-    <a href="https://amilaeduhelp.github.io/Career-key/" class="card" target="_blank">
-      <span class="card-icon">🔑</span>
-      <div class="card-title">වෘත්තීය ළැදියා පරීක්ෂණය</div>
-      <div class="card-description">ඔබේ වෘත්තීය අනාගතය සොයා ගන්න</div>
-    </a>
-
-    <a href="https://www.eduhelp.lk/index.php/uncategorized/36615/" class="card" target="_blank">
-      <span class="card-icon">📚</span>
-      <div class="card-title">Y-Sub</div>
-      <div class="card-description">විවිධ විෂයයන් හැදෑරීමේ වැදගත්කම්</div>
-    </a>
-
-    <a href="https://www.eduhelp.lk/index.php/uncategorized/edu/41488/" class="card" target="_blank">
-      <span class="card-icon">📗</span>
-      <div class="card-title">පොත්හල</div>
-      <div class="card-description">විවිධ අධ්‍යාපනික පොත් සහ සම්පත්</div>
-    </a>
-     
-    <a href="https://amilaeduhelp.github.io/bibliographies/" class="card">
-      <span class="card-icon">✍️</span>
-      <div class="card-title">bibliographies</div>
-      <div class="card-description">Create bibliographies</div>
-    </a>
-  </div>
+<div class="max-w-7xl mx-auto px-3 sm:px-4 py-6 sm:py-8">
   
-  <div class="instructions-box">
-    <div class="instructions-header">
-      <span class="info-icon">📱</span>
-      <h2>මෙම වෙබ් පිටුව ඔබේ දුරකථනයේ App එකක් මෙන් එකතු කරන්න!</h2>
+  <!-- Header -->
+  <div class="text-center mb-8 sm:mb-12 animate-fadeInDown">
+    <div class="inline-block mb-4 animate-float">
+      <div class="text-6xl sm:text-7xl">📚</div>
     </div>
+    <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-amber-900 mb-3">
+      LearnX
+    </h1>
+    <p class="text-lg sm:text-xl text-amber-700 font-medium">
+      ඔබට අවශ්‍ය සම්පත තෝරන්න
+    </p>
+    <div class="mt-4 flex justify-center gap-2">
+      <div class="w-16 h-1 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full"></div>
+      <div class="w-8 h-1 bg-gradient-to-r from-orange-500 to-red-500 rounded-full"></div>
+    </div>
+  </div>
+
+  <!-- Cards Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 mb-8">
     
-    <div class="instructions-content">
-      <div class="platform">
-        <h3>🤖 Android Phone:</h3>
-        <ol>
-          <li><strong>Chrome Browser</strong> භාවිතා කර මෙම page එක විවෘත කරන්න</li>
-          <li>Menu (⋮) එක tap කරන්න</li>
-          <li>"Add to Home screen" හෝ "Install app" තෝරන්න</li>
-          <li>නමක් ලබා දී "Add" click කරන්න</li>
+    <a href="indpedia.html" class="card animate-fadeInUp block bg-white rounded-2xl p-5 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-amber-300">
+      <div class="text-4xl sm:text-5xl mb-3">📖</div>
+      <h3 class="text-lg sm:text-xl font-bold text-amber-900 mb-2">ඉතිහාසය විශ්ව කෝෂය</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">අර්ථ සහිතව ඉතිහාසය වාග් මාලාව - සාමාන්‍ය පෙළ හා උසස් පෙළ</p>
+    </a>
+
+    <a href="note.html" class="card animate-fadeInUp block bg-white rounded-2xl p-5 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-amber-300">
+      <div class="text-4xl sm:text-5xl mb-3">📝</div>
+      <h3 class="text-lg sm:text-xl font-bold text-amber-900 mb-2">සටහන් පොත</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">උසස් පෙළ ඉතිහාසය සටහන් - ශ්‍රී ලංකා, යුරෝපා, ඉන්දියා</p>
+    </a>
+
+    <a href="papers.html" class="card animate-fadeInUp block bg-white rounded-2xl p-5 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-amber-300">
+      <div class="text-4xl sm:text-5xl mb-3">📚</div>
+      <h3 class="text-lg sm:text-xl font-bold text-amber-900 mb-2">ප්‍රශ්නපත්‍ර හා සිතියම්</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">ප්‍රශ්නපත්‍ර හා සිතියම්</p>
+    </a>
+
+    <a href="modelans.html" class="card animate-fadeInUp block bg-white rounded-2xl p-5 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-amber-300">
+      <div class="text-4xl sm:text-5xl mb-3">✍️</div>
+      <h3 class="text-lg sm:text-xl font-bold text-amber-900 mb-2">ආදර්ශ පිළිතුරු පොත</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">සාමාන්‍ය පෙළ හා උසස් පෙළ ආදර්ශ පිළිතුරු</p>
+    </a>
+
+    <a href="https://amilaeduhelp.github.io/edupoints/" target="_blank" class="card animate-fadeInUp block bg-white rounded-2xl p-5 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-amber-300">
+      <div class="text-4xl sm:text-5xl mb-3">🎯</div>
+      <h3 class="text-lg sm:text-xl font-bold text-amber-900 mb-2">edupoint</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">රචනාමය ප්‍රශ්න ලිවීමට මගපෙන්වීම</p>
+    </a>
+
+    <a href="මෙතෙක් ආ ප්‍රශ්න.html" class="card animate-fadeInUp block bg-white rounded-2xl p-5 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-amber-300">
+      <div class="text-4xl sm:text-5xl mb-3">❓</div>
+      <h3 class="text-lg sm:text-xl font-bold text-amber-900 mb-2">මෙතෙක් ආ ප්‍රශ්න</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">උසස් පෙළ ඉතිහාසය - මෙතෙක් ආ ප්‍රශ්න ක්ෂේත්‍ර</p>
+    </a>
+
+    <a href="https://amilaeduhelp.github.io/smart-map/" target="_blank" class="card animate-fadeInUp block bg-white rounded-2xl p-5 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-amber-300">
+      <div class="text-4xl sm:text-5xl mb-3">🗺️</div>
+      <h3 class="text-lg sm:text-xl font-bold text-amber-900 mb-2">Smart Map</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">Smart සිතියම් පොත - උසස් පෙළ හා සාමාන්‍ය පෙළ</p>
+    </a>
+
+    <a href="https://amilaeduhelp.github.io/HISTORY-MCQ-/" target="_blank" class="card animate-fadeInUp block bg-white rounded-2xl p-5 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-amber-300">
+      <div class="text-4xl sm:text-5xl mb-3">✅</div>
+      <h3 class="text-lg sm:text-xl font-bold text-amber-900 mb-2">MCQ Test (History)</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">ඉතිහාසය MCQ පරීක්ෂණ - ඔබේ ලකුණු බලා ගන්න</p>
+    </a>
+
+    <a href="https://www.eduhelp.lk/index.php/pusthakalaya/46024/" target="_blank" class="card animate-fadeInUp block bg-white rounded-2xl p-5 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-amber-300">
+      <div class="text-4xl sm:text-5xl mb-3">🎓</div>
+      <h3 class="text-lg sm:text-xl font-bold text-amber-900 mb-2">විශ්වවිද්‍යාල පාඨමාලා</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">විශ්වවිද්‍යාල පාඨමාලා විස්තර</p>
+    </a>
+
+    <a href="https://www.eduhelp.lk/index.php/uncategorized/40872/" target="_blank" class="card animate-fadeInUp block bg-white rounded-2xl p-5 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-amber-300">
+      <div class="text-4xl sm:text-5xl mb-3">📊</div>
+      <h3 class="text-lg sm:text-xl font-bold text-amber-900 mb-2">Z-Score</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">පසුගිය වසර කිහිපයක Z-Score දත්ත</p>
+    </a>
+
+    <a href="https://www.eduhelp.lk/index.php/uncategorized/edu/41476/" target="_blank" class="card animate-fadeInUp block bg-white rounded-2xl p-5 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-amber-300">
+      <div class="text-4xl sm:text-5xl mb-3">💼</div>
+      <h3 class="text-lg sm:text-xl font-bold text-amber-900 mb-2">Job Mart</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">රැකියා විස්තර සහ අවස්ථා</p>
+    </a>
+
+    <a href="https://www.eduhelp.lk/index.php/uncategorized/36586/" target="_blank" class="card animate-fadeInUp block bg-white rounded-2xl p-5 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-amber-300">
+      <div class="text-4xl sm:text-5xl mb-3">📄</div>
+      <h3 class="text-lg sm:text-xl font-bold text-amber-900 mb-2">රාජකාරී ලේඛන</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">වැදගත් රාජකාරී ලේඛන සහ ආකෘති</p>
+    </a>
+
+    <a href="https://amilaeduhelp.github.io/Career-key/" target="_blank" class="card animate-fadeInUp block bg-white rounded-2xl p-5 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-amber-300">
+      <div class="text-4xl sm:text-5xl mb-3">🔑</div>
+      <h3 class="text-lg sm:text-xl font-bold text-amber-900 mb-2">වෘත්තීය ළැදියා පරීක්ෂණය</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">ඔබේ වෘත්තීය අනාගතය සොයා ගන්න</p>
+    </a>
+
+    <a href="https://www.eduhelp.lk/index.php/uncategorized/36615/" target="_blank" class="card animate-fadeInUp block bg-white rounded-2xl p-5 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-amber-300">
+      <div class="text-4xl sm:text-5xl mb-3">📚</div>
+      <h3 class="text-lg sm:text-xl font-bold text-amber-900 mb-2">Y-Sub</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">විවිධ විෂයයන් හැදෑරීමේ වැදගත්කම්</p>
+    </a>
+
+    <a href="https://www.eduhelp.lk/index.php/uncategorized/edu/41488/" target="_blank" class="card animate-fadeInUp block bg-white rounded-2xl p-5 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-amber-300">
+      <div class="text-4xl sm:text-5xl mb-3">📗</div>
+      <h3 class="text-lg sm:text-xl font-bold text-amber-900 mb-2">පොත්හල</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">විවිධ අධ්‍යාපනික පොත් සහ සම්පත්</p>
+    </a>
+
+    <a href="https://amilaeduhelp.github.io/bibliographies/" class="card animate-fadeInUp block bg-white rounded-2xl p-5 sm:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border-2 border-transparent hover:border-amber-300">
+      <div class="text-4xl sm:text-5xl mb-3">✍️</div>
+      <h3 class="text-lg sm:text-xl font-bold text-amber-900 mb-2">Bibliographies</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">Create bibliographies</p>
+    </a>
+
+  </div>
+
+  <!-- Instructions Box -->
+  <div class="bg-white rounded-2xl shadow-2xl p-5 sm:p-8 mb-8 animate-fadeInUp border-t-4 border-amber-500">
+    
+    <div class="text-center mb-6">
+      <div class="text-5xl sm:text-6xl mb-3">📱</div>
+      <h2 class="text-xl sm:text-2xl font-bold text-amber-900 leading-tight">
+        මෙම වෙබ් පිටුව ඔබේ දුරකථනයේ<br class="hidden sm:block" />
+        <span class="gradient-text">App එකක් මෙන්</span> එකතු කරන්න!
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-5 sm:gap-6 mb-6">
+      
+      <!-- Android -->
+      <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-5 border-2 border-green-200">
+        <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span class="text-2xl">🤖</span>
+          Android Phone
+        </h3>
+        <ol class="space-y-3 mb-4 text-sm sm:text-base">
+          <li class="flex items-start gap-2">
+            <span class="font-bold text-green-600 flex-shrink-0">1.</span>
+            <span class="text-gray-700"><strong className="text-green-700">Chrome Browser</strong> භාවිතා කර මෙම page එක විවෘත කරන්න</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="font-bold text-green-600 flex-shrink-0">2.</span>
+            <span class="text-gray-700">Menu <strong>(⋮)</strong> එක tap කරන්න</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="font-bold text-green-600 flex-shrink-0">3.</span>
+            <span class="text-gray-700">"Add to Home screen" හෝ "Install app" තෝරන්න</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="font-bold text-green-600 flex-shrink-0">4.</span>
+            <span class="text-gray-700">නමක් ලබා දී "Add" click කරන්න</span>
+          </li>
         </ol>
-        <a href="https://amilaeduhelp.github.io/-2025/" class="open-btn android-btn" target="_blank">
+        <a href="https://amilaeduhelp.github.io/-2025/" target="_blank" class="block text-center bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-all transform hover:scale-105">
           Chrome ඔස්සේ විවෘත කරන්න 🌐
         </a>
       </div>
 
-      <div class="platform">
-        <h3>🍎 iPhone (iOS):</h3>
-        <ol>
-          <li><strong>Safari Browser</strong> භාවිතා කර මෙම page එක විවෘත කරන්න</li>
-          <li>Share button (□↑) එක tap කරන්න</li>
-          <li>"Add to Home Screen" තෝරන්න</li>
-          <li>"Add" click කරන්න</li>
+      <!-- iOS -->
+      <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 border-2 border-blue-200">
+        <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span class="text-2xl">🍎</span>
+          iPhone (iOS)
+        </h3>
+        <ol class="space-y-3 mb-4 text-sm sm:text-base">
+          <li class="flex items-start gap-2">
+            <span class="font-bold text-blue-600 flex-shrink-0">1.</span>
+            <span class="text-gray-700"><strong className="text-blue-700">Safari Browser</strong> භාවිතා කර මෙම page එක විවෘත කරන්න</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="font-bold text-blue-600 flex-shrink-0">2.</span>
+            <span class="text-gray-700">Share button <strong>(□↑)</strong> එක tap කරන්න</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="font-bold text-blue-600 flex-shrink-0">3.</span>
+            <span class="text-gray-700">"Add to Home Screen" තෝරන්න</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="font-bold text-blue-600 flex-shrink-0">4.</span>
+            <span class="text-gray-700">"Add" click කරන්න</span>
+          </li>
         </ol>
-        <a href="https://amilaeduhelp.github.io/-2025/" class="open-btn ios-btn" target="_blank">
+        <a href="https://amilaeduhelp.github.io/-2025/" target="_blank" class="block text-center bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-all transform hover:scale-105">
           Safari ඔස්සේ විවෘත කරන්න 🌐
         </a>
       </div>
+
     </div>
 
-    <div class="instructions-footer">
-      <p>✨ මෙසේ කිරීමෙන් ඔබේ phone එකේ තිරයේ app icon එකක් මෙන් මෙම shortcut එක එකතු වේ. එය click කළ විට කෙළින්ම LearnX page එක විවෘත වනු ඇත.</p>
+    <div class="bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl p-4 sm:p-5 text-center">
+      <p class="text-white text-sm sm:text-base leading-relaxed">
+        ✨ <strong>මෙසේ කිරීමෙන්</strong> ඔබේ phone එකේ තිරයේ app icon එකක් මෙන් මෙම shortcut එක එකතු වේ. එය click කළ විට කෙළින්ම LearnX page එක විවෘත වනු ඇත.
+      </p>
     </div>
+
   </div>
 
-  <div class="footer">
-    <p>© 2025 LearnX</p>
-    <p class="copyright">Developed by: Amila Udawattha | 📞 0701551279</p>
+  <!-- Footer -->
+  <div class="text-center py-6 border-t-2 border-amber-200">
+    <p class="text-amber-800 font-semibold mb-2">© 2025 LearnX</p>
+    <p class="text-amber-700 text-sm sm:text-base">
+      <strong>Developed by:</strong> Amila Udawattha | 📞 0701551279
+    </p>
   </div>
+
 </div>
 
 </body>
 </html>
-
