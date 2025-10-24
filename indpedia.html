@@ -3,496 +3,535 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LearnX Pedia - Encyclopedia</title>
-    <style> 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        header {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo {
-            font-size: 32px;
-            font-weight: bold;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .back-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            text-decoration: none;
-            display: inline-block;
-            transition: transform 0.2s;
-        }
-
-        .back-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .search-section {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-bottom: 30px;
-        }
-
-        .search-box {
-            position: relative;
-        }
-
-        #searchInput {
-            width: 100%;
-            padding: 15px 20px;
-            font-size: 18px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        #searchInput:focus {
-            border-color: #667eea;
-        }
-
-        .suggestions {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-top: none;
-            border-radius: 0 0 10px 10px;
-            max-height: 300px;
-            overflow-y: auto;
-            display: none;
-            z-index: 100;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .suggestions.active {
-            display: block;
-        }
-
-        .suggestion-item {
-            padding: 12px 20px;
-            cursor: pointer;
-            transition: background 0.2s;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .suggestion-item:last-child {
-            border-bottom: none;
-        }
-
-        .suggestion-item:hover {
-            background: #f5f5f5;
-        }
-
-        .search-btn {
-            margin-top: 15px;
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .search-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .results-section {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            display: none;
-        }
-
-        .results-section.active {
-            display: block;
-        }
-
-        .result-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .tab {
-            padding: 10px 20px;
-            background: #f0f0f0;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 14px;
-        }
-
-        .tab.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .result-content {
-            display: none;
-        }
-
-        .result-content.active {
-            display: block;
-            animation: fadeIn 0.3s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .result-item {
-            padding: 20px;
-            background: #f9f9f9;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border-left: 4px solid #667eea;
-        }
-
-        .result-title {
-            font-size: 14px;
-            font-weight: normal;
-            color: #3498db;
-            margin-bottom: 12px;
-        }
-
-        .result-text {
-            color: #000;
-            line-height: 1.8;
-            white-space: pre-wrap;
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-
-            header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-                padding: 15px;
-            }
-
-            .logo {
-                font-size: 24px;
-            }
-
-            .back-btn {
-                width: 100%;
-                text-align: center;
-            }
-
-            .search-section, .results-section {
-                padding: 20px;
-            }
-
-            #searchInput {
-                font-size: 16px;
-                padding: 12px 15px;
-            }
-
-            .search-btn {
-                font-size: 16px;
-                padding: 12px;
-            }
-
-            .result-tabs {
-                gap: 8px;
-            }
-
-            .tab {
-                padding: 8px 15px;
-                font-size: 13px;
-            }
-
-            .result-title {
-                font-size: 13px;
-            }
-
-            .result-text {
-                font-size: 16px;
-            }
-
-            .new-search-btn {
-                padding: 10px 20px;
-                font-size: 14px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .logo {
-                font-size: 20px;
-            }
-
-            .result-tabs {
-                flex-direction: column;
-            }
-
-            .tab {
-                width: 100%;
-            }
-        }
-
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: #667eea;
-            font-size: 18px;
-        }
-
-        .error {
-            text-align: center;
-            padding: 20px;
-            color: #e74c3c;
-            font-size: 16px;
-        }
-
-        .no-results {
-            text-align: center;
-            padding: 40px;
-            color: #999;
-            font-size: 18px;
-        }
-
-        .new-search-btn {
-            margin-top: 20px;
-            padding: 12px 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: transform 0.2s;
-        }
-
-        .new-search-btn:hover {
-            transform: translateY(-2px);
-        }
-    </style>
+    <title>සිංහල Smart Search</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">LearnX Pedia</div>
-            <a href="https://amilaeduhelp.github.io/-2025/entrence.html" class="back-btn">← ආපසු</a>
-        </header>
+    <div id="root"></div>
 
-        <div class="search-section">
-            <h2 style="margin-bottom: 20px; color: #333;">වචනයක් සොයන්න</h2>
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="වචනයක් ටයිප් කරන්න..." autocomplete="off">
-                <div class="suggestions" id="suggestions"></div>
-            </div>
-            <button class="search-btn" onclick="searchWord()">සොයන්න</button>
-        </div>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-        <div class="results-section" id="resultsSection">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2 style="color: #333;">ප්‍රතිඵල</h2>
-                <button class="new-search-btn" onclick="newSearch()">නව සෙවීමක්</button>
-            </div>
-            <div class="result-tabs" id="resultTabs"></div>
-            <div id="resultContent"></div>
-        </div>
-    </div>
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
 
-    <script>
         const SUPABASE_URL = 'https://uqgzlaxsnknheoerbfus.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxZ3psYXhzbmtuaGVvZXJiZnVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ4MDQzMTEsImV4cCI6MjA2MDM4MDMxMX0.O5dNUizqZ5kfwTs0mHLEorqOAqjZFjWakp2Q484MKEk';
 
-        let allWords = [];
-        let currentResults = [];
+        // Icons
+        const SearchIcon = () => (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+        );
 
-        // Load all words for suggestions
-        async function loadWords() {
-            try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/learnX pedia?select=word,slug`, {
-                    headers: {
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        const BookIcon = () => (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+        );
+
+        const ChevronDownIcon = () => (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+        );
+
+        const LoaderIcon = () => (
+            <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+        );
+
+        const CloseIcon = () => (
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        );
+
+        // HTML <br> tags ඉවත් කර නිවැරදි line breaks දෙන function
+        const formatContent = (text) => {
+            if (!text) return '';
+            return text.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]*>/g, '');
+        };
+
+        // Popup Modal Component
+        function ContentModal({ item, type, onClose, searchWord }) {
+            const contentRef = useRef(null);
+
+            useEffect(() => {
+                document.body.style.overflow = 'hidden';
+                return () => {
+                    document.body.style.overflow = 'unset';
+                };
+            }, []);
+
+            // වචනය highlight කරන්න
+            const highlightText = (text) => {
+                if (!searchWord || !text) return text;
+                
+                const regex = new RegExp(`(${searchWord})`, 'gi');
+                const parts = text.split(regex);
+                
+                return parts.map((part, index) => {
+                    if (part.toLowerCase() === searchWord.toLowerCase()) {
+                        return <mark key={index} className="bg-yellow-300 px-1 rounded">{part}</mark>;
                     }
+                    return part;
                 });
-                const data = await response.json();
-                allWords = data.map(item => item.word);
-            } catch (error) {
-                console.error('Error loading words:', error);
-            }
-        }
+            };
 
-        // Show suggestions
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            const value = e.target.value.toLowerCase().trim();
-            const suggestionsDiv = document.getElementById('suggestions');
-            
-            if (value.length < 1) {
-                suggestionsDiv.classList.remove('active');
-                return;
-            }
-
-            const matches = allWords.filter(word => 
-                word.toLowerCase().includes(value)
-            ).slice(0, 10);
-
-            if (matches.length > 0) {
-                suggestionsDiv.innerHTML = matches.map(word => 
-                    `<div class="suggestion-item" onclick="selectSuggestion('${word}')">${word}</div>`
-                ).join('');
-                suggestionsDiv.classList.add('active');
-            } else {
-                suggestionsDiv.classList.remove('active');
-            }
-        });
-
-        function selectSuggestion(word) {
-            document.getElementById('searchInput').value = word;
-            document.getElementById('suggestions').classList.remove('active');
-            searchWord();
-        }
-
-        // Close suggestions when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.search-box')) {
-                document.getElementById('suggestions').classList.remove('active');
-            }
-        });
-
-        // Search for word
-        async function searchWord() {
-            const searchTerm = document.getElementById('searchInput').value.trim();
-            if (!searchTerm) return;
-
-            const resultsSection = document.getElementById('resultsSection');
-            const resultContent = document.getElementById('resultContent');
-            
-            resultContent.innerHTML = '<div class="loading">පූර්ණ කරමින්...</div>';
-            resultsSection.classList.add('active');
-            document.getElementById('suggestions').classList.remove('active');
-
-            try {
-                const response = await fetch(
-                    `${SUPABASE_URL}/rest/v1/learnX pedia?word=ilike.${encodeURIComponent(searchTerm)}&select=id,word,meaning,slug`,
-                    {
-                        headers: {
-                            'apikey': SUPABASE_ANON_KEY,
-                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+            // වචනය ඇති පළමු ස්ථානයට scroll කරන්න
+            const scrollToWord = () => {
+                if (!contentRef.current) return;
+                
+                const marks = contentRef.current.querySelectorAll('mark');
+                if (marks.length > 0) {
+                    marks[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    marks.forEach((mark, idx) => {
+                        if (idx === 0) {
+                            mark.classList.add('ring-2', 'ring-amber-500');
                         }
-                    }
-                );
+                    });
+                }
+            };
 
-                currentResults = await response.json();
+            return (
+                <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-2 sm:p-4" onClick={onClose}>
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
+                        {/* Header */}
+                        <div className="bg-gradient-to-r from-amber-500 to-orange-500 p-4 sm:p-6 flex justify-between items-start">
+                            <div className="flex-1 pr-2">
+                                <h2 className="text-xl sm:text-2xl font-bold text-white mb-1 sm:mb-2 leading-tight">
+                                    {type === 'ඉතිහාසය' && item.title}
+                                    {type === 'පිළිතුරු' && item.question}
+                                    {type === 'අධ්‍යාපන සබැඳි' && item.topic}
+                                </h2>
+                                <p className="text-amber-100 text-xs sm:text-sm">{type}</p>
+                            </div>
+                            <button 
+                                onClick={onClose}
+                                className="text-white hover:bg-white hover:bg-opacity-20 rounded-lg p-1.5 sm:p-2 transition-colors flex-shrink-0"
+                            >
+                                <CloseIcon />
+                            </button>
+                        </div>
 
-                if (currentResults.length === 0) {
-                    resultContent.innerHTML = '<div class="no-results">ප්‍රතිඵල හමු නොවීය</div>';
-                    document.getElementById('resultTabs').innerHTML = '';
+                        {/* වචනය පෙන්වන්න Button */}
+                        {searchWord && (type === 'ඉතිහාසය' || type === 'පිළිතුරු') && (
+                            <div className="px-4 sm:px-6 pt-3 sm:pt-4">
+                                <button
+                                    onClick={scrollToWord}
+                                    className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-lg font-semibold text-xs sm:text-sm transition-colors w-full sm:w-auto justify-center"
+                                >
+                                    <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                    <span className="truncate">"{searchWord}" වචනය ඇති තැන පෙන්වන්න</span>
+                                </button>
+                            </div>
+                        )}
+
+                        {/* Content */}
+                        <div ref={contentRef} className="p-4 sm:p-6 overflow-y-auto max-h-[calc(95vh-200px)] sm:max-h-[calc(90vh-200px)]">
+                            {type === 'ඉතිහාසය' && (
+                                <div className="prose prose-sm sm:prose-lg max-w-none">
+                                    <p className="text-gray-800 whitespace-pre-wrap leading-relaxed text-sm sm:text-base">
+                                        {highlightText(formatContent(item.content))}
+                                    </p>
+                                </div>
+                            )}
+                            {type === 'පිළිතුරු' && (
+                                <div>
+                                    <div className="mb-3 sm:mb-4 p-3 sm:p-4 bg-amber-50 rounded-lg">
+                                        <h3 className="font-bold text-amber-900 mb-2 text-sm sm:text-base">ප්‍රශ්නය:</h3>
+                                        <p className="text-gray-800 text-sm sm:text-base">{highlightText(item.question)}</p>
+                                    </div>
+                                    <div className="p-3 sm:p-4 bg-green-50 rounded-lg">
+                                        <h3 className="font-bold text-green-900 mb-2 text-sm sm:text-base">පිළිතුර:</h3>
+                                        <p className="text-gray-800 whitespace-pre-wrap leading-relaxed text-sm sm:text-base">
+                                            {highlightText(formatContent(item.answer))}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+                            {type === 'අධ්‍යාපන සබැඳි' && (
+                                <div>
+                                    <div className="mb-3 sm:mb-4">
+                                        <h3 className="font-bold text-gray-700 mb-2 text-sm sm:text-base">විෂයය:</h3>
+                                        <p className="text-gray-800 text-base sm:text-lg">{item.subject}</p>
+                                    </div>
+                                    {item.link && (
+                                        <a 
+                                            href={item.link} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer" 
+                                            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-colors text-sm sm:text-base"
+                                        >
+                                            සබැඳිය විවෘත කරන්න →
+                                        </a>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Footer */}
+                        <div className="bg-gray-50 p-3 sm:p-4 border-t border-gray-200">
+                            <button
+                                onClick={onClose}
+                                className="w-full bg-amber-500 hover:bg-amber-600 text-white py-2.5 sm:py-3 rounded-lg font-bold transition-colors text-sm sm:text-base"
+                            >
+                                හරි
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function App() {
+            const [searchTerm, setSearchTerm] = useState('');
+            const [suggestions, setSuggestions] = useState([]);
+            const [showSuggestions, setShowSuggestions] = useState(false);
+            const [selectedWord, setSelectedWord] = useState(null);
+            const [relatedContent, setRelatedContent] = useState([]);
+            const [loadingRelated, setLoadingRelated] = useState(false);
+            const [showRelated, setShowRelated] = useState(false);
+            const [modalContent, setModalContent] = useState(null);
+            const searchRef = useRef(null);
+
+            // Search learnX pedia for suggestions
+            const searchDictionary = async (term) => {
+                if (term.length < 2) {
+                    setSuggestions([]);
                     return;
                 }
 
-                displayResults();
-            } catch (error) {
-                console.error('Error:', error);
-                resultContent.innerHTML = '<div class="error">දෝෂයක් ඇතිවිය. නැවත උත්සාහ කරන්න.</div>';
-            }
-        }
+                try {
+                    const encodedTerm = encodeURIComponent(term);
+                    const url = `${SUPABASE_URL}/rest/v1/learnX pedia?select=id,word,meaning&word=ilike.${encodedTerm}*&limit=10&order=word.asc`;
+                    
+                    const response = await fetch(url, {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                            'Content-Type': 'application/json',
+                            'Prefer': 'return=representation'
+                        }
+                    });
 
-        function displayResults() {
-            const resultTabs = document.getElementById('resultTabs');
-            const resultContent = document.getElementById('resultContent');
+                    if (response.ok) {
+                        const data = await response.json();
+                        setSuggestions(data);
+                        setShowSuggestions(data.length > 0);
+                    }
+                } catch (err) {
+                    console.error('Dictionary search error:', err);
+                }
+            };
 
-            // Create tabs
-            resultTabs.innerHTML = currentResults.map((result, index) => 
-                `<button class="tab ${index === 0 ? 'active' : ''}" onclick="showResult(${index})">
-                    ප්‍රතිඵලය ${index + 1}
-                </button>`
-            ).join('');
+            // Search related content from other tables
+            const searchRelatedContent = async (word) => {
+                setLoadingRelated(true);
+                const related = [];
+                const encodedWord = encodeURIComponent(word);
 
-            // Create content areas
-            resultContent.innerHTML = currentResults.map((result, index) => 
-                `<div class="result-content ${index === 0 ? 'active' : ''}" id="result-${index}">
-                    <div class="result-item">
-                        <div class="result-title">${result.word}</div>
-                        <div class="result-text">${result.meaning || 'අර්ථය නොමැත'}</div>
+                const tables = [
+                    { name: 'Historynt', columns: 'id,title,content', type: 'ඉතිහාසය' },
+                    { name: 'answers', columns: 'id,question,answer', type: 'පිළිතුරු' },
+                    { name: 'edupoint2', columns: 'id,topic,subject,link', type: 'අධ්‍යාපන සබැඳි' }
+                ];
+
+                for (const table of tables) {
+                    try {
+                        let query = `${SUPABASE_URL}/rest/v1/${table.name}?select=${table.columns}&limit=3`;
+                        
+                        if (table.name === 'Historynt') {
+                            query += `&or=(title.ilike.*${encodedWord}*,content.ilike.*${encodedWord}*)`;
+                        } else if (table.name === 'answers') {
+                            query += `&or=(question.ilike.*${encodedWord}*,answer.ilike.*${encodedWord}*)`;
+                        } else if (table.name === 'edupoint2') {
+                            query += `&or=(topic.ilike.*${encodedWord}*,subject.ilike.*${encodedWord}*)`;
+                        }
+
+                        const response = await fetch(query, {
+                            headers: {
+                                'apikey': SUPABASE_ANON_KEY,
+                                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            if (data.length > 0) {
+                                related.push({
+                                    type: table.type,
+                                    table: table.name,
+                                    items: data
+                                });
+                            }
+                        }
+                    } catch (err) {
+                        console.error(`Error searching ${table.name}:`, err);
+                    }
+                }
+
+                setRelatedContent(related);
+                setLoadingRelated(false);
+            };
+
+            // Handle word selection
+            const selectWord = async (item) => {
+                setSelectedWord(item);
+                setSearchTerm(item.word);
+                setShowSuggestions(false);
+                setShowRelated(false);
+                await searchRelatedContent(item.word);
+            };
+
+            // Open modal with content
+            const openModal = (item, type) => {
+                setModalContent({ item, type });
+            };
+
+            // Debounced search
+            useEffect(() => {
+                const timer = setTimeout(() => {
+                    if (searchTerm && searchTerm.length >= 2) {
+                        searchDictionary(searchTerm);
+                    } else {
+                        setSuggestions([]);
+                        setShowSuggestions(false);
+                    }
+                }, 300);
+
+                return () => clearTimeout(timer);
+            }, [searchTerm]);
+
+            // Click outside to close suggestions
+            useEffect(() => {
+                const handleClickOutside = (event) => {
+                    if (searchRef.current && !searchRef.current.contains(event.target)) {
+                        setShowSuggestions(false);
+                    }
+                };
+
+                document.addEventListener('mousedown', handleClickOutside);
+                return () => document.removeEventListener('mousedown', handleClickOutside);
+            }, []);
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 p-3 sm:p-4">
+                    <div className="max-w-4xl mx-auto">
+                        {/* Header */}
+                        <div className="text-center mb-6 sm:mb-8 pt-4 sm:pt-8">
+                            <h1 className="text-3xl sm:text-4xl font-bold text-amber-900 mb-2">
+                                📚 සිංහල Smart Search
+                            </h1>
+                            <p className="text-amber-700 text-sm sm:text-base px-2">
+                                වචනයක් type කරන්න - ස්වයංක්‍රීයව යෝජනා පෙන්වයි
+                            </p>
+                        </div>
+
+                        {/* Search Box with Suggestions */}
+                        <div className="relative mb-6 sm:mb-8" ref={searchRef}>
+                            <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-6">
+                                <div className="relative">
+                                    <div className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-amber-600">
+                                        <SearchIcon />
+                                    </div>
+                                    <input
+                                        type="text"
+                                        value={searchTerm}
+                                        onChange={(e) => {
+                                            setSearchTerm(e.target.value);
+                                            setSelectedWord(null);
+                                        }}
+                                        onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
+                                        placeholder="වචනයක් type කරන්න..."
+                                        className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-3 sm:py-4 border-2 border-amber-200 rounded-xl focus:outline-none focus:border-amber-500 text-base sm:text-lg"
+                                    />
+                                </div>
+
+                                {/* Suggestions Dropdown */}
+                                {showSuggestions && suggestions.length > 0 && (
+                                    <div className="mt-3 sm:mt-4 border-t-2 border-amber-100 pt-3 sm:pt-4 max-h-80 sm:max-h-96 overflow-y-auto">
+                                        <p className="text-xs sm:text-sm text-amber-700 mb-2 sm:mb-3 font-semibold px-1">
+                                            යෝජනා: ({suggestions.length} ප්‍රතිඵල)
+                                        </p>
+                                        <div className="space-y-2">
+                                            {suggestions.map((item) => (
+                                                <button
+                                                    key={item.id}
+                                                    onClick={() => selectWord(item)}
+                                                    className="w-full text-left p-3 sm:p-4 bg-amber-50 hover:bg-amber-100 rounded-xl transition-all transform hover:scale-[1.02] border border-amber-200"
+                                                >
+                                                    <div className="flex items-start gap-2 sm:gap-3">
+                                                        <div className="flex-shrink-0 mt-0.5">
+                                                            <BookIcon />
+                                                        </div>
+                                                        <div className="flex-1 min-w-0">
+                                                            <h4 className="font-bold text-amber-900 text-base sm:text-lg">{item.word}</h4>
+                                                            <p className="text-gray-600 text-xs sm:text-sm mt-1 line-clamp-2">{item.meaning}</p>
+                                                        </div>
+                                                    </div>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* No results message */}
+                                {showSuggestions && suggestions.length === 0 && searchTerm.length >= 2 && (
+                                    <div className="mt-3 sm:mt-4 border-t-2 border-amber-100 pt-3 sm:pt-4">
+                                        <p className="text-amber-600 text-center py-3 sm:py-4 text-sm sm:text-base">
+                                            "{searchTerm}" සඳහා ප්‍රතිඵල හමු නොවීය
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Selected Word Display */}
+                        {selectedWord && (
+                            <div className="space-y-4 sm:space-y-6">
+                                {/* Main Definition */}
+                                <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 border-l-4 border-amber-500">
+                                    <div className="flex items-start gap-2 sm:gap-3 mb-3 sm:mb-4">
+                                        <div className="p-1.5 sm:p-2 bg-amber-100 rounded-lg flex-shrink-0">
+                                            <BookIcon />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <h2 className="text-2xl sm:text-3xl font-bold text-amber-900 break-words">{selectedWord.word}</h2>
+                                            <p className="text-xs sm:text-sm text-amber-600 mt-1">ශබ්ද කෝෂයෙන්</p>
+                                        </div>
+                                    </div>
+                                    <div className="pl-0 sm:pl-14">
+                                        <p className="text-gray-800 text-base sm:text-lg leading-relaxed">{selectedWord.meaning}</p>
+                                    </div>
+                                </div>
+
+                                {/* Related Content Toggle */}
+                                {relatedContent.length > 0 && !loadingRelated && !showRelated && (
+                                    <button
+                                        onClick={() => setShowRelated(true)}
+                                        className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-xl p-3 sm:p-4 font-bold text-base sm:text-lg shadow-lg transition-all transform hover:scale-[1.02] flex items-center justify-center gap-2"
+                                    >
+                                        📖 වැඩි දුර කියවන්න ({relatedContent.reduce((sum, r) => sum + r.items.length, 0)} ප්‍රතිඵල)
+                                        <ChevronDownIcon />
+                                    </button>
+                                )}
+                                
+                                {/* Hide Button */}
+                                {showRelated && relatedContent.length > 0 && (
+                                    <button
+                                        onClick={() => setShowRelated(false)}
+                                        className="w-full bg-gray-500 hover:bg-gray-600 text-white rounded-xl p-2.5 sm:p-3 font-semibold text-sm sm:text-base shadow-lg transition-all transform hover:scale-[1.02] flex items-center justify-center gap-2"
+                                    >
+                                        සඟවන්න
+                                        <span className="transform rotate-180">
+                                            <ChevronDownIcon />
+                                        </span>
+                                    </button>
+                                )}
+
+                                {loadingRelated && (
+                                    <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 text-center">
+                                        <div className="flex justify-center mb-3">
+                                            <LoaderIcon />
+                                        </div>
+                                        <p className="text-amber-700 text-sm sm:text-base">සම්බන්ධ තොරතුරු සොයමින්...</p>
+                                    </div>
+                                )}
+
+                                {/* Related Content */}
+                                {showRelated && relatedContent.length > 0 && (
+                                    <div className="space-y-4 sm:space-y-6">
+                                        {relatedContent.map((section, idx) => (
+                                            <div key={idx} className="bg-white rounded-2xl shadow-lg p-4 sm:p-6">
+                                                <h3 className="text-lg sm:text-xl font-bold text-amber-900 mb-3 sm:mb-4 flex items-center gap-2">
+                                                    <span className="text-xl sm:text-2xl">📚</span>
+                                                    <span className="break-words">{section.type} ({section.items.length})</span>
+                                                </h3>
+                                                <div className="space-y-3 sm:space-y-4">
+                                                    {section.items.map((item, i) => (
+                                                        <button
+                                                            key={i}
+                                                            onClick={() => openModal(item, section.type)}
+                                                            className="w-full text-left p-3 sm:p-4 bg-amber-50 hover:bg-amber-100 rounded-lg border border-amber-100 transition-all transform hover:scale-[1.01] cursor-pointer"
+                                                        >
+                                                            {section.table === 'Historynt' && (
+                                                                <>
+                                                                    <h4 className="font-bold text-amber-900 mb-2 text-sm sm:text-base">{item.title}</h4>
+                                                                    <p className="text-gray-700 text-xs sm:text-sm line-clamp-2">
+                                                                        {formatContent(item.content)}
+                                                                    </p>
+                                                                    <p className="text-blue-600 text-xs font-semibold mt-2">සම්පූර්ණ ලිපිය කියවන්න →</p>
+                                                                </>
+                                                            )}
+                                                            {section.table === 'answers' && (
+                                                                <>
+                                                                    <h4 className="font-bold text-amber-900 mb-2 text-sm sm:text-base">ප්‍රශ්නය: {item.question}</h4>
+                                                                    <p className="text-gray-700 text-xs sm:text-sm line-clamp-2">
+                                                                        {formatContent(item.answer)}
+                                                                    </p>
+                                                                    <p className="text-blue-600 text-xs font-semibold mt-2">සම්පූර්ණ පිළිතුර බලන්න →</p>
+                                                                </>
+                                                            )}
+                                                            {section.table === 'edupoint2' && (
+                                                                <>
+                                                                    <h4 className="font-bold text-amber-900 mb-2 text-sm sm:text-base">{item.topic}</h4>
+                                                                    <p className="text-gray-600 text-xs sm:text-sm mb-1">විෂයය: {item.subject}</p>
+                                                                    <p className="text-blue-600 text-xs font-semibold mt-2">විස්තර බලන්න →</p>
+                                                                </>
+                                                            )}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {/* Example Words */}
+                        {!selectedWord && !searchTerm && (
+                            <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6">
+                                <h3 className="text-base sm:text-lg font-bold text-amber-900 mb-3">උදාහරණ වචන:</h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    {['අනුරාධපුරය', 'පණ්ඩුකාභය', 'ලංකාව', 'රාජධානිය'].map((word, i) => (
+                                        <button
+                                            key={i}
+                                            onClick={() => setSearchTerm(word)}
+                                            className="px-3 sm:px-4 py-2.5 sm:py-3 bg-amber-50 hover:bg-amber-100 rounded-lg text-amber-800 font-semibold transition-colors text-left text-sm sm:text-base"
+                                        >
+                                            {word}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
-                </div>`
-            ).join('');
+
+                    {/* Modal */}
+                    {modalContent && (
+                        <ContentModal
+                            item={modalContent.item}
+                            type={modalContent.type}
+                            searchWord={selectedWord?.word}
+                            onClose={() => setModalContent(null)}
+                        />
+                    )}
+                </div>
+            );
         }
 
-        function showResult(index) {
-            // Update tabs
-            document.querySelectorAll('.tab').forEach((tab, i) => {
-                tab.classList.toggle('active', i === index);
-            });
-
-            // Update content
-            document.querySelectorAll('.result-content').forEach((content, i) => {
-                content.classList.toggle('active', i === index);
-            });
-        }
-
-        function newSearch() {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('resultsSection').classList.remove('active');
-            document.getElementById('searchInput').focus();
-        }
-
-        // Enter key to search
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                searchWord();
-            }
-        });
-
-        // Load words on page load
-        loadWords();
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
 </body>
 </html>
