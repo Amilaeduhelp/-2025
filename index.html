@@ -9,7 +9,7 @@
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 50%, #92400E 100%);
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -18,50 +18,95 @@ body {
 }
 
 .login-container {
-  background: white;
+  background: #FFFBEB;
   border-radius: 16px;
   padding: 2.5rem;
   box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-  max-width: 420px;
+  max-width: 440px;
   width: 100%;
   animation: slideUp 0.5s ease;
+  border: 2px solid #FDE68A;
 }
 
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .logo {
   text-align: center;
-  margin-bottom: 2rem;
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
 }
 
-.logo h1 {
-  color: #667eea;
-  font-size: 2.5rem;
+h1 {
+  color: #78350F;
+  text-align: center;
   margin-bottom: 0.5rem;
+  font-size: 2rem;
+  font-weight: 700;
 }
 
-.logo p {
-  color: #666;
+.subtitle {
+  text-align: center;
+  color: #92400E;
+  margin-bottom: 2rem;
   font-size: 0.95rem;
 }
 
-.form-group {
+.countdown-box {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
   margin-bottom: 1.5rem;
+  text-align: center;
+  display: none;
+  animation: fadeIn 0.5s;
+}
+
+.countdown-box.show { display: block; }
+
+.countdown-box h3 {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.95;
+}
+
+.countdown-timer {
+  font-size: 1.5rem;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.time-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.time-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.time-label {
+  font-size: 0.7rem;
+  opacity: 0.9;
+  margin-top: 0.2rem;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
 }
 
 label {
   display: block;
   margin-bottom: 0.5rem;
-  color: #333;
+  color: #78350F;
   font-weight: 600;
   font-size: 0.95rem;
 }
@@ -69,22 +114,23 @@ label {
 input {
   width: 100%;
   padding: 0.875rem;
-  border: 2px solid #e0e0e0;
+  border: 2px solid #FDE68A;
   border-radius: 8px;
   font-size: 1rem;
   transition: all 0.3s;
+  background: white;
 }
 
 input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #F59E0B;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
 }
 
 .btn-login {
   width: 100%;
   padding: 1rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -92,16 +138,17 @@ input:focus {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .btn-login:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 10px 25px rgba(217, 119, 6, 0.4);
+  background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
 }
 
 .btn-login:disabled {
-  background: #ccc;
+  background: #D1D5DB;
   cursor: not-allowed;
   transform: none;
 }
@@ -109,49 +156,199 @@ input:focus {
 .message {
   padding: 1rem;
   border-radius: 8px;
-  margin-bottom: 1.5rem;
+  margin-top: 1rem;
   display: none;
   animation: slideIn 0.3s;
+  font-size: 0.9rem;
+  text-align: center;
 }
 
 @keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
-.message.show {
-  display: block;
-}
+.message.show { display: block; }
 
 .message.error {
-  background: #fee;
-  color: #c33;
-  border: 1px solid #fcc;
+  background: #FEE2E2;
+  color: #991B1B;
+  border: 1px solid #FCA5A5;
 }
 
 .message.success {
-  background: #efe;
-  color: #3c3;
-  border: 1px solid #cfc;
+  background: #D1FAE5;
+  color: #065F46;
+  border: 1px solid #6EE7B7;
 }
 
-.message.info {
-  background: #e7f3ff;
-  color: #1976D2;
-  border: 1px solid #90caf9;
-}
-
-.footer {
-  text-align: center;
-  margin-top: 2rem;
-  color: #999;
+.info {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: #FEF3C7;
+  border-left: 4px solid #F59E0B;
+  border-radius: 6px;
   font-size: 0.85rem;
+  color: #78350F;
+  line-height: 1.6;
+}
+
+.info strong { color: #D97706; }
+
+.warning-box {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #FEF3C7;
+  border-left: 4px solid #F59E0B;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  color: #92400E;
+  line-height: 1.6;
+}
+
+.warning-box strong { color: #B45309; }
+
+.action-buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.secondary-btn {
+  width: 100%;
+  padding: 0.85rem;
+  background: white;
+  color: #D97706;
+  border: 2px solid #F59E0B;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.secondary-btn:hover {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3);
+}
+
+.news-btn {
+  background: linear-gradient(135deg, #EA580C 0%, #DC2626 100%);
+  color: white;
+  border: none;
+}
+
+.news-btn:hover {
+  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+}
+
+.whatsapp-btn:hover {
+  background: #25D366;
+  border-color: #25D366;
+  color: white;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #DC2626;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  min-width: 22px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.4);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal.show { display: flex; }
+
+.modal-content {
+  background: #FFFBEB;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: slideUp 0.4s ease-out;
+  border: 2px solid #FDE68A;
+}
+
+.modal-content h2 {
+  color: #D97706;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.modal-content p {
+  color: #78350F;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.modal-content ul {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+
+.modal-content li {
+  padding: 0.7rem 0;
+  border-bottom: 1px solid #FDE68A;
+  color: #78350F;
+  line-height: 1.8;
+}
+
+.modal-btn {
+  width: 100%;
+  padding: 0.9rem;
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 1rem;
+}
+
+.modal-btn:hover {
+  background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(217, 119, 6, 0.3);
 }
 
 .redirect-message {
@@ -160,20 +357,20 @@ input:focus {
 }
 
 .redirect-message h2 {
-  color: #667eea;
+  color: #D97706;
   margin-bottom: 1rem;
   font-size: 1.8rem;
 }
 
 .redirect-message p {
-  color: #666;
+  color: #78350F;
   font-size: 1rem;
   margin-bottom: 1.5rem;
 }
 
 .spinner {
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #667eea;
+  border: 4px solid #FDE68A;
+  border-top: 4px solid #F59E0B;
   border-radius: 50%;
   width: 50px;
   height: 50px;
@@ -185,42 +382,104 @@ input:focus {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.footer {
+  text-align: center;
+  margin-top: 2rem;
+  color: #92400E;
+  font-size: 0.85rem;
+}
+
+.debug {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background: #FEF3C7;
+  border: 1px solid #F59E0B;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: #78350F;
+  font-family: monospace;
+}
 </style>
 </head>
 <body>
 
 <div class="login-container">
   <div id="loginSection">
-    <div class="logo">
-      <h1>📚 LearnX</h1>
-      <p>පුරනය වන්න</p>
+    <div class="logo">🔐</div>
+    <h1>LearnX</h1>
+    <p class="subtitle">පුරනය වන්න</p>
+    
+    <div class="countdown-box" id="countdownBox">
+      <h3>⏱️ ඔබගේ ගිණුම කල් ඉකුත් වන්නේ:</h3>
+      <div class="countdown-timer">
+        <div class="time-unit">
+          <div class="time-value" id="days">0</div>
+          <div class="time-label">දින</div>
+        </div>
+        <div class="time-unit">
+          <div class="time-value" id="hours">0</div>
+          <div class="time-label">පැය</div>
+        </div>
+        <div class="time-unit">
+          <div class="time-value" id="minutes">0</div>
+          <div class="time-label">මිනිත්තු</div>
+        </div>
+      </div>
     </div>
     
-    <div class="message" id="message"></div>
-    
-    <!-- Login Form -->
     <form id="loginForm">
       <div class="form-group">
         <label for="accessCode">Access Code</label>
-        <input type="text" id="accessCode" placeholder="ඔබගේ access code එක ඇතුළත් කරන්න" required>
+        <input type="text" id="accessCode" placeholder="ඔබගේ access code එක ඇතුළත් කරන්න" required autocomplete="username" autofocus>
       </div>
       
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" id="password" placeholder="ඔබගේ password එක ඇතුළත් කරන්න" required>
+        <input type="password" id="password" placeholder="ඔබගේ password එක ඇතුළත් කරන්න" required autocomplete="current-password">
       </div>
       
       <button type="submit" class="btn-login" id="loginBtn">
         🔐 පුරනය වන්න
       </button>
+      
+      <div class="message" id="message"></div>
     </form>
+    
+    <div class="info">
+      <strong>ℹ️ Access Code එකක් අවශ්‍ය ද?</strong><br>
+      ඔබගේ access code හා password ලබා ගැනීම සඳහා පහළ බොත්තම click කරන්න.
+    </div>
+    
+    <div class="warning-box">
+      <strong>⚠️ වැදගත්:</strong> එක් ගිණුමකට එක් සක්‍රීය session එකක් පමණක් ඉඩ දෙනු ලැබේ. ඔබ වෙනත් device/browser එකකින් login වුවහොත්, ඔබගේ වත්මන් session එක අවසන් වනු ඇත.
+    </div>
+    
+    <div class="warning-box">
+      <strong>⚠️ අවවාදයයි:</strong> ඔබගේ access code එක හෝ password එක අන් අයට බෙදා හැරීමෙන් ඔබගේ ගිණුම පූර්ව දැනුම්දීමකින් තොරව අවලංගු කරනු ඇත. තවද මෙම වෙබ් අඩවියේ සියලුම තොරතුරු හා සැකසුම් LearnX සතු වන අතර අනවසරයෙන් දත්ත උපුටා ගැනීම්, සමාජ මාධ්‍ය වල පල කිරීම් ඇතුළු කිසිදු ආකාරයක කතුහිමිකම් උල්ලංඝනය කිරීමක් නීති විරෝධී වේ.
+    </div>
+    
+    <div class="action-buttons">
+      <button class="secondary-btn news-btn" onclick="window.location.href='news.html'" type="button" style="position: relative;">
+        📰 අලුත් දැනුම්දීම්
+        <span class="notification-badge" id="newsBadge" style="display: none;">0</span>
+      </button>
+      <button class="secondary-btn" onclick="window.location.href='price.html'" type="button">
+        💰 Password එකක් හා Access Code එකක් ලබා ගන්නේ කෙසේ ද?
+      </button>
+      <button class="secondary-btn" onclick="showContentModal()" type="button">
+        📚 මෙහි අන්තර්ගත වන්නේ මොනවා ද?
+      </button>
+      <button class="secondary-btn whatsapp-btn" onclick="window.open('https://wa.me/94716637804', '_blank')" type="button">
+        📱 අප අමතන්න
+      </button>
+    </div>
     
     <div class="footer">
       <p>© 2025 LearnX - අමිල උඩවත්ත</p>
     </div>
   </div>
   
-  <!-- Redirect Screen (shown after successful login) -->
   <div class="redirect-message" id="redirectSection" style="display: none;">
     <h2>✅ සාර්ථකයි!</h2>
     <p>ඔබ සාර්ථකව පුරනය වී ඇත</p>
@@ -229,69 +488,177 @@ input:focus {
   </div>
 </div>
 
+<div class="modal" id="contentModal">
+  <div class="modal-content">
+    <h2>📚 මෙහි අන්තර්ගත වන්නේ මොනවා ද?</h2>
+    <ul>
+      <li>✓ අර්ථ සහිතව ඉතිහාසය වාග් මාලාව (සාමාන්‍ය පෙළ හා උසස් පෙළට අදාළව)</li>
+      <li>✓ උසස් පෙළ ඉතිහාසය සටහන් (ශ්‍රී ලංකා ඉතිහාසය, යුරෝපා ඉතිහාසය, ඉන්දියා ඉතිහාසය)</li>
+      <li>✓ ආදර්ශ පිළිතුරු පොත (සාමාන්‍ය පෙළ හා උසස් පෙළ)</li>
+      <li>✓ edupoints (සාමාන්‍ය පෙළ හා උසස් පෙළ සඳහා රචනාමය ප්‍රශ්න ලිවීමට මගපෙන්වීම)</li>
+      <li>✓ විශ්වවිද්‍යාල පාඨමාලා විස්තර</li>
+      <li>✓ Z-Score (පසුගිය වසර කිහිපයක)</li>
+      <li>✓ Job mart (රැකියා විස්තර)</li>
+      <li>✓ රාජකාරී ලේඛන</li>
+      <li>✓ මෙතෙක් ආ ප්‍රශ්න ක්ෂේත්‍ර (උසස් පෙළ ඉතිහාසය සඳහා)</li>
+      <li>✓ Smart සිතියම් පොත (උසස් පෙළ හා සාමාන්‍ය පෙළ සඳහා)</li>
+      <li>✓ MCQ test එකකින් ඔබේ ලකුණු බලා ගන්න</li>
+      <li>✓ වෘත්තීය ළැදියා පරීක්ෂණය</li>
+      <li>✓ පොත්හල</li>
+      <li>✓ Y-Sub (විවිධ විෂයයන් හැදෑරීමේ වැදගත්කම්)</li>
+    </ul>
+    <button class="modal-btn" onclick="closeContentModal()" type="button">හරි</button>
+  </div>
+</div>
+
+<div class="modal" id="logoutModal">
+  <div class="modal-content" style="max-width: 400px;">
+    <h2>⚠️ Session අවසන් විය</h2>
+    <p>ඔබගේ credentials භාවිතයෙන් වෙනත් පරිශීලකයෙක් login වී ඇත. ආරක්ෂක හේතු මත ඔබගේ session අවසන් කර ඇත.</p>
+    <button class="modal-btn" onclick="closeLogoutModal()" type="button">හරි</button>
+  </div>
+</div>
+
+<div class="modal" id="expiredModal">
+  <div class="modal-content" style="max-width: 400px;">
+    <h2>⚠️ ගිණුම කල් ඉකුත් වී ඇත</h2>
+    <p>ඔබගේ access code එක දින 365 කාලය අවසන් වී ඇත. කරුණාකර නව access code එකක් ලබා ගන්න.</p>
+    <button class="modal-btn" onclick="closeExpiredModal()" type="button">හරි</button>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-let supabase = null;
+console.log('🚀 Script started loading...');
 
-// Supabase Configuration - ස්ථිරව සකසා ඇත
+// Debug function
+function debug(msg) {
+  console.log(msg);
+  const debugEl = document.getElementById('debug');
+  if (debugEl) {
+    debugEl.style.display = 'block';
+    debugEl.innerHTML += msg + '<br>';
+  }
+}
+
+debug('✅ JavaScript is running!');
+
+let supabase = null;
+let mySessionId = generateSessionId();
+let myUser = null;
+let channel = null;
+let countdownInterval = null;
+
 const SUPABASE_URL = 'https://uqgzlaxsnknheoerbfus.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxZ3psYXhzbmtuaGVvZXJiZnVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ4MDQzMTEsImV4cCI6MjA2MDM4MDMxMX0.O5dNUizqZ5kfwTs0mHLEorqOAqjZFjWakp2Q484MKEk';
-
-// Redirect URL - මෙම URL එක ඔබගේ අවශ්‍යතාවයට අනුව වෙනස් කරන්න
 const REDIRECT_URL = 'https://amilaeduhelp.github.io/-2025/entrence.html';
 
 function hash(str) {
-  return CryptoJS.SHA256(str).toString();
+  if (typeof CryptoJS !== 'undefined') {
+    return CryptoJS.SHA256(str).toString();
+  } else {
+    debug('❌ CryptoJS not loaded!');
+    return null;
+  }
+}
+
+function generateSessionId() {
+  return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
 
 function showMessage(message, type) {
   const msgEl = document.getElementById('message');
   msgEl.textContent = message;
   msgEl.className = `message show ${type}`;
-  
-  setTimeout(() => {
-    msgEl.classList.remove('show');
-  }, 5000);
+  setTimeout(() => msgEl.classList.remove('show'), 5000);
+}
+
+function showContentModal() {
+  document.getElementById('contentModal').classList.add('show');
+}
+
+function closeContentModal() {
+  document.getElementById('contentModal').classList.remove('show');
+}
+
+function showLogoutModal() {
+  document.getElementById('logoutModal').classList.add('show');
+}
+
+function closeLogoutModal() {
+  document.getElementById('logoutModal').classList.remove('show');
+  if (channel) {
+    channel.postMessage({ type: 'logout', user: myUser });
+  }
+  sessionStorage.clear();
+  window.location.reload();
+}
+
+function showExpiredModal() {
+  document.getElementById('expiredModal').classList.add('show');
+}
+
+function closeExpiredModal() {
+  document.getElementById('expiredModal').classList.remove('show');
+  sessionStorage.clear();
+  window.location.reload();
 }
 
 function initSupabase() {
   try {
+    debug('🔄 Initializing Supabase...');
+    if (typeof window.supabase === 'undefined') {
+      debug('❌ Supabase library not loaded!');
+      showMessage('❌ කරුණාකර පිටුව refresh කරන්න', 'error');
+      return false;
+    }
     supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    debug('✅ Supabase initialized successfully');
     return true;
   } catch (error) {
-    showMessage('❌ Supabase සම්බන්ධ කිරීමේ දෝෂයක්: ' + error.message, 'error');
+    debug('❌ Supabase error: ' + error.message);
+    showMessage('❌ දත්ත සම්බන්ධතා දෝෂයක්', 'error');
     return false;
   }
 }
 
-function redirectToPage(userData) {
-  // User data එක sessionStorage එකට save කරන්න (optional)
-  sessionStorage.setItem('learnx_user', JSON.stringify({
-    access_code: userData.access_code,
-    created_at: userData.created_at,
-    last_login: userData.last_login
-  }));
+// Wait for libraries to load
+window.addEventListener('load', function() {
+  debug('📚 Page loaded, checking libraries...');
   
-  // Redirect screen එක පෙන්වන්න
-  document.getElementById('loginSection').style.display = 'none';
-  document.getElementById('redirectSection').style.display = 'block';
-  
-  // 2 seconds පසු redirect කරන්න
-  setTimeout(() => {
-    window.location.href = REDIRECT_URL;
-  }, 2000);
-}
+  setTimeout(function() {
+    if (typeof CryptoJS !== 'undefined') {
+      debug('✅ CryptoJS loaded');
+    } else {
+      debug('❌ CryptoJS NOT loaded');
+    }
+    
+    if (typeof window.supabase !== 'undefined') {
+      debug('✅ Supabase loaded');
+      initSupabase();
+    } else {
+      debug('❌ Supabase NOT loaded');
+    }
+  }, 1000);
+});
 
-document.getElementById('loginForm').addEventListener('submit', async (e) => {
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
   e.preventDefault();
+  debug('🔐 Login attempt started...');
   
   if (!supabase) {
-    initSupabase();
+    debug('🔄 Supabase not initialized, initializing now...');
+    if (!initSupabase()) {
+      return;
+    }
   }
   
   const accessCode = document.getElementById('accessCode').value.trim().toUpperCase();
   const password = document.getElementById('password').value;
+  
+  debug('📝 Access Code: ' + accessCode);
+  debug('📝 Password length: ' + password.length);
   
   if (!accessCode || !password) {
     showMessage('⚠️ කරුණාකර සියලු තොරතුරු පුරවන්න', 'error');
@@ -304,6 +671,12 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   
   try {
     const passwordHash = hash(password);
+    if (!passwordHash) {
+      throw new Error('Password hash failed');
+    }
+    
+    debug('🔐 Password hash: ' + passwordHash);
+    debug('🔄 Querying database...');
     
     const { data, error } = await supabase
       .from('credentials')
@@ -312,41 +685,36 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
       .eq('password_hash', passwordHash)
       .single();
     
-    if (error || !data) {
+    debug('📊 Query result: ' + JSON.stringify({data: data, error: error}));
+    
+    if (error) {
+      debug('❌ Database error: ' + error.message);
       showMessage('❌ වැරදි Access Code හෝ Password', 'error');
       loginBtn.disabled = false;
       loginBtn.textContent = '🔐 පුරනය වන්න';
       return;
     }
     
-    if (!data.is_active) {
-      showMessage('⚠️ මෙම ගිණුම අක්‍රීය කර ඇත', 'error');
+    if (!data) {
+      debug('❌ No data returned');
+      showMessage('❌ වැරදි Access Code හෝ Password', 'error');
       loginBtn.disabled = false;
       loginBtn.textContent = '🔐 පුරනය වන්න';
       return;
     }
     
-    const createdDate = new Date(data.created_at);
-    const expiryDate = new Date(createdDate);
-    expiryDate.setDate(expiryDate.getDate() + 365);
+    debug('✅ Login successful!');
+    showMessage('✅ සාර්ථකව පුරනය වී ඇත!', 'success');
     
-    if (new Date() > expiryDate) {
-      showMessage('⚠️ ඔබගේ ගිණුම කල් ඉකුත් වී ඇත', 'error');
-      loginBtn.disabled = false;
-      loginBtn.textContent = '🔐 පුරනය වන්න';
-      return;
-    }
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('redirectSection').style.display = 'block';
     
-    // Last login update කරන්න
-    await supabase
-      .from('credentials')
-      .update({ last_login: new Date().toISOString() })
-      .eq('access_code', accessCode);
-    
-    // සාර්ථක පුරනයෙන් පසු redirect කරන්න
-    redirectToPage(data);
+    setTimeout(function() {
+      window.location.href = REDIRECT_URL;
+    }, 2000);
     
   } catch (error) {
+    debug('❌ Catch error: ' + error.message);
     console.error('Login error:', error);
     showMessage('❌ දෝෂයක් ඇතිවිය: ' + error.message, 'error');
     loginBtn.disabled = false;
@@ -354,10 +722,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
   }
 });
 
-// Page load වෙද්දී Supabase initialize කරන්න
-window.addEventListener('DOMContentLoaded', () => {
-  initSupabase();
-});
+debug('✅ Event listeners attached');
 </script>
 
 </body>
