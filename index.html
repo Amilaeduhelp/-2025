@@ -527,22 +527,39 @@ input:focus {
   </div>
 </div>
 
+<div class="modal" id="newsModal">
+  <div class="modal-content" style="max-width: 450px;">
+    <h2 style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+      <span>📢</span> LearnX Updates
+    </h2>
+    <div style="text-align: left; background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border: 2px solid #FDE68A;">
+      <div style="margin-bottom: 1.2rem; padding-bottom: 1.2rem; border-bottom: 2px solid #FEF3C7;">
+        <h3 style="color: #D97706; font-size: 1.1rem; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem;">
+          <span>📝</span> උසස් පෙළ විභාගය
+        </h3>
+        <p style="color: #78350F; line-height: 1.7; font-size: 0.95rem;">
+          <strong>මීළඟ වාර විභාග ප්‍රශ්නපත්‍ර අපෙන්.</strong><br>
+          රැඳී සිටින්න. 🎯
+        </p>
+      </div>
+      <div>
+        <h3 style="color: #D97706; font-size: 1.1rem; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.5rem;">
+          <span>📋</span> සාමාන්‍ය පෙළ විභාගය
+        </h3>
+        <p style="color: #78350F; line-height: 1.7; font-size: 0.95rem;">
+          <strong>ඉතිහාසය අනුමාන පත්‍රය බලාපොරොත්තු වන්න.</strong><br>
+          ඉක්මනින් නිකුත් වේ! 📚
+        </p>
+      </div>
+    </div>
+    <button class="modal-btn" onclick="closeNewsModal()" type="button">හරි, ස්තුතියි! ✅</button>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-console.log('🚀 Script started loading...');
-
-// Debug function
-function debug(msg) {
-  console.log(msg);
-  const debugEl = document.getElementById('debug');
-  if (debugEl) {
-    debugEl.style.display = 'block';
-    debugEl.innerHTML += msg + '<br>';
-  }
-}
-
-debug('✅ JavaScript is running!');
+console.log('LearnX Login Page Ready');
 
 let supabase = null;
 let mySessionId = generateSessionId();
@@ -557,10 +574,8 @@ const REDIRECT_URL = 'https://amilaeduhelp.github.io/-2025/entrence.html';
 function hash(str) {
   if (typeof CryptoJS !== 'undefined') {
     return CryptoJS.SHA256(str).toString();
-  } else {
-    debug('❌ CryptoJS not loaded!');
-    return null;
   }
+  return null;
 }
 
 function generateSessionId() {
@@ -605,19 +620,23 @@ function closeExpiredModal() {
   window.location.reload();
 }
 
+function showNewsModal() {
+  document.getElementById('newsModal').classList.add('show');
+}
+
+function closeNewsModal() {
+  document.getElementById('newsModal').classList.remove('show');
+}
+
 function initSupabase() {
   try {
-    debug('🔄 Initializing Supabase...');
     if (typeof window.supabase === 'undefined') {
-      debug('❌ Supabase library not loaded!');
       showMessage('❌ කරුණාකර පිටුව refresh කරන්න', 'error');
       return false;
     }
     supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    debug('✅ Supabase initialized successfully');
     return true;
   } catch (error) {
-    debug('❌ Supabase error: ' + error.message);
     showMessage('❌ දත්ත සම්බන්ධතා දෝෂයක්', 'error');
     return false;
   }
@@ -625,30 +644,20 @@ function initSupabase() {
 
 // Wait for libraries to load
 window.addEventListener('load', function() {
-  debug('📚 Page loaded, checking libraries...');
-  
   setTimeout(function() {
-    if (typeof CryptoJS !== 'undefined') {
-      debug('✅ CryptoJS loaded');
-    } else {
-      debug('❌ CryptoJS NOT loaded');
-    }
-    
     if (typeof window.supabase !== 'undefined') {
-      debug('✅ Supabase loaded');
       initSupabase();
-    } else {
-      debug('❌ Supabase NOT loaded');
     }
   }, 1000);
+  
+  // Show news popup immediately
+  showNewsModal();
 });
 
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
   e.preventDefault();
-  debug('🔐 Login attempt started...');
   
   if (!supabase) {
-    debug('🔄 Supabase not initialized, initializing now...');
     if (!initSupabase()) {
       return;
     }
@@ -656,9 +665,6 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
   
   const accessCode = document.getElementById('accessCode').value.trim().toUpperCase();
   const password = document.getElementById('password').value;
-  
-  debug('📝 Access Code: ' + accessCode);
-  debug('📝 Password length: ' + password.length);
   
   if (!accessCode || !password) {
     showMessage('⚠️ කරුණාකර සියලු තොරතුරු පුරවන්න', 'error');
@@ -675,9 +681,6 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
       throw new Error('Password hash failed');
     }
     
-    debug('🔐 Password hash: ' + passwordHash);
-    debug('🔄 Querying database...');
-    
     const { data, error } = await supabase
       .from('credentials')
       .select('*')
@@ -685,25 +688,13 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
       .eq('password_hash', passwordHash)
       .single();
     
-    debug('📊 Query result: ' + JSON.stringify({data: data, error: error}));
-    
-    if (error) {
-      debug('❌ Database error: ' + error.message);
+    if (error || !data) {
       showMessage('❌ වැරදි Access Code හෝ Password', 'error');
       loginBtn.disabled = false;
       loginBtn.textContent = '🔐 පුරනය වන්න';
       return;
     }
     
-    if (!data) {
-      debug('❌ No data returned');
-      showMessage('❌ වැරදි Access Code හෝ Password', 'error');
-      loginBtn.disabled = false;
-      loginBtn.textContent = '🔐 පුරනය වන්න';
-      return;
-    }
-    
-    debug('✅ Login successful!');
     showMessage('✅ සාර්ථකව පුරනය වී ඇත!', 'success');
     
     document.getElementById('loginSection').style.display = 'none';
@@ -714,15 +705,14 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     }, 2000);
     
   } catch (error) {
-    debug('❌ Catch error: ' + error.message);
     console.error('Login error:', error);
-    showMessage('❌ දෝෂයක් ඇතිවිය: ' + error.message, 'error');
+    showMessage('❌ දෝෂයක් ඇතිවිය', 'error');
     loginBtn.disabled = false;
     loginBtn.textContent = '🔐 පුරනය වන්න';
   }
 });
 
-debug('✅ Event listeners attached');
+console.log('LearnX Login System Active');
 </script>
 
 </body>
