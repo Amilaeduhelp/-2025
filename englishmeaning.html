@@ -748,17 +748,24 @@
         let currentPdfDoc = null;
         let totalPages = 0;
         
-        // API Configuration - CORS විසඳුම
+        // API Configuration - CORS විසඳුම (AllOrigins Proxy භාවිතයෙන්)
         const API_CONFIG = {
             useProxy: window.location.hostname !== 'localhost' && window.location.protocol !== 'file:',
-            proxyUrl: '/dictionary-proxy.php?word=',
+            proxyUrl: 'https://api.allorigins.win/raw?url=',  // Free CORS proxy
             directUrl: 'https://api.dictionaryapi.dev/api/v2/entries/en/'
         };
         
         async function fetchDictionaryData(word) {
-            const url = API_CONFIG.useProxy 
-                ? API_CONFIG.proxyUrl + encodeURIComponent(word)
-                : API_CONFIG.directUrl + encodeURIComponent(word);
+            let url;
+            
+            if (API_CONFIG.useProxy) {
+                // Use AllOrigins proxy
+                const apiUrl = API_CONFIG.directUrl + encodeURIComponent(word);
+                url = API_CONFIG.proxyUrl + encodeURIComponent(apiUrl);
+            } else {
+                // Direct API
+                url = API_CONFIG.directUrl + encodeURIComponent(word);
+            }
             
             return await fetch(url);
         }
