@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A/L විභාග කාලසටහන 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab:hover {
+            background: #e9ecef;
+        }
+
+        .tab.active {
+            background: white;
+            border-bottom-color: #667eea;
+            color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .my-subjects-panel {
+            padding: 30px;
+        }
+
+        .subject-selector {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .selector-header {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stream-selector {
+            margin-bottom: 25px;
+        }
+
+        .stream-selector label {
+            display: block;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 10px;
+        }
+
+        .stream-selector select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            font-size: 16px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .stream-selector select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .subject-checkbox {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .subject-checkbox:hover {
+            border-color: #667eea;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.2);
+        }
+
+        .subject-checkbox input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .subject-checkbox label {
+            cursor: pointer;
+            font-weight: 500;
+            color: #2c3e50;
+            flex: 1;
+        }
+
+        .subject-checkbox.checked {
+            background: #e7f0ff;
+            border-color: #667eea;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .report-section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .report-section.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .report-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .report-header h2 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .selected-subjects {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .subject-tag {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.95em;
+        }
+
+        .exam-days-section {
+            background: #e7f0ff;
+            border: 2px solid #667eea;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .exam-days-section h3 {
+            color: #667eea;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .free-days-section {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .free-days-section h3 {
+            color: #28a745;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .day-item {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .day-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .day-name {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .day-date {
+            color: #6c757d;
+            font-weight: 600;
+        }
+
+        .exam-subjects {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .exam-subject {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .exam-time {
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .controls {
+            padding: 25px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid #dee2e6;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .language-toggle {
+            display: flex;
+            gap: 10px;
+        }
+
+        .lang-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .lang-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .day-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .day-card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .day-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .day-title {
+            font-size: 1.4em;
+            font-weight: 700;
+        }
+
+        .sessions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            padding: 25px;
+        }
+
+        .session {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .session.afternoon {
+            border-left-color: #764ba2;
+        }
+
+        .session-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .session-time {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .session.afternoon .session-time {
+            background: #764ba2;
+        }
+
+        .subject-list {
+            list-style: none;
+        }
+
+        .subject-item {
+            padding: 12px;
+            background: white;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .subject-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .subject-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .subject-code {
+            background: #e9ecef;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            color: #6c757d;
+            font-weight: 600;
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .sessions {
+                grid-template-columns: 1fr;
+            }
+
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 A/L විභාග කාලසටහන 2025</h1>
+            <p>උසස් පෙළ සාමාන්‍ය විභාගය - නොවැම්බර් / දෙසැම්බර් 2025</p>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('full')">📅 සම්පූර්ණ කාලසටහන</div>
+            <div class="tab" onclick="switchTab('my')">📚 මගේ විෂයයන්</div>
+        </div>
+
+        <!-- Full Timetable Tab -->
+        <div id="fullTab" class="tab-content active">
+            <div class="controls">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="විෂයක් සොයන්න...">
+                </div>
+                <div class="language-toggle">
+                    <button class="lang-btn active" onclick="setLanguage('si')">සිංහල</button>
+                    <button class="lang-btn" onclick="setLanguage('en')">English</button>
+                </div>
+            </div>
+
+            <div class="content" id="timetableContent"></div>
+        </div>
+
+        <!-- My Subjects Tab -->
+        <div id="myTab" class="tab-content">
+            <div class="my-subjects-panel">
+                <!-- Selection Panel -->
+                <div id="selectionPanel" class="subject-selector">
+                    <div class="selector-header">
+                        📝 ඔබගේ විෂයයන් තෝරන්න
+                    </div>
+
+                    <div class="stream-selector">
+                        <label>විෂය ධාරාව තෝරන්න:</label>
+                        <select id="streamSelect" onchange="loadSubjectsByStream()">
+                            <option value="">-- විෂය ධාරාවක් තෝරන්න --</option>
+                            <option value="maths">ගණිත ධාරාව (Physical Science)</option>
+                            <option value="bio">ජීව විද්‍යා ධාරාව (Bio Science)</option>
+                            <option value="commerce">වාණිජ ධාරාව (Commerce)</option>
+                            <option value="arts">කලා ධාරාව (Arts)</option>
+                            <option value="tech">තාක්ෂණ ධාරාව (Technology)</option>
+                            <option value="custom">අනෙකුත් (Custom Selection)</option>
+                        </select>
+                    </div>
+
+                    <div id="subjectsContainer" class="subjects-grid"></div>
+
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="submit-btn" onclick="generateReport()" id="submitBtn" disabled>
+                            වාර්තාව සාදන්න
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Report Panel -->
+                <div id="reportPanel" class="report-section"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLang = 'si';
+        let selectedSubjects = [];
+
+        const allSubjects = {
+            "10": {si: "සංයුක්ත ගණිතය", en: "Combined Mathematics"},
+            "01": {si: "භෞතික විද්‍යාව", en: "Physics"},
+            "02": {si: "රසායන විද්‍යාව", en: "Chemistry"},
+            "09": {si: "ජීව විද්‍යාව", en: "Biology"},
+            "21": {si: "ආර්ථික විද්‍යාව", en: "Economics"},
+            "32": {si: "ව්‍යාපාර අධ්‍යයනය", en: "Business Studies"},
+            "33": {si: "ගණකාධිකරණය", en: "Accounting"},
+            "31": {si: "ව්‍යාපාර සංඛ්‍යානය", en: "Business Statistics"},
+            "71": {si: "සිංහල", en: "Sinhala"},
+            "72": {si: "දෙමළ", en: "Tamil"},
+            "73": {si: "ඉංග්‍රීසි", en: "English"},
+            "22": {si: "භූගෝල විද්‍යාව", en: "Geography"},
+            "23": {si: "දේශපාලන විද්‍යාව", en: "Political Science"},
+            "24": {si: "තර්ක විද්‍යාව හා විද්‍යාත්මක ක්‍රමය", en: "Logic & Scientific Method"},
+            "25": {si: "ඉතිහාසය", en: "History"},
+            "29": {si: "සන්නිවේදනය හා මාධ්‍ය අධ්‍යයනය", en: "Communication & Media Studies"},
+            "08": {si: "කෘෂි විද්‍යාව", en: "Agricultural Science"},
+            "20": {si: "තොරතුරු හා සන්නිවේදන තාක්ෂණය", en: "ICT"},
+            "28": {si: "ගෘහ ආර්ථික විද්‍යාව", en: "Home Economics"},
+            "65": {si: "ඉංජිනේරු තාක්ෂණය", en: "Engineering Technology"},
+            "66": {si: "ජෛව පද්ධති තාක්ෂණය", en: "Bio Systems Technology"},
+            "67": {si: "තාක්ෂණය සඳහා විද්‍යාව", en: "Science for Technology"},
+            "14": {si: "සිවිල් තාක්ෂණය", en: "Civil Technology"},
+            "15": {si: "යාන්ත්‍රික තාක්ෂණය", en: "Mechanical Technology"},
+            "16": {si: "විදුලි, ඉලෙක්ට්‍රොනික හා තොරතුරු තාක්ෂණය", en: "Electrical, Electronic and IT"},
+            "17": {si: "ආහාර තාක්ෂණය", en: "Food Technology"},
+            "18": {si: "කෘෂි තාක්ෂණය", en: "Agro Technology"},
+            "19": {si: "ජෛව සම්පත් තාක්ෂණය", en: "Bio Resource Technology"},
+            "51": {si: "චිත්‍ර කලාව", en: "Art"},
+            "52": {si: "නැටුම් (දේශීය)", en: "Dancing (Indigenous)"},
+            "53": {si: "නැටුම් (භාරත)", en: "Dancing (Bharatha)"},
+            "54": {si: "පෙරදිග සංගීතය", en: "Oriental Music"},
+            "55": {si: "කර්ණාටක සංගීතය", en: "Carnatic Music"},
+            "56": {si: "බටහිර සංගීතය", en: "Western Music"},
+            "57": {si: "නාට්‍ය හා රංග කලාව (සිංහල)", en: "Drama & Theatre (Sinhala)"},
+            "58": {si: "නාට්‍ය හා රංග කලාව (දෙමළ)", en: "Drama & Theatre (Tamil)"},
+            "59": {si: "නාට්‍ය හා රංග කලාව (ඉංග්‍රීසි)", en: "Drama & Theatre (English)"},
+            "41": {si: "බුද්ධ ධර්මය", en: "Buddhism"},
+            "42": {si: "හින්දු ධර්මය", en: "Hinduism"},
+            "43": {si: "කිතුණු ධර්මය", en: "Christianity"},
+            "44": {si: "ඉස්ලාම්", en: "Islam"},
+            "45": {si: "බෞද්ධ ශිෂ්ටාචාරය", en: "Buddhist Civilization"},
+            "46": {si: "හින්දු ශිෂ්ටාචාරය", en: "Hindu Civilization"},
+            "47": {si: "ඉස්ලාම් ශිෂ්ටාචාරය", en: "Islamic Civilization"},
+            "49": {si: "කිතුණු ශිෂ්ටාචාරය", en: "Christian Civilization"},
+            "48": {si: "ග්‍රීක සහ රෝම ශිෂ්ටාචාරය", en: "Greek and Roman Civilization"},
+            "74": {si: "පාලි", en: "Pali"},
+            "75": {si: "සංස්කෘත", en: "Sanskrit"},
+            "78": {si: "අරාබි", en: "Arabic"},
+            "79": {si: "මැලේ", en: "Malay"},
+            "81": {si: "ප්‍රංශ", en: "French"},
+            "82": {si: "ජර්මන්", en: "German"},
+            "83": {si: "රුසියානු", en: "Russian"},
+            "84": {si: "හින්දි", en: "Hindi"},
+            "86": {si: "චීන", en: "Chinese"},
+            "87": {si: "ජපන්", en: "Japanese"},
+            "88": {si: "කොරියන්", en: "Korean"},
+            "07": {si: "ගණිතය", en: "Mathematics"},
+            "11": {si: "උසස් ගණිතය", en: "Higher Mathematics"}
+        };
+
+        const streamSubjects = {
+            maths: ["10", "01", "02", "07", "11"],
+            bio: ["09", "02", "01", "08"],
+            commerce: ["32", "33", "21", "31", "73"],
+            arts: ["71", "72", "22", "23", "24", "25", "29", "41", "42", "43", "44", "45", "46", "47", "48", "49", "51", "52", "53", "54", "55", "56", "57", "58", "59", "74", "75", "78", "79", "81", "82", "83", "84", "86", "87", "88"],
+            tech: ["65", "66", "67", "20", "14", "15", "16", "17", "18", "19"],
+            custom: Object.keys(allSubjects)
+        };
+
+        const timetableData = {
+            "Nov 10": {
+                day: "සඳුදා", date: "නොවැම්බර් 10",
+                exams: [
+                    {code: "10", time: "0830-1030", paper: "I"},
+                    {code: "41", time: "0830-1030", paper: "I"},
+                    {code: "42", time: "0830-1030", paper: "I"},
+                    {code: "09", time: "1300-1500", paper: "I"},
+                    {code: "21", time: "1300-1500", paper: "I"}
+                ]
+            },
+            "Nov 11": {
+                day: "අඟහරුවාදා", date: "නොවැම්බර් 11",
+                exams: [
+                    {code: "41", time: "0830-1140", paper: "II"},
+                    {code: "42", time: "0830-1140", paper: "II"},
+                    {code: "09", time: "1300-1610", paper: "II"},
+                    {code: "21", time: "1300-1610", paper: "II"}
+                ]
+            },
+            "Nov 12": {
+                day: "බදාදා", date: "නොවැම්බර් 12",
+                exams: [
+                    {code: "10", time: "0830-1140", paper: "II"},
+                    {code: "51", time: "0830-1140", paper: "I"},
+                    {code: "24", time: "1300-1500", paper: "I"},
+                    {code: "65", time: "1300-1500", paper: "I"},
+                    {code: "66", time: "1300-1500", paper: "I"}
+                ]
+            },
+            "Nov 13": {
+                day: "බ්‍රහස්පතින්දා", date: "නොවැම්බර් 13",
+                exams: [
+                    {code: "32", time: "0830-1030", paper: "I"},
+                    {code: "08", time: "1300-1500", paper: "I"}
+                ]
+            },
+            "Nov 14": {
+                day: "සිකුරාදා", date: "නොවැම්බර් 14",
+                exams: [
+                    {code: "01", time: "0830-1030", paper: "I"},
+                    {code: "51", time: "0830-1030", paper: "II"},
+                    {code: "24", time: "1400-1710", paper: "II"},
+                    {code: "65", time: "1400-1710", paper: "II"},
+                    {code: "66", time: "1400-1710", paper: "II"}
+                ]
+            },
+            "Nov 15": {
+                day: "සෙනසුරාදා", date: "නොවැම්බර් 15",
+                exams: [
+                    {code: "71", time: "0830-1140", paper: "I"},
+                    {code: "72", time: "0830-1140", paper: "I"},
+                    {code: "08", time: "1300-1610", paper: "II"}
+                ]
+            },
+            "Nov 17": {
+                day: "සඳුදා", date: "නොවැම්බර් 17",
+                exams: [
+                    {code: "01", time: "0830-1140", paper: "II"},
+                    {code: "51", time: "0830-1140", paper: "III"},
+                    {code: "32", time: "1300-1610", paper: "II"}
+                ]
+            },
+            "Nov 18": {
+                day: "අඟහරුවාදා", date: "නොවැම්බර් 18",
+                exams: [
+                    {code: "71", time: "0830-1140", paper: "II"},
+                    {code: "72", time: "0830-1140", paper: "II"},
+                    {code: "14", time: "1300-1500", paper: "I"},
+                    {code: "15", time: "1300-1500", paper: "I"},
+                    {code: "16", time: "1300-1500", paper: "I"},
+                    {code: "31", time: "1300-1500", paper: "I"}
+                ]
+            },
+            "Nov 19": {
+                day: "බදාදා", date: "නොවැම්බර් 19",
+                exams: [
+                    {code: "02", time: "0830-1030", paper: "I"},
+                    {code: "67", time: "0830-1030", paper: "I"},
+                    {code: "57", time: "0830-1030", paper: "I"},
+                    {code: "58", time: "0830-1030", paper: "I"},
+                    {code: "23", time: "1300-1500", paper: "I"}
+                ]
+            },
+            "Nov 20": {
+                day: "බ්‍රහස්පතින්දා", date: "නොවැම්බර් 20",
+                exams: [
+                    {code: "31", time: "0830-1140", paper: "II"},
+                    {code: "57", time: "0830-1140", paper: "II"},
+                    {code: "58", time: "0830-1140", paper: "II"},
+                    {code: "14", time: "1300-1500", paper: "II"},
+                    {code: "15", time: "1300-1500", paper: "II"},
+                    {code: "16", time: "1300-1500", paper: "II"}
+                ]
+            },
+            "Nov 21": {
+                day: "සිකුරාදා", date: "නොවැම්බර් 21",
+                exams: [
+                    {code: "02", time: "0830-1140", paper: "II"},
+                    {code: "67", time: "0830-1140", paper: "II"},
+                    {code: "23", time: "1400-1710", paper: "II"}
+                ]
+            },
+            "Nov 22": {
+                day: "සෙනසුරාදා", date: "නොවැම්බර් 22",
+                exams: [
+                    {code: "73", time: "1300-1610", paper: "I"}
+                ]
+            },
+            "Nov 25": {
+                day: "අඟහරුවාදා", date: "නොවැම්බර් 25",
+                exams: [
+                    {code: "33", time: "0830-1030", paper: "I"},
+                    {code: "73", time: "1300-1610", paper: "II"}
+                ]
+            },
+            "Nov 26": {
+                day: "බදාදා", date: "නොවැම්බර් 26",
+                exams: [
+                    {code: "25", time: "0830-1140", paper: "II"}
+                ]
+            },
+            "Nov 27": {
+                day: "බ්‍රහස්පතින්දා", date: "නොවැම්බර් 27",
+                exams: [
+                    {code: "20", time: "1300-1500", paper: "I"}
+                ]
+            },
+            "Nov 28": {
+                day: "සිකුරාදා", date: "නොවැම්බර් 28",
+                exams: [
+                    {code: "33", time: "0830-1140", paper: "II"},
+                    {code: "25", time: "1400-1710", paper: "I"}
+                ]
+            },
+            "Nov 29": {
+                day: "සෙනසුරාදා", date: "නොවැම්බර් 29",
+                exams: [
+                    {code: "20", time: "0830-1140", paper: "II"}
+                ]
+            },
+            "Dec 01": {
+                day: "සඳුදා", date: "දෙසැම්බර් 01",
+                exams: [
+                    {code: "22", time: "1300-1610", paper: "I"}
+                ]
+            },
+            "Dec 02": {
+                day: "අඟහරුවාදා", date: "දෙසැම්බර් 02",
+                exams: [
+                    {code: "22", time: "1300-1610", paper: "II"}
+                ]
+            }
+        };
+
+        function loadSubjectsByStream() {
+            const stream = document.getElementById('streamSelect').value;
+            const container = document.getElementById('subjectsContainer');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if (!stream) {
+                container.innerHTML = '';
+                submitBtn.disabled = true;
+                return;
+            }
+
+            const subjects = streamSubjects[stream];
+            let html = '';
+
+            subjects.forEach(code => {
+                const subject = allSubjects[code];
+                if (subject) {
+                    html += `
+                        <div class="subject-checkbox" id="checkbox-${code}">
+                            <input type="checkbox" id="sub-${code}" value="${code}" 
+                                   onchange="updateSelection('${code}')">
+                            <label for="sub-${code}">${subject.si}</label>
+                        </div>
+                    `;
+                }
+            });
+
+            container.innerHTML = html;
+            submitBtn.disabled = false;
+            selectedSubjects = [];
+        }
+
+        function updateSelection(code) {
+            const checkbox = document.getElementById(`sub-${code}`);
+            const checkboxDiv = document.getElementById(`checkbox-${code}`);
+            
+            if (checkbox.checked) {
+                selectedSubjects.push(code);
+                checkboxDiv.classList.add('checked');
+            } else {
+                selectedSubjects = selectedSubjects.filter(c => c !== code);
+                checkboxDiv.classList.remove('checked');
+            }
+        }
+
+        function generateReport() {
+            if (selectedSubjects.length === 0) {
+                alert('කරුණාකර අවම වශයෙන් විෂයයක් තෝරන්න!');
+                return;
+            }
+
+            const examDays = [];
+            const freeDays = [];
+            const allDates = Object.keys(timetableData);
+
+            allDates.forEach(dateKey => {
+                const dayData = timetableData[dateKey];
+                const hasExam = dayData.exams.some(exam => selectedSubjects.includes(exam.code));
+                
+                if (hasExam) {
+                    const myExams = dayData.exams.filter(exam => selectedSubjects.includes(exam.code));
+                    examDays.push({...dayData, date: dateKey, myExams});
+                } else {
+                    freeDays.push({...dayData, date: dateKey});
+                }
+            });
+
+            displayReport(examDays, freeDays);
+        }
+
+        function displayReport(examDays, freeDays) {
+            document.getElementById('selectionPanel').style.display = 'none';
+            const reportPanel = document.getElementById('reportPanel');
+            
+            let html = `
+                <button class="back-btn" onclick="backToSelection()">⬅️ ආපසු යන්න</button>
+                
+                <div class="report-header">
+                    <h2>📊 ඔබගේ විභාග වාර්තාව</h2>
+                    <div class="selected-subjects">
+                        ${selectedSubjects.map(code => 
+                            `<span class="subject-tag">${allSubjects[code].si}</span>`
+                        ).join('')}
+                    </div>
+                </div>
+
+                <div class="summary-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">${selectedSubjects.length}</div>
+                        <div class="stat-label">තෝරාගත් විෂයයන්</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${examDays.length}</div>
+                        <div class="stat-label">විභාග දින</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${freeDays.length}</div>
+                        <div class="stat-label">නිදහස් දින</div>
+                    </div>
+                </div>
+
+                <div class="exam-days-section">
+                    <h3>📝 විභාග ඇති දින (${examDays.length})</h3>
+                    ${examDays.map(day => `
+                        <div class="day-item">
+                            <div class="day-item-header">
+                                <div class="day-name">${day.day}</div>
+                                <div class="day-date">${day.date}</div>
+                            </div>
+                            <div class="exam-subjects">
+                                ${day.myExams.map(exam => `
+                                    <div class="exam-subject">
+                                        <span><strong>${allSubjects[exam.code].si}</strong> - Paper ${exam.paper}</span>
+                                        <span class="exam-time">${exam.time}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="free-days-section">
+                    <h3>✅ නිදහස් දින (${freeDays.length})</h3>
+                    ${freeDays.map(day => `
+                        <div class="day-item">
+                            <div class="day-item-header">
+                                <div class="day-name">${day.day}</div>
+                                <div class="day-date">${day.date}</div>
+                            </div>
+                            <p style="color: #28a745; font-weight: 600;">
+                                🎉 මෙම දිනයේ ඔබට විභාග නොමැත - පුනරීක්ෂණය සඳහා භාවිතා කරන්න!
+                            </p>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            reportPanel.innerHTML = html;
+            reportPanel.classList.add('show');
+        }
+
+        function backToSelection() {
+            document.getElementById('selectionPanel').style.display = 'block';
+            document.getElementById('reportPanel').classList.remove('show');
+            document.getElementById('reportPanel').innerHTML = '';
+        }
+
+        function switchTab(tab) {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            tabContents.forEach(tc => tc.classList.remove('active'));
+            
+            if (tab === 'full') {
+                tabs[0].classList.add('active');
+                document.getElementById('fullTab').classList.add('active');
+            } else {
+                tabs[1].classList.add('active');
+                document.getElementById('myTab').classList.add('active');
+            }
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            const buttons = document.querySelectorAll('.lang-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // Initialize
+        window.onload = function() {
+            console.log('Timetable loaded successfully!');
+        };
+    </script>
+</body>
+</html>
