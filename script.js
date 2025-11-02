@@ -40,8 +40,103 @@ const nextLessonBtn = document.getElementById('nextLessonBtn');
 const increaseBtn = document.getElementById('increaseBtn');
 const decreaseBtn = document.getElementById('decreaseBtn');
 const lessonList = document.getElementById('lessonList');
+const navBtn = document.getElementById('navBtn');
+const navSidebar = document.getElementById('navSidebar');
+const navOverlay = document.getElementById('navOverlay');
+const navCloseBtn = document.getElementById('navCloseBtn');
+const navContent = document.getElementById('navContent');
+const pageIndicator = document.getElementById('pageIndicator');
 
 document.addEventListener('contextmenu', e => e.preventDefault());
+
+// Navigation Functions
+function toggleNavigation() {
+    navSidebar.classList.toggle('open');
+    navOverlay.classList.toggle('active');
+}
+
+function closeNavigation() {
+    navSidebar.classList.remove('open');
+    navOverlay.classList.remove('active');
+}
+
+function addHeaderIds() {
+    const headers = noteArea.querySelectorAll('h1, h2, h3');
+    headers.forEach((header, index) => {
+        header.id = 'section-' + index;
+        header.classList.add('section-anchor');
+    });
+    console.log('Header IDs added:', headers.length);
+    generateNavigation();
+}
+
+function generateNavigation() {
+    const headers = noteArea.querySelectorAll('h1, h2, h3');
+    
+    if (headers.length === 0) {
+        navContent.innerHTML = '<div class="nav-empty-state"><p>මාතෘකා හමු නොවීය</p></div>';
+        return;
+    }
+    
+    navContent.innerHTML = '';
+    
+    headers.forEach((header, index) => {
+        const navItem = document.createElement('div');
+        navItem.className = 'nav-item ' + header.tagName.toLowerCase();
+        navItem.textContent = header.textContent;
+        
+        const sectionId = header.id || 'section-' + index;
+        
+        navItem.onclick = function() {
+            const targetHeader = document.getElementById(sectionId);
+            if (targetHeader) {
+                targetHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                console.log('Scrolling to:', sectionId, targetHeader.textContent);
+            } else {
+                console.warn('Header not found:', sectionId);
+            }
+            closeNavigation();
+            
+            navItem.style.background = '#667eea';
+            navItem.style.color = 'white';
+            setTimeout(function() {
+                navItem.style.background = '';
+                navItem.style.color = '';
+            }, 300);
+        };
+        
+        navContent.appendChild(navItem);
+    });
+    
+    console.log('Navigation generated with', headers.length, 'items');
+}
+
+function updatePageIndicator() {
+    if (!currentCategory || !currentLessonNumber) {
+        pageIndicator.style.display = 'none';
+        return;
+    }
+    
+    const range = categoryRanges[currentCategory];
+    const categoryName = range.name;
+    pageIndicator.textContent = categoryName + ' - පාඩම ' + currentLessonNumber + ' / ' + range.end;
+    pageIndicator.style.display = 'block';
+}
+
+navBtn.addEventListener('click', toggleNavigation);
+navCloseBtn.addEventListener('click', closeNavigation);
+navOverlay.addEventListener('click', closeNavigation);
+
+document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        toggleNavigation();
+    }
+    
+    if (e.key === 'Escape' && navSidebar.classList.contains('open')) {
+        closeNavigation();
+    }
+});
 
 async function loadLearnXTerms() {
     try {
@@ -49,7 +144,6 @@ async function loadLearnXTerms() {
             throw new Error('Supabase client not initialized');
         }
         
-        // වචන ගණන වැඩි නිසා batch වලින් load කරමු
         let allData = [];
         let from = 0;
         const batchSize = 1000;
@@ -79,8 +173,7 @@ async function loadLearnXTerms() {
         console.log('LearnX terms loaded:', allData.length);
         
         if (allData.length > 0) {
-            allData.forEach(item => {
-                // Normalize the word (trim whitespace)
+            allData.forEach(function(item) {
                 const normalizedWord = item.word.trim();
                 learnXTerms[normalizedWord] = {
                     meaning: item.meaning,
@@ -89,13 +182,6 @@ async function loadLearnXTerms() {
                     originalWord: item.word
                 };
             });
-            
-            // Debug: ධර්මපාල තිබේද බලමු
-            if (learnXTerms['ධර්මපාල']) {
-                console.log('✅ ධර්මපාල found in terms:', learnXTerms['ධර්මපාල']);
-            } else {
-                console.warn('❌ ධර්මපාල still not found');
-            }
             
             console.log('Total unique terms:', Object.keys(learnXTerms).length);
         }
@@ -122,7 +208,7 @@ async function loadLessonTitles() {
         
         if (data) {
             console.log('Lesson titles loaded:', data.length);
-            data.forEach(item => {
+            data.forEach(function(item) {
                 lessonTitles[item.slug] = item.title;
             });
             populateLessons('slhis');
@@ -135,8 +221,10 @@ async function loadLessonTitles() {
 
 function switchCategory(category) {
     currentCategory = category;
-    document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active'));
-    document.querySelector(`.category-tab.${category}`).classList.add('active');
+    document.querySelectorAll('.category-tab').forEach(function(tab) {
+        tab.classList.remove('active');
+    });
+    document.querySelector('.category-tab.' + category).classList.add('active');
     populateLessons(category);
     lessonList.classList.remove('hidden');
 }
@@ -147,11 +235,11 @@ function populateLessons(category) {
     
     for (let i = range.start; i <= range.end; i++) {
         const slug = getSlugFromNumber(category, i);
-        const title = lessonTitles[slug] || `පාඩම ${i}`;
+        const title = lessonTitles[slug] || 'පාඩම ' + i;
         const btn = document.createElement('button');
         btn.className = 'lesson-btn';
-        btn.textContent = `${i}. ${title}`;
-        btn.onclick = () => {
+        btn.textContent = i + '. ' + title;
+        btn.onclick = function() {
             loadArticle(slug);
             lessonList.classList.add('hidden');
             noteArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -161,7 +249,7 @@ function populateLessons(category) {
 }
 
 function getSlugFromNumber(category, number) {
-    return `${category}${String(number).padStart(3, '0')}`;
+    return category + String(number).padStart(3, '0');
 }
 
 function getNumberFromSlug(slug) {
@@ -201,12 +289,15 @@ async function loadArticle(slug) {
             originalHTML = data.content;
             noteArea.innerHTML = data.content;
             
-            requestAnimationFrame(() => {
+            addHeaderIds();
+            
+            requestAnimationFrame(function() {
                 applyCrossReferences();
                 updateNavigationButtons();
                 updateCategoryButtons();
                 updateLessonHighlight();
                 updateURL(slug);
+                updatePageIndicator();
             });
         } else {
             noteArea.innerHTML = '<div class="error">පාඩම හමු නොවිණි.</div>';
@@ -232,19 +323,21 @@ function updateNavigationButtons() {
 }
 
 function updateCategoryButtons() {
-    document.querySelectorAll('.category-tab').forEach(tab => {
+    document.querySelectorAll('.category-tab').forEach(function(tab) {
         tab.classList.remove('active');
     });
     
     if (currentCategory) {
-        document.querySelector(`.category-tab.${currentCategory}`).classList.add('active');
+        document.querySelector('.category-tab.' + currentCategory).classList.add('active');
     }
     
     updateLessonHighlight();
 }
 
 function updateLessonHighlight() {
-    document.querySelectorAll('.lesson-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.lesson-btn').forEach(function(btn) {
+        btn.classList.remove('active');
+    });
     
     if (currentLessonNumber) {
         const buttons = Array.from(lessonList.querySelectorAll('.lesson-btn'));
@@ -272,31 +365,33 @@ function applyCrossReferences() {
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = content;
     
-    tempDiv.querySelectorAll('.cross-ref-term').forEach(term => {
+    const headerInfo = [];
+    tempDiv.querySelectorAll('h1, h2, h3').forEach(function(header, index) {
+        headerInfo.push({
+            tagName: header.tagName,
+            id: header.id,
+            className: header.className || '',
+            text: header.textContent
+        });
+    });
+    
+    tempDiv.querySelectorAll('.cross-ref-term').forEach(function(term) {
         term.outerHTML = term.textContent;
     });
     
     content = tempDiv.innerHTML;
     
-    const sortedTerms = Object.keys(learnXTerms).sort((a, b) => b.length - a.length);
+    const sortedTerms = Object.keys(learnXTerms).sort(function(a, b) {
+        return b.length - a.length;
+    });
     let processedCount = 0;
     
     console.log('Processing cross-references for', sortedTerms.length, 'terms');
     
-    // Debug: First 10 terms බලමු
-    console.log('First 10 terms:', sortedTerms.slice(0, 10));
-    
-    // Debug: ධර්මපාල process වෙනවද බලමු
-    const dharmapaalaIndex = sortedTerms.findIndex(t => t.includes('ධර්මපාල'));
-    if (dharmapaalaIndex >= 0) {
-        console.log('✅ ධර්මපාල will be processed at index:', dharmapaalaIndex);
-    } else {
-        console.warn('❌ ධර්මපාල not in processing list');
-    }
-    
     function processTermBatch() {
         if (processedCount >= sortedTerms.length) {
             console.log('Cross-reference processing complete');
+            restoreHeaderIds();
             return;
         }
         
@@ -312,7 +407,6 @@ function applyCrossReferences() {
             function replaceInNodes(node) {
                 if (node.nodeType === Node.TEXT_NODE) {
                     const text = node.textContent;
-                    // Word boundary regex - වචනය හුදෙකලාව තිබේද කියා පරීක්ෂා කරනවා
                     const regex = new RegExp('(?:^|[\\s,.:;!?()\\-"\'\\u200B\\u200D])(' + escapedTerm + ')(?=[\\s,.:;!?()\\-"\'\\u200B\\u200D]|$)', 'gi');
                     
                     const matches = text.match(regex);
@@ -323,29 +417,25 @@ function applyCrossReferences() {
                         regex.lastIndex = 0;
                         let match;
                         while ((match = regex.exec(text)) !== null) {
-                            // පෙර කොටස add කරන්න
                             if (match.index > lastIndex) {
                                 fragment.appendChild(document.createTextNode(text.substring(lastIndex, match.index)));
                             }
                             
-                            // Separator character එක add කරන්න (space, comma, etc.)
                             const beforeChar = match[0].charAt(0);
                             if (/[\s,.:;!?()\-"'\u200B\u200D]/.test(beforeChar)) {
                                 fragment.appendChild(document.createTextNode(beforeChar));
                             }
                             
-                            // Cross-reference span එක add කරන්න
                             const span = document.createElement('span');
                             span.className = 'cross-ref-term';
                             span.setAttribute('data-meaning', termData.meaning);
                             span.setAttribute('data-slug', termData.slug);
-                            span.textContent = match[1]; // captured term එක පමණයි
+                            span.textContent = match[1];
                             fragment.appendChild(span);
                             
                             lastIndex = match.index + match[0].length;
                         }
                         
-                        // ඉතිරි කොටස add කරන්න
                         if (lastIndex < text.length) {
                             fragment.appendChild(document.createTextNode(text.substring(lastIndex)));
                         }
@@ -356,11 +446,15 @@ function applyCrossReferences() {
                           node.className !== 'cross-ref-term' && 
                           node.tagName !== 'SCRIPT' && 
                           node.tagName !== 'STYLE') {
-                    Array.from(node.childNodes).forEach(child => replaceInNodes(child));
+                    Array.from(node.childNodes).forEach(function(child) {
+                        replaceInNodes(child);
+                    });
                 }
             }
             
-            Array.from(tempContainer.childNodes).forEach(child => replaceInNodes(child));
+            Array.from(tempContainer.childNodes).forEach(function(child) {
+                replaceInNodes(child);
+            });
             content = tempContainer.innerHTML;
         }
         
@@ -368,15 +462,34 @@ function applyCrossReferences() {
             requestAnimationFrame(processTermBatch);
         } else {
             noteArea.innerHTML = content;
+            restoreHeaderIds();
             attachCrossRefListeners();
         }
+    }
+    
+    function restoreHeaderIds() {
+        const headers = noteArea.querySelectorAll('h1, h2, h3');
+        headers.forEach(function(header, index) {
+            if (headerInfo[index]) {
+                if (headerInfo[index].id) {
+                    header.id = headerInfo[index].id;
+                }
+                if (headerInfo[index].className) {
+                    header.className = headerInfo[index].className;
+                }
+                if (!header.classList.contains('section-anchor')) {
+                    header.classList.add('section-anchor');
+                }
+            }
+        });
+        console.log('Header IDs restored:', headers.length);
     }
     
     processTermBatch();
 }
 
 function attachCrossRefListeners() {
-    document.querySelectorAll('.cross-ref-term').forEach(term => {
+    document.querySelectorAll('.cross-ref-term').forEach(function(term) {
         term.addEventListener('click', function(e) {
             e.stopPropagation();
             const meaning = this.getAttribute('data-meaning');
@@ -389,10 +502,14 @@ function attachCrossRefListeners() {
 
 function showTooltip(text, slug) {
     const cleanText = text.replace(/<br\s*\/?>/gi, '|||BREAK|||');
-    const meanings = cleanText.split('|||BREAK|||').filter(m => m.trim());
+    const meanings = cleanText.split('|||BREAK|||').filter(function(m) {
+        return m.trim();
+    });
     
     if (meanings.length > 1) {
-        tooltip.innerHTML = meanings.map(m => '<div class="tooltip-meaning">' + m.trim() + '</div>').join('');
+        tooltip.innerHTML = meanings.map(function(m) {
+            return '<div class="tooltip-meaning">' + m.trim() + '</div>';
+        }).join('');
     } else {
         tooltip.innerHTML = '<div class="tooltip-meaning">' + text + '</div>';
     }
@@ -432,7 +549,7 @@ searchBox.addEventListener('input', function() {
         return;
     }
     
-    searchTimeout = setTimeout(() => {
+    searchTimeout = setTimeout(function() {
         const text = noteArea.textContent;
         const regex = new RegExp('(' + searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
         const matches = text.match(regex);
@@ -457,7 +574,9 @@ searchBox.addEventListener('input', function() {
                 } else if (node.nodeType === Node.ELEMENT_NODE && 
                           node.tagName !== 'SCRIPT' && 
                           node.tagName !== 'STYLE') {
-                    Array.from(node.childNodes).forEach(child => highlightTextNodes(child));
+                    Array.from(node.childNodes).forEach(function(child) {
+                        highlightTextNodes(child);
+                    });
                 }
             }
             
@@ -513,8 +632,13 @@ function navigateHighlights(direction) {
     updateSearchNavButtons();
 }
 
-prevSearchBtn.addEventListener('click', () => navigateHighlights('prev'));
-nextSearchBtn.addEventListener('click', () => navigateHighlights('next'));
+prevSearchBtn.addEventListener('click', function() {
+    navigateHighlights('prev');
+});
+
+nextSearchBtn.addEventListener('click', function() {
+    navigateHighlights('next');
+});
 
 increaseBtn.addEventListener('click', function() {
     fontSize += 2;
