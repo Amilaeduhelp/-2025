@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LearnX අර්ථදීපනී</title>
+    <title>සිංහල Smart Search</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
@@ -58,8 +58,10 @@
         };
 
         // Popup Modal Component
-        function ContentModal({ item, type, onClose, searchWord }) {
+        function ContentModal({ item, type, onClose, searchWord, onNavigate }) {
             const contentRef = useRef(null);
+            const [relatedArticles, setRelatedArticles] = useState([]);
+            const [loadingRelated, setLoadingRelated] = useState(false);
 
             useEffect(() => {
                 document.body.style.overflow = 'hidden';
@@ -67,6 +69,54 @@
                     document.body.style.overflow = 'unset';
                 };
             }, []);
+
+            // Modal content වෙනස් වූ විට top එකට scroll කරන්න
+            useEffect(() => {
+                if (contentRef.current) {
+                    contentRef.current.scrollTop = 0;
+                }
+            }, [item.id]); // item එක වෙනස් වූ විට trigger වේ
+
+            // අතිරේක කියවීම් සොයන function
+            useEffect(() => {
+                const fetchRelatedArticles = async () => {
+                    // learnX අර්ථදීපනී සඳහා පමණක් related articles සොයන්න
+                    if (type !== 'learnX අර්ථදීපනී' || !searchWord) return;
+                    
+                    setLoadingRelated(true);
+                    try {
+                        // searchWord එකේ වචන වෙන් කරන්න (space වලින් split කරන්න)
+                        const words = searchWord.split(/\s+/).filter(w => w.length > 2);
+                        
+                        if (words.length === 0) {
+                            setLoadingRelated(false);
+                            return;
+                        }
+
+                        // සෑම වචනයක්ම meaning column එකේ සොයන query එකක්
+                        const searchTerms = words.map(w => `meaning.ilike.*${encodeURIComponent(w)}*`).join(',');
+                        const url = `${SUPABASE_URL}/rest/v1/learnX pedia?select=id,word,meaning&or=(${searchTerms})&word=neq.${encodeURIComponent(searchWord)}&limit=6`;
+                        
+                        const response = await fetch(url, {
+                            headers: {
+                                'apikey': SUPABASE_ANON_KEY,
+                                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            setRelatedArticles(data);
+                        }
+                    } catch (err) {
+                        console.error('Error fetching related articles:', err);
+                    }
+                    setLoadingRelated(false);
+                };
+
+                fetchRelatedArticles();
+            }, [searchWord, type]);
 
             // වචනය highlight කරන්න
             const highlightText = (text) => {
@@ -136,6 +186,49 @@
 
                         {/* Content */}
                         <div ref={contentRef} className="p-4 sm:p-6 overflow-y-auto max-h-[calc(95vh-200px)] sm:max-h-[calc(90vh-200px)]">
+                            {type === 'learnX අර්ථදීපනී' && (
+                                <div className="prose prose-sm sm:prose-lg max-w-none">
+                                    <p className="text-gray-800 whitespace-pre-wrap leading-relaxed text-sm sm:text-base">
+                                        {highlightText(item.meaning)}
+                                    </p>
+
+                                    {/* අතිරේක කියවීම් Section */}
+                                    {relatedArticles.length > 0 && (
+                                        <div className="mt-6 sm:mt-8 pt-6 border-t-2 border-amber-200">
+                                            <h3 className="text-lg sm:text-xl font-bold text-amber-900 mb-4 flex items-center gap-2">
+                                                <span>📖</span>
+                                                <span>අතිරේක කියවීම්</span>
+                                            </h3>
+                                            <div className="grid grid-cols-1 gap-3">
+                                                {relatedArticles.map((article) => (
+                                                    <button
+                                                        key={article.id}
+                                                        onClick={() => onNavigate(article)}
+                                                        className="text-left p-3 sm:p-4 bg-gradient-to-r from-amber-50 to-orange-50 hover:from-amber-100 hover:to-orange-100 rounded-lg border-2 border-amber-200 hover:border-amber-400 transition-all transform hover:scale-[1.02]"
+                                                    >
+                                                        <h4 className="font-bold text-amber-900 text-sm sm:text-base mb-1 flex items-center gap-2">
+                                                            <span className="text-amber-600">→</span>
+                                                            {article.word}
+                                                        </h4>
+                                                        <p className="text-gray-600 text-xs sm:text-sm line-clamp-2">
+                                                            {article.meaning.substring(0, 100)}...
+                                                        </p>
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {loadingRelated && (
+                                        <div className="mt-6 sm:mt-8 pt-6 border-t-2 border-amber-200 text-center">
+                                            <div className="flex justify-center mb-2">
+                                                <LoaderIcon />
+                                            </div>
+                                            <p className="text-amber-700 text-xs sm:text-sm">අතිරේක කියවීම් සොයමින්...</p>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                             {type === 'ඉතිහාසය' && (
                                 <div className="prose prose-sm sm:prose-lg max-w-none">
                                     <p className="text-gray-800 whitespace-pre-wrap leading-relaxed text-sm sm:text-base">
@@ -200,6 +293,7 @@
             const [loadingRelated, setLoadingRelated] = useState(false);
             const [showRelated, setShowRelated] = useState(false);
             const [modalContent, setModalContent] = useState(null);
+            const [navigationHistory, setNavigationHistory] = useState([]);
             const searchRef = useRef(null);
 
             // Search learnX pedia for suggestions
@@ -292,12 +386,43 @@
                 setSearchTerm(item.word);
                 setShowSuggestions(false);
                 setShowRelated(false);
+                // learnX අර්ථදීපනී වලින් select කළහොත් එය modal එකේ විවෘත කරන්න
+                setModalContent({ item, type: 'learnX අර්ථදීපනී' });
+                setNavigationHistory([]);
                 await searchRelatedContent(item.word);
             };
 
             // Open modal with content
             const openModal = (item, type) => {
                 setModalContent({ item, type });
+                setNavigationHistory([]);
+            };
+
+            // අතිරේක ලිපියකට navigate කරන්න
+            const navigateToRelatedArticle = (article) => {
+                // වත්මන් modal content එක history එකට add කරන්න
+                setNavigationHistory(prev => [...prev, modalContent]);
+                // නව article එක modal එකේ පෙන්වන්න
+                setModalContent({ item: article, type: 'learnX අර්ථදීපනී' });
+                // නව word එක selectedWord එකට set කරන්න (අතිරේක කියවීම් සඳහා)
+                setSelectedWord(article);
+            };
+
+            // Back button - පෙර ලිපිය යළි පෙන්වන්න
+            const goBack = () => {
+                if (navigationHistory.length > 0) {
+                    const previous = navigationHistory[navigationHistory.length - 1];
+                    setModalContent(previous);
+                    // selectedWord එකත් යාවත්කාලීන කරන්න
+                    setSelectedWord(previous.item);
+                    setNavigationHistory(prev => prev.slice(0, -1));
+                }
+            };
+
+            // Modal close කරන විට history clear කරන්න
+            const closeModal = () => {
+                setModalContent(null);
+                setNavigationHistory([]);
             };
 
             // Debounced search
@@ -399,7 +524,7 @@
                         </div>
 
                         {/* Selected Word Display */}
-                        {selectedWord && (
+                        {selectedWord && !modalContent && (
                             <div className="space-y-4 sm:space-y-6">
                                 {/* Main Definition */}
                                 <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 border-l-4 border-amber-500">
@@ -409,7 +534,7 @@
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <h2 className="text-2xl sm:text-3xl font-bold text-amber-900 break-words">{selectedWord.word}</h2>
-                                            <p className="text-xs sm:text-sm text-amber-600 mt-1">ශබ්ද කෝෂයෙන්</p>
+                                            <p className="text-xs sm:text-sm text-amber-600 mt-1">learnX අර්ථදීපනී වලින්</p>
                                         </div>
                                     </div>
                                     <div className="pl-0 sm:pl-14">
@@ -526,8 +651,24 @@
                             item={modalContent.item}
                             type={modalContent.type}
                             searchWord={selectedWord?.word}
-                            onClose={() => setModalContent(null)}
+                            onClose={closeModal}
+                            onNavigate={navigateToRelatedArticle}
                         />
+                    )}
+
+                    {/* Back Button Overlay - Modal එක විවෘතව ඇති විට සහ history තිබේ නම් */}
+                    {modalContent && navigationHistory.length > 0 && (
+                        <div className="fixed top-4 left-4 z-[60]">
+                            <button
+                                onClick={goBack}
+                                className="bg-amber-600 hover:bg-amber-700 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-full shadow-2xl font-bold text-sm sm:text-base flex items-center gap-2 transition-all transform hover:scale-105"
+                            >
+                                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                                </svg>
+                                <span>ආපසු යන්න</span>
+                            </button>
+                        </div>
                     )}
                 </div>
             );
