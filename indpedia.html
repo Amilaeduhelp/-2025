@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>සිංහල Smart Search</title>
+    <title>LearnX අර්ථදීපනී</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
@@ -211,9 +211,10 @@
 
                 try {
                     const encodedTerm = encodeURIComponent(term);
-                    // word column එකේ "/" වලින් වෙන් කළ වචන සලකමින් search කරන query
-                    // word=ilike පමණක් නොව, word column එකේ "/" වලින් split වන කොටස් සලකයි
-                    const url = `${SUPABASE_URL}/rest/v1/learnX pedia?select=id,word,meaning&or=(word.ilike.${encodedTerm}*,word.ilike.*/${encodedTerm}*)&limit=10&order=word.asc`;
+                    // වචනයේ ඕනෑම තැනක match වන පරිදි search කරන query
+                    // *${term}* = වචනයේ මුල, මැද, අග ඕනෑම තැනක
+                    // උදා: "පොෆ්" search කළහොත් "අන්ද්‍රපොෆ්", "යූරි ඇන්ඩ්‍රොපොව්" යනාදිය match වේ
+                    const url = `${SUPABASE_URL}/rest/v1/learnX pedia?select=id,word,meaning&word=ilike.*${encodedTerm}*&limit=10&order=word.asc`;
                     
                     const response = await fetch(url, {
                         headers: {
