@@ -204,14 +204,16 @@
 
             // Search learnX pedia for suggestions
             const searchDictionary = async (term) => {
-                if (term.length < 2) {
+                if (term.length < 1) {
                     setSuggestions([]);
                     return;
                 }
 
                 try {
                     const encodedTerm = encodeURIComponent(term);
-                    const url = `${SUPABASE_URL}/rest/v1/learnX pedia?select=id,word,meaning&word=ilike.${encodedTerm}*&limit=10&order=word.asc`;
+                    // word column එකේ "/" වලින් වෙන් කළ වචන සලකමින් search කරන query
+                    // word=ilike පමණක් නොව, word column එකේ "/" වලින් split වන කොටස් සලකයි
+                    const url = `${SUPABASE_URL}/rest/v1/learnX pedia?select=id,word,meaning&or=(word.ilike.${encodedTerm}*,word.ilike.*/${encodedTerm}*)&limit=10&order=word.asc`;
                     
                     const response = await fetch(url, {
                         headers: {
@@ -300,7 +302,7 @@
             // Debounced search
             useEffect(() => {
                 const timer = setTimeout(() => {
-                    if (searchTerm && searchTerm.length >= 2) {
+                    if (searchTerm && searchTerm.length >= 1) {
                         searchDictionary(searchTerm);
                     } else {
                         setSuggestions([]);
@@ -385,7 +387,7 @@
                                 )}
 
                                 {/* No results message */}
-                                {showSuggestions && suggestions.length === 0 && searchTerm.length >= 2 && (
+                                {showSuggestions && suggestions.length === 0 && searchTerm.length >= 1 && (
                                     <div className="mt-3 sm:mt-4 border-t-2 border-amber-100 pt-3 sm:pt-4">
                                         <p className="text-amber-600 text-center py-3 sm:py-4 text-sm sm:text-base">
                                             "{searchTerm}" සඳහා ප්‍රතිඵල හමු නොවීය
