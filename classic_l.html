@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>සම්භාව්‍ය සාහිත්‍ය පරිශීලකය</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans Sinhala', 'FMAbhaya', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .controls label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #495057;
+        }
+        
+        .controls select,
+        .controls input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .controls input {
+            cursor: text;
+        }
+        
+        .controls select:hover,
+        .controls input:hover {
+            border-color: #667eea;
+        }
+        
+        .controls select:focus,
+        .controls input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+        }
+        
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .content {
+            padding: 40px;
+            line-height: 2.2;
+            font-size: 18px;
+            color: #212529;
+            min-height: 400px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .content.empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-style: italic;
+        }
+        
+        .word {
+            color: #0d6efd;
+            cursor: pointer;
+            transition: all 0.2s;
+            padding: 2px 0;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+        }
+        
+        .word:hover {
+            background: #cfe2ff;
+            color: #084298;
+            border-radius: 3px;
+            text-decoration: solid;
+        }
+        
+        .popup {
+            display: none;
+            position: fixed;
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 15px 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 1000;
+            max-width: 400px;
+            animation: popupFade 0.2s ease-in;
+        }
+        
+        @keyframes popupFade {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .popup-word {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        .popup-meaning {
+            color: #495057;
+            line-height: 1.6;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+        }
+        
+        .error {
+            text-align: center;
+            padding: 20px;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>සම්භාව්‍ය සාහිත්‍ය පරිශීලකය</h1>
+            <p>පොතක් තෝරා වචන අර්ථ දැනගන්න</p>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="searchInput">පොතේ නමින් සොයන්න:</label>
+                <input type="text" id="searchInput" list="bookSuggestions" placeholder="">
+                <datalist id="bookSuggestions"></datalist>
+            </div>
+            
+            <div class="control-group">
+                <label for="typeSelect">වර්ගය:</label>
+                <select id="typeSelect">
+                    <option value="">සියල්ල</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="bookSelect">පොත තෝරන්න:</label>
+                <select id="bookSelect">
+                    <option value="">පොතක් තෝරන්න...</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="content empty" id="content">
+            පොතක් තෝරන්න...
+        </div>
+    </div>
+    
+    <div class="popup" id="popup">
+        <div class="popup-word" id="popupWord"></div>
+        <div class="popup-meaning" id="popupMeaning"></div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://uqgzlaxsnknheoerbfus.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxZ3psYXhzbmtuaGVvZXJiZnVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5MjM2MTUsImV4cCI6MjA3OTI4MzYxNX0.IYWZ7ukx8J-GJMWy7cMk2BWnmzJmJjjE93yEmJie7nQ';
+        
+        let wordsDictionary = {};
+        let allBooks = [];
+        let currentFilter = {
+            search: '',
+            type: ''
+        };
+        
+        async function fetchData(table, select = '*') {
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/${table}?select=${select}`, {
+                headers: {
+                    'apikey': SUPABASE_KEY,
+                    'Authorization': `Bearer ${SUPABASE_KEY}`
+                }
+            });
+            return await response.json();
+        }
+        
+        async function loadBooks() {
+            try {
+                const books = await fetchData('classic_l', 'book,content,type');
+                allBooks = books;
+                
+                // Load unique types
+                const types = [...new Set(books.map(b => b.type).filter(t => t))];
+                const typeSelect = document.getElementById('typeSelect');
+                types.sort().forEach(type => {
+                    const option = document.createElement('option');
+                    option.value = type;
+                    option.textContent = type;
+                    typeSelect.appendChild(option);
+                });
+                
+                // Initial display of all books
+                displayFilteredBooks();
+            } catch (error) {
+                document.getElementById('content').innerHTML = '<div class="error">පොත් ලොඩ් කිරීමේ දී දෝෂයක් ඇතිවිය</div>';
+            }
+        }
+        
+        function displayFilteredBooks() {
+            const bookSelect = document.getElementById('bookSelect');
+            bookSelect.innerHTML = '<option value="">පොතක් තෝරන්න...</option>';
+            
+            let filtered = allBooks;
+            
+            // Filter by type
+            if (currentFilter.type) {
+                filtered = filtered.filter(book => book.type === currentFilter.type);
+            }
+            
+            // Filter by search
+            if (currentFilter.search) {
+                filtered = filtered.filter(book => 
+                    book.book && book.book.toLowerCase().includes(currentFilter.search.toLowerCase())
+                );
+            }
+            
+            // Display filtered books
+            filtered.forEach(book => {
+                const option = document.createElement('option');
+                option.value = book.content;
+                option.textContent = book.book;
+                option.dataset.type = book.type || '';
+                bookSelect.appendChild(option);
+            });
+            
+            // Show message if no results
+            if (filtered.length === 0) {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'ප්‍රතිඵල හමු නොවුණි';
+                option.disabled = true;
+                bookSelect.appendChild(option);
+            }
+        }
+        
+        function updateSuggestions() {
+            const datalist = document.getElementById('bookSuggestions');
+            datalist.innerHTML = '';
+            
+            let filtered = allBooks;
+            
+            // Filter by type if selected
+            if (currentFilter.type) {
+                filtered = filtered.filter(book => book.type === currentFilter.type);
+            }
+            
+            // Filter by search term
+            if (currentFilter.search) {
+                filtered = filtered.filter(book => 
+                    book.book && book.book.toLowerCase().includes(currentFilter.search.toLowerCase())
+                );
+            }
+            
+            // Add suggestions
+            filtered.forEach(book => {
+                const option = document.createElement('option');
+                option.value = book.book;
+                datalist.appendChild(option);
+            });
+        }
+        
+        async function loadDictionary() {
+            try {
+                const words = await fetchData('sinhala_words', 'word,meaning,different');
+                console.log('Total words loaded:', words.length);
+                words.forEach(item => {
+                    if (item.word && item.word.trim()) {
+                        wordsDictionary[item.word.trim()] = {
+                            meaning: item.meaning || '',
+                            originalWord: item.word.trim(),
+                            isDifferent: false
+                        };
+                    }
+                    if (item.different && item.different.trim()) {
+                        // Split by "/" to handle multiple different forms
+                        const differentForms = item.different.split('/');
+                        differentForms.forEach(form => {
+                            const trimmedForm = form.trim();
+                            if (trimmedForm) {
+                                wordsDictionary[trimmedForm] = {
+                                    meaning: item.meaning || '',
+                                    originalWord: item.word ? item.word.trim() : '',
+                                    isDifferent: true
+                                };
+                            }
+                        });
+                    }
+                });
+                console.log('Dictionary loaded. Testing "සමයක":', wordsDictionary['සමයක']);
+                console.log('Total entries in dictionary:', Object.keys(wordsDictionary).length);
+            } catch (error) {
+                console.error('Dictionary loading error:', error);
+            }
+        }
+        
+        function processText(text) {
+            const words = text.split(/(\s+)/);
+            let processedHTML = '';
+            
+            words.forEach(segment => {
+                if (segment.trim() === '') {
+                    processedHTML += segment;
+                } else {
+                    const cleanWord = segment.trim();
+                    const wordData = wordsDictionary[cleanWord];
+                    if (wordData && wordData.meaning) {
+                        processedHTML += `<span class="word" data-word="${cleanWord}">${segment}</span>`;
+                    } else {
+                        processedHTML += segment;
+                    }
+                }
+            });
+            
+            return processedHTML;
+        }
+        
+        document.getElementById('bookSelect').addEventListener('change', function() {
+            const content = this.value;
+            const contentDiv = document.getElementById('content');
+            
+            if (content) {
+                contentDiv.classList.remove('empty');
+                contentDiv.innerHTML = processText(content);
+            } else {
+                contentDiv.classList.add('empty');
+                contentDiv.textContent = 'පොතක් තෝරන්න...';
+            }
+        });
+        
+        document.getElementById('searchInput').addEventListener('input', function() {
+            currentFilter.search = this.value;
+            updateSuggestions();
+            displayFilteredBooks();
+        });
+        
+        document.getElementById('typeSelect').addEventListener('change', function() {
+            currentFilter.type = this.value;
+            displayFilteredBooks();
+        });
+        
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('word')) {
+                const word = e.target.dataset.word;
+                const wordData = wordsDictionary[word];
+                
+                if (wordData) {
+                    const popup = document.getElementById('popup');
+                    const popupWord = document.getElementById('popupWord');
+                    const popupMeaning = document.getElementById('popupMeaning');
+                    
+                    if (wordData.isDifferent) {
+                        popupWord.textContent = `ඔබ සොයන වචනය '${word}'`;
+                        popupMeaning.textContent = `ශබ්දකෝෂයේ '${wordData.originalWord}' යන වචනය තිබේ. එහි අරුත පහත පරිදි වේ.ගැළපේ ද බලන්න.\n\n${wordData.meaning}`;
+                    } else {
+                        popupWord.textContent = word;
+                        popupMeaning.textContent = wordData.meaning;
+                    }
+                    
+                    const rect = e.target.getBoundingClientRect();
+                    popup.style.left = rect.left + 'px';
+                    popup.style.top = (rect.bottom + 5) + 'px';
+                    popup.style.display = 'block';
+                }
+            } else {
+                document.getElementById('popup').style.display = 'none';
+            }
+        });
+        
+        (async function init() {
+            await loadDictionary();
+            await loadBooks();
+        })();
+    </script>
+</body>
+</html>
