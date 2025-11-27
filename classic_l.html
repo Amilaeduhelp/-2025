@@ -168,42 +168,72 @@
         }
         
         .word {
-            color: #AFB42B;
+            color: #5AAA05;
             cursor: pointer;
             transition: all 0.2s;
-            padding: 2px 0;
+            padding: 2px 4px;
+            font-weight: bold;
             text-decoration: underline;
-            text-decoration-style: dotted;
+            text-decoration-style: solid;
+            text-decoration-color: #5AAA05;
+            text-decoration-thickness: 2px;
         }
         
         .word:hover {
             background: #F9FBE7;
-            color: #827717;
+            color: #558B2F;
             border-radius: 3px;
-            text-decoration: solid;
+            text-decoration-thickness: 2.5px;
+        }
+        
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            animation: overlayFade 0.2s ease-in;
         }
         
         .popup {
             display: none;
             position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             background: white;
             border: 3px solid #AFB42B;
             border-radius: 0.75rem;
-            padding: 1rem 1.25rem;
+            padding: 1.5rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             z-index: 1000;
-            max-width: 400px;
+            max-width: 450px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
             animation: popupFade 0.2s ease-in;
+        }
+        
+        @keyframes overlayFade {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
         
         @keyframes popupFade {
             from {
                 opacity: 0;
-                transform: translateY(-10px);
+                transform: translate(-50%, -50%) scale(0.95);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translate(-50%, -50%) scale(1);
             }
         }
         
@@ -300,6 +330,7 @@
         </div>
     </div>
     
+    <div class="popup-overlay" id="popupOverlay"></div>
     <div class="popup" id="popup">
         <div class="popup-word" id="popupWord"></div>
         <div class="popup-meaning" id="popupMeaning"></div>
@@ -478,12 +509,14 @@
         });
         
         document.addEventListener('click', function(e) {
+            const popup = document.getElementById('popup');
+            const overlay = document.getElementById('popupOverlay');
+            
             if (e.target.classList.contains('word')) {
                 const word = e.target.dataset.word;
                 const wordData = wordsDictionary[word];
                 
                 if (wordData) {
-                    const popup = document.getElementById('popup');
                     const popupWord = document.getElementById('popupWord');
                     const popupMeaning = document.getElementById('popupMeaning');
                     
@@ -495,13 +528,12 @@
                         popupMeaning.textContent = wordData.meaning;
                     }
                     
-                    const rect = e.target.getBoundingClientRect();
-                    popup.style.left = rect.left + 'px';
-                    popup.style.top = (rect.bottom + 5) + 'px';
+                    overlay.style.display = 'block';
                     popup.style.display = 'block';
                 }
-            } else {
-                document.getElementById('popup').style.display = 'none';
+            } else if (e.target.id === 'popupOverlay' || (!popup.contains(e.target) && overlay.style.display === 'block')) {
+                overlay.style.display = 'none';
+                popup.style.display = 'none';
             }
         });
         
