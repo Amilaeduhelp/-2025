@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>සම්භාව්‍ය සාහිත්‍ය පරිශීලකය</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Sinhala:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,94 +13,157 @@
         }
         
         body {
-            font-family: 'Noto Sans Sinhala', 'FMAbhaya', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Noto Serif Sinhala', serif;
+            background: #EBF9DE;
             min-height: 100vh;
-            padding: 20px;
         }
         
         .container {
-            max-width: 900px;
+            max-width: 7xl;
             margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
+            padding: 1.5rem;
         }
         
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
             text-align: center;
+            margin-bottom: 2rem;
+            padding-top: 1.5rem;
+        }
+        
+        .header-title {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
         }
         
         .header h1 {
-            font-size: 2em;
-            margin-bottom: 10px;
+            font-size: 3rem;
+            font-weight: bold;
+            color: #827717;
+        }
+        
+        .header p {
+            color: #827717;
+            font-size: 1.125rem;
+            opacity: 0.9;
+            font-weight: 600;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            flex: 1;
+            min-width: 200px;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(130, 119, 23, 0.4);
+            border-radius: 1rem 1rem 0 0;
+            color: #827717;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.125rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        .tab.active {
+            background: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-bottom: 4px solid #AFB42B;
+        }
+        
+        .main-content {
+            background: white;
+            border-radius: 0 0 1rem 1rem;
+            border-radius: 0 1rem 1rem 1rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
         }
         
         .controls {
-            padding: 20px 30px;
-            background: #f8f9fa;
-            border-bottom: 2px solid #e9ecef;
+            background: #B7E28F;
+            padding: 2rem;
         }
         
-        .controls label {
-            display: block;
-            margin-bottom: 8px;
+        .controls h2 {
+            font-size: 1.875rem;
             font-weight: bold;
-            color: #495057;
-        }
-        
-        .controls select,
-        .controls input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #dee2e6;
-            border-radius: 8px;
-            font-size: 16px;
-            font-family: inherit;
-            background: white;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .controls input {
-            cursor: text;
-        }
-        
-        .controls select:hover,
-        .controls input:hover {
-            border-color: #667eea;
-        }
-        
-        .controls select:focus,
-        .controls input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            color: #827717;
+            margin-bottom: 1.5rem;
+            text-align: center;
         }
         
         .control-group {
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
+            max-width: 48rem;
+            margin-left: auto;
+            margin-right: auto;
         }
         
         .control-group:last-child {
             margin-bottom: 0;
         }
         
-        .content {
-            padding: 40px;
+        .control-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #827717;
+        }
+        
+        .control-group select,
+        .control-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #827717;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-family: inherit;
+            background: white;
+            transition: all 0.3s;
+        }
+        
+        .control-group input {
+            cursor: text;
+        }
+        
+        .control-group select:hover,
+        .control-group input:hover {
+            border-color: #AFB42B;
+        }
+        
+        .control-group select:focus,
+        .control-group input:focus {
+            outline: none;
+            border-color: #AFB42B;
+            box-shadow: 0 0 0 3px rgba(175, 180, 43, 0.2);
+        }
+        
+        .content-wrapper {
+            padding: 2.5rem;
             line-height: 2.2;
-            font-size: 18px;
+            font-size: 1.125rem;
             color: #212529;
             min-height: 400px;
             white-space: pre-wrap;
             word-wrap: break-word;
         }
         
-        .content.empty {
+        .content-wrapper.empty {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -108,7 +172,7 @@
         }
         
         .word {
-            color: #0d6efd;
+            color: #AFB42B;
             cursor: pointer;
             transition: all 0.2s;
             padding: 2px 0;
@@ -117,8 +181,8 @@
         }
         
         .word:hover {
-            background: #cfe2ff;
-            color: #084298;
+            background: #F9FBE7;
+            color: #827717;
             border-radius: 3px;
             text-decoration: solid;
         }
@@ -127,10 +191,10 @@
             display: none;
             position: fixed;
             background: white;
-            border: 2px solid #667eea;
-            border-radius: 10px;
-            padding: 15px 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 3px solid #AFB42B;
+            border-radius: 0.75rem;
+            padding: 1rem 1.25rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             z-index: 1000;
             max-width: 400px;
             animation: popupFade 0.2s ease-in;
@@ -149,8 +213,8 @@
         
         .popup-word {
             font-weight: bold;
-            color: #667eea;
-            margin-bottom: 8px;
+            color: #827717;
+            margin-bottom: 0.5rem;
             font-size: 1.1em;
         }
         
@@ -159,50 +223,84 @@
             line-height: 1.6;
         }
         
-        .loading {
+        .loading,
+        .error {
             text-align: center;
-            padding: 20px;
+            padding: 1.25rem;
             color: #6c757d;
         }
         
         .error {
-            text-align: center;
-            padding: 20px;
             color: #dc3545;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .footer p {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+        
+        .footer p:last-child {
+            color: #adb5bd;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>සම්භාව්‍ය සාහිත්‍ය පරිශීලකය</h1>
-            <p>පොතක් තෝරා වචන අර්ථ දැනගන්න</p>
+            <div class="header-title">
+                <h1>සිංහල ශබ්දකෝෂය</h1>
+            </div>
+            <p>සිංහල භාෂාවේ අලංකාර යෙදුම් එකතුව</p>
         </div>
         
-        <div class="controls">
-            <div class="control-group">
-                <label for="searchInput">පොතේ නමින් සොයන්න:</label>
-                <input type="text" id="searchInput" list="bookSuggestions" placeholder="">
-                <datalist id="bookSuggestions"></datalist>
-            </div>
-            
-            <div class="control-group">
-                <label for="typeSelect">වර්ගය:</label>
-                <select id="typeSelect">
-                    <option value="">සියල්ල</option>
-                </select>
-            </div>
-            
-            <div class="control-group">
-                <label for="bookSelect">පොත තෝරන්න:</label>
-                <select id="bookSelect">
-                    <option value="">පොතක් තෝරන්න...</option>
-                </select>
-            </div>
-        </div>
+        <div class="tabs">
+    <a href="විසිතුරු හෙලබස.html" class="tab">විසිතුරු හෙළ යෙදුම්</a>
+    <a href="https://amilaeduhelp.github.io/dictionary/" class="tab">සිංහල ශබ්දකෝෂය</a>
+    <div class="tab active">සාහිත කෙත</div>
+</div>
         
-        <div class="content empty" id="content">
-            පොතක් තෝරන්න...
+        <div class="main-content">
+            <div class="controls">
+                <h2>📚 සම්භාව්‍ය සාහිත්‍ය පරිශීලකය</h2>
+                
+                <div class="control-group">
+                    <label for="searchInput">පොතේ නමින් සොයන්න:</label>
+                    <input type="text" id="searchInput" list="bookSuggestions" placeholder="පොතේ නම ටයිප් කරන්න...">
+                    <datalist id="bookSuggestions"></datalist>
+                </div>
+                
+                <div class="control-group">
+                    <label for="typeSelect">වර්ගය:</label>
+                    <select id="typeSelect">
+                        <option value="">සියල්ල</option>
+                    </select>
+                </div>
+                
+                <div class="control-group">
+                    <label for="bookSelect">පොත තෝරන්න:</label>
+                    <select id="bookSelect">
+                        <option value="">පොතක් තෝරන්න...</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="content-wrapper empty" id="content">
+                පොතක් තෝරන්න...
+            </div>
+            
+            <div class="footer">
+                <p>Copyright © Amila Udawattha</p>
+                <p>සියලු විශේෂාංග සහිතව - සාහිත කෙත v1.0</p>
+            </div>
         </div>
     </div>
     
@@ -237,7 +335,6 @@
                 const books = await fetchData('classic_l', 'book,content,type');
                 allBooks = books;
                 
-                // Load unique types
                 const types = [...new Set(books.map(b => b.type).filter(t => t))];
                 const typeSelect = document.getElementById('typeSelect');
                 types.sort().forEach(type => {
@@ -247,7 +344,6 @@
                     typeSelect.appendChild(option);
                 });
                 
-                // Initial display of all books
                 displayFilteredBooks();
             } catch (error) {
                 document.getElementById('content').innerHTML = '<div class="error">පොත් ලොඩ් කිරීමේ දී දෝෂයක් ඇතිවිය</div>';
@@ -260,19 +356,16 @@
             
             let filtered = allBooks;
             
-            // Filter by type
             if (currentFilter.type) {
                 filtered = filtered.filter(book => book.type === currentFilter.type);
             }
             
-            // Filter by search
             if (currentFilter.search) {
                 filtered = filtered.filter(book => 
                     book.book && book.book.toLowerCase().includes(currentFilter.search.toLowerCase())
                 );
             }
             
-            // Display filtered books
             filtered.forEach(book => {
                 const option = document.createElement('option');
                 option.value = book.content;
@@ -281,7 +374,6 @@
                 bookSelect.appendChild(option);
             });
             
-            // Show message if no results
             if (filtered.length === 0) {
                 const option = document.createElement('option');
                 option.value = '';
@@ -297,19 +389,16 @@
             
             let filtered = allBooks;
             
-            // Filter by type if selected
             if (currentFilter.type) {
                 filtered = filtered.filter(book => book.type === currentFilter.type);
             }
             
-            // Filter by search term
             if (currentFilter.search) {
                 filtered = filtered.filter(book => 
                     book.book && book.book.toLowerCase().includes(currentFilter.search.toLowerCase())
                 );
             }
             
-            // Add suggestions
             filtered.forEach(book => {
                 const option = document.createElement('option');
                 option.value = book.book;
@@ -320,7 +409,6 @@
         async function loadDictionary() {
             try {
                 const words = await fetchData('sinhala_words', 'word,meaning,different');
-                console.log('Total words loaded:', words.length);
                 words.forEach(item => {
                     if (item.word && item.word.trim()) {
                         wordsDictionary[item.word.trim()] = {
@@ -330,7 +418,6 @@
                         };
                     }
                     if (item.different && item.different.trim()) {
-                        // Split by "/" to handle multiple different forms
                         const differentForms = item.different.split('/');
                         differentForms.forEach(form => {
                             const trimmedForm = form.trim();
@@ -344,8 +431,6 @@
                         });
                     }
                 });
-                console.log('Dictionary loaded. Testing "සමයක":', wordsDictionary['සමයක']);
-                console.log('Total entries in dictionary:', Object.keys(wordsDictionary).length);
             } catch (error) {
                 console.error('Dictionary loading error:', error);
             }
@@ -408,7 +493,7 @@
                     
                     if (wordData.isDifferent) {
                         popupWord.textContent = `ඔබ සොයන වචනය '${word}'`;
-                        popupMeaning.textContent = `ශබ්දකෝෂයේ '${wordData.originalWord}' යන වචනය තිබේ. එහි අරුත පහත පරිදි වේ.ගැළපේ ද බලන්න.\n\n${wordData.meaning}`;
+                        popupMeaning.textContent = `ශබ්දකෝෂයේ '${wordData.originalWord}' යන වචනය තිබේ. එහි අරුත පහත පරිදි වේ. ගැළපේ ද බලන්න.\n\n${wordData.meaning}`;
                     } else {
                         popupWord.textContent = word;
                         popupMeaning.textContent = wordData.meaning;
