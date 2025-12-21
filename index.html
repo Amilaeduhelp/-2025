@@ -560,6 +560,7 @@ input:focus {
           අද ම අමතන්න! 0701551279 📚
         </p>
       </div>
+    </div>
     <button class="modal-btn" onclick="closeNewsModal()" type="button">හරි, ස්තුතියි! ✅</button>
   </div>
 </div>
@@ -569,7 +570,7 @@ input:focus {
 <script>
 console.log('LearnX Login Page Ready');
 
-let supabase = null;
+let mySupabase = null;
 let mySessionId = generateSessionId();
 let myUser = null;
 let channel = null;
@@ -642,7 +643,7 @@ function initSupabase() {
       showMessage('❌ කරුණාකර පිටුව refresh කරන්න', 'error');
       return false;
     }
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    mySupabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     return true;
   } catch (error) {
     showMessage('❌ දත්ත සම්බන්ධතා දෝෂයක්', 'error');
@@ -650,7 +651,6 @@ function initSupabase() {
   }
 }
 
-// Wait for libraries to load
 window.addEventListener('load', function() {
   setTimeout(function() {
     if (typeof window.supabase !== 'undefined') {
@@ -658,14 +658,13 @@ window.addEventListener('load', function() {
     }
   }, 1000);
   
-  // Show news popup immediately
   showNewsModal();
 });
 
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
   e.preventDefault();
   
-  if (!supabase) {
+  if (!mySupabase) {
     if (!initSupabase()) {
       return;
     }
@@ -689,14 +688,14 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
       throw new Error('Password hash failed');
     }
     
-    const { data, error } = await supabase
+    const { data, error } = await mySupabase
       .from('credentials')
       .select('*')
       .eq('access_code', accessCode)
       .eq('password_hash', passwordHash)
       .single();
     
-    if (error || !data) {
+  if (error || !data) {
       showMessage('❌ වැරදි Access Code හෝ Password', 'error');
       loginBtn.disabled = false;
       loginBtn.textContent = '🔐 පුරනය වන්න';
@@ -725,8 +724,3 @@ console.log('LearnX Login System Active');
 
 </body>
 </html>
-
-
-
-
-
