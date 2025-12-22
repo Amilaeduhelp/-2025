@@ -4,9 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>සටහන් පොත</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
-        /* Navigation Sidebar Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans Sinhala', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        /* Navigation Sidebar */
         .nav-sidebar {
             position: fixed;
             left: -350px;
@@ -47,11 +79,6 @@
             cursor: pointer;
             color: #667eea;
             padding: 5px 10px;
-        }
-
-        .nav-close-btn:hover {
-            background: #f0f0f0;
-            border-radius: 5px;
         }
 
         .nav-overlay {
@@ -110,6 +137,135 @@
             scroll-margin-top: 80px;
         }
 
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .category-tab {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Noto Sans Sinhala', sans-serif;
+            background: #f0f0f0;
+            color: #555;
+        }
+
+        .category-tab.slhis.active {
+            background: #4285f4;
+            color: white;
+        }
+
+        .category-tab.erphis.active {
+            background: #ea4335;
+            color: white;
+        }
+
+        .category-tab.indhis.active {
+            background: #34a853;
+            color: white;
+        }
+
+        /* Lesson List */
+        .lesson-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .lesson-item {
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .lesson-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .lesson-item.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        /* Book Link */
+        .book-link {
+            display: block;
+            padding: 15px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .book-link:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Search Container */
+        .search-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        #searchBox {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: 'Noto Sans Sinhala', sans-serif;
+        }
+
+        .search-results-info {
+            margin-top: 10px;
+            text-align: center;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .search-nav-buttons {
+            display: none;
+            gap: 10px;
+            margin-top: 10px;
+            justify-content: center;
+        }
+
+        .search-nav-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            background: #667eea;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        /* Page Indicator */
         .page-indicator {
             text-align: center;
             margin: 20px 0;
@@ -122,25 +278,121 @@
             font-size: 1.1em;
         }
 
+        /* Note Area */
+        .note-area {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            min-height: 400px;
+            line-height: 1.8;
+            font-size: 18px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .note-area h1, .note-area h2, .note-area h3 {
+            color: #667eea;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .note-area p {
+            margin-bottom: 15px;
+        }
+
+        .loading {
+            text-align: center;
+            color: #667eea;
+            padding: 40px;
+            font-size: 1.2em;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: none;
+            z-index: 1001;
+            max-width: 300px;
+            font-size: 14px;
+        }
+
+        .tooltip-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 1000;
+        }
+
+        /* Button Container */
+        .button-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .button-container button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+            min-width: 50px;
+        }
+
         #navBtn {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         }
 
-        #navBtn:hover {
-            background: linear-gradient(135deg, #e082ea 0%, #e4465b 100%);
+        #prevLessonBtn, #nextLessonBtn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        #increaseBtn, #decreaseBtn {
+            background: linear-gradient(135deg, #34a853 0%, #2d9248 100%);
+        }
+
+        .button-container button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        mark {
+            background-color: yellow;
+            padding: 2px 4px;
+            border-radius: 2px;
         }
 
         @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
             .nav-sidebar {
                 width: 280px;
                 left: -280px;
             }
-        }
 
-        .nav-empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #999;
+            .lesson-list {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
         }
     </style>
 </head>
@@ -203,10 +455,237 @@
         </div>
     </div>
     
-    <!-- Supabase Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <!-- Main Script - වරක් පමණක් load වෙනවා -->
-    <script src="script.js"></script>
+    <script>
+        // Disable right-click and keyboard shortcuts
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', function(e) {
+            if (e.keyCode == 123 || 
+                (e.ctrlKey && e.shiftKey && e.keyCode == 73) || 
+                (e.ctrlKey && e.shiftKey && e.keyCode == 74) || 
+                (e.ctrlKey && e.keyCode == 85) ||
+                (e.ctrlKey && e.keyCode == 67) || // Ctrl+C
+                (e.ctrlKey && e.keyCode == 65) || // Ctrl+A
+                (e.ctrlKey && e.keyCode == 88) || // Ctrl+X
+                (e.metaKey && e.keyCode == 67) || // Cmd+C (Mac)
+                (e.metaKey && e.keyCode == 65) || // Cmd+A (Mac)
+                (e.metaKey && e.keyCode == 88)) { // Cmd+X (Mac)
+                e.preventDefault();
+            }
+        });
+        
+        // Disable copy event
+        document.addEventListener('copy', e => e.preventDefault());
+        document.addEventListener('cut', e => e.preventDefault());
+
+        // Supabase Configuration
+        const SUPABASE_URL = 'https://uqgzlaxsnknheoerbfus.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxZ3psYXhzbmtuaGVvZXJiZnVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5MjM2MTUsImV4cCI6MjA3OTI4MzYxNX0.IYWZ7ukx8J-GJMWy7cMk2BWnmzJmJjjE93yEmJie7nQ';
+        const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        let currentCategory = 'slhis';
+        let currentLessons = [];
+        let currentLessonIndex = 0;
+        let fontSize = 18;
+        let searchMatches = [];
+        let currentSearchIndex = 0;
+
+        // Load lessons on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadLessons(currentCategory);
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Category tabs
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentCategory = tab.dataset.category;
+                    loadLessons(currentCategory);
+                });
+            });
+
+            // Navigation sidebar
+            document.getElementById('navBtn').addEventListener('click', toggleNavSidebar);
+            document.getElementById('navCloseBtn').addEventListener('click', toggleNavSidebar);
+            document.getElementById('navOverlay').addEventListener('click', toggleNavSidebar);
+
+            // Lesson navigation
+            document.getElementById('prevLessonBtn').addEventListener('click', () => navigateLesson(-1));
+            document.getElementById('nextLessonBtn').addEventListener('click', () => navigateLesson(1));
+
+            // Font size
+            document.getElementById('increaseBtn').addEventListener('click', () => changeFontSize(2));
+            document.getElementById('decreaseBtn').addEventListener('click', () => changeFontSize(-2));
+
+            // Search
+            document.getElementById('searchBox').addEventListener('input', handleSearch);
+            document.getElementById('prevSearchBtn').addEventListener('click', () => navigateSearch(-1));
+            document.getElementById('nextSearchBtn').addEventListener('click', () => navigateSearch(1));
+        }
+
+        async function loadLessons(category) {
+            try {
+                const { data, error } = await sbClient
+                    .from('Historynt')
+                    .select('*')
+                    .like('slug', `${category}%`)
+                    .order('slug', { ascending: true });
+
+                if (error) throw error;
+
+                currentLessons = data;
+                currentLessonIndex = 0;
+                displayLessonList();
+                if (currentLessons.length > 0) {
+                    displayLesson(0);
+                }
+            } catch (error) {
+                console.error('Error loading lessons:', error);
+                document.getElementById('noteArea').innerHTML = '<div class="loading">දත්ත පූරණය කිරීමේ දෝෂයක් සිදුවිය!</div>';
+            }
+        }
+
+        function displayLessonList() {
+            const lessonList = document.getElementById('lessonList');
+            if (currentLessons.length === 0) {
+                lessonList.innerHTML = '<div class="loading">පාඩම් නොමැත</div>';
+                return;
+            }
+
+            lessonList.innerHTML = currentLessons.map((lesson, index) => `
+                <div class="lesson-item ${index === currentLessonIndex ? 'active' : ''}" 
+                     onclick="displayLesson(${index})">
+                    ${lesson.title}
+                </div>
+            `).join('');
+        }
+
+        function displayLesson(index) {
+            if (index < 0 || index >= currentLessons.length) return;
+            
+            currentLessonIndex = index;
+            const lesson = currentLessons[index];
+            
+            document.getElementById('pageTitle').textContent = lesson.title;
+            document.getElementById('pageIndicator').style.display = 'block';
+            document.getElementById('pageIndicator').textContent = `පාඩම ${index + 1} / ${currentLessons.length}`;
+            
+            const noteArea = document.getElementById('noteArea');
+            noteArea.innerHTML = lesson.content;
+            noteArea.style.fontSize = fontSize + 'px';
+            
+            displayLessonList();
+            generateNavigation(lesson.content);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function generateNavigation(content) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = content;
+            
+            const headings = tempDiv.querySelectorAll('h1, h2, h3');
+            const navContent = document.getElementById('navContent');
+            
+            if (headings.length === 0) {
+                navContent.innerHTML = '<div class="nav-empty-state"><p>මාතෘකා නොමැත</p></div>';
+                return;
+            }
+            
+            navContent.innerHTML = Array.from(headings).map((heading, i) => {
+                const id = `section-${i}`;
+                heading.id = id;
+                heading.classList.add('section-anchor');
+                return `<div class="nav-item ${heading.tagName.toLowerCase()}" onclick="scrollToSection('${id}')">${heading.textContent}</div>`;
+            }).join('');
+            
+            document.getElementById('noteArea').innerHTML = tempDiv.innerHTML;
+        }
+
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                toggleNavSidebar();
+            }
+        }
+
+        function toggleNavSidebar() {
+            const sidebar = document.getElementById('navSidebar');
+            const overlay = document.getElementById('navOverlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        function navigateLesson(direction) {
+            const newIndex = currentLessonIndex + direction;
+            if (newIndex >= 0 && newIndex < currentLessons.length) {
+                displayLesson(newIndex);
+            }
+        }
+
+        function changeFontSize(change) {
+            fontSize = Math.max(14, Math.min(28, fontSize + change));
+            document.getElementById('noteArea').style.fontSize = fontSize + 'px';
+        }
+
+        function handleSearch() {
+            const searchTerm = document.getElementById('searchBox').value.trim();
+            const noteArea = document.getElementById('noteArea');
+            
+            // Clear previous highlights
+            noteArea.innerHTML = noteArea.innerHTML.replace(/<mark>/g, '').replace(/<\/mark>/g, '');
+            searchMatches = [];
+            currentSearchIndex = 0;
+            
+            if (!searchTerm) {
+                document.getElementById('searchInfo').textContent = '';
+                document.getElementById('searchNavButtons').style.display = 'none';
+                return;
+            }
+            
+            // Find and highlight matches
+            const content = noteArea.textContent;
+            const regex = new RegExp(searchTerm, 'gi');
+            const matches = content.match(regex);
+            
+            if (matches) {
+                searchMatches = matches;
+                const highlightedContent = noteArea.innerHTML.replace(
+                    new RegExp(searchTerm, 'gi'),
+                    match => `<mark>${match}</mark>`
+                );
+                noteArea.innerHTML = highlightedContent;
+                
+                document.getElementById('searchInfo').textContent = `${matches.length} ප්‍රතිඵල හමුවිය`;
+                document.getElementById('searchNavButtons').style.display = 'flex';
+                
+                // Scroll to first match
+                const firstMark = noteArea.querySelector('mark');
+                if (firstMark) {
+                    firstMark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            } else {
+                document.getElementById('searchInfo').textContent = 'ප්‍රතිඵල හමු නොවීය';
+                document.getElementById('searchNavButtons').style.display = 'none';
+            }
+        }
+
+        function navigateSearch(direction) {
+            if (searchMatches.length === 0) return;
+            
+            currentSearchIndex += direction;
+            if (currentSearchIndex < 0) currentSearchIndex = searchMatches.length - 1;
+            if (currentSearchIndex >= searchMatches.length) currentSearchIndex = 0;
+            
+            const marks = document.querySelectorAll('mark');
+            if (marks[currentSearchIndex]) {
+                marks[currentSearchIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+    </script>
 </body>
 </html>
