@@ -4,9 +4,256 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>සටහන් පොත</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
-        /* Navigation Sidebar Styles */
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans Sinhala', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .category-tab {
+            flex: 1;
+            padding: 15px 25px;
+            border: none;
+            background: #f0f0f0;
+            color: #333;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .category-tab:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        .category-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        /* Lesson List */
+        .lesson-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .lesson-list.hidden {
+            display: none;
+        }
+
+        .lesson-btn {
+            padding: 20px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            text-align: left;
+        }
+
+        .lesson-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .lesson-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+        }
+
+        /* Book Link */
+        .book-link {
+            display: block;
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #333;
+            text-decoration: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .book-link:hover {
+            transform: scale(1.02);
+        }
+
+        /* Search Container */
+        .search-container {
+            margin-bottom: 20px;
+        }
+
+        #searchBox {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .search-results-info {
+            text-align: center;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .search-nav-buttons {
+            display: none;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .search-nav-btn {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: all 0.3s;
+        }
+
+        .search-nav-btn:hover {
+            background: #5568d3;
+        }
+
+        .search-nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Note Area */
+        .note-area {
+            background: #fafafa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            min-height: 400px;
+            line-height: 1.8;
+        }
+
+        .loading {
+            text-align: center;
+            color: #999;
+            font-size: 1.2em;
+            padding: 100px 0;
+        }
+
+        .error {
+            text-align: center;
+            color: #f5576c;
+            font-size: 1.1em;
+            padding: 50px 20px;
+            background: #fff5f5;
+            border-radius: 10px;
+            border: 2px solid #f5576c;
+        }
+
+        /* Cross References */
+        .cross-ref-term {
+            color: #667eea;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+        }
+
+        .cross-ref-term:hover {
+            color: #764ba2;
+            background: #f0f0f0;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        /* Search Highlights */
+        .highlight {
+            background: yellow;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .current-highlight {
+            background: orange;
+            font-weight: bold;
+        }
+
+        /* Button Container */
+        .button-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .button-container button {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .button-container button:hover {
+            transform: scale(1.05);
+        }
+
+        .button-container button:disabled {
+            background: linear-gradient(135deg, #ccc 0%, #aaa 100%);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Navigation Sidebar */
         .nav-sidebar {
             position: fixed;
             left: -350px;
@@ -74,7 +321,7 @@
             margin: 5px 0;
             cursor: pointer;
             border-radius: 5px;
-            transition: background 0.2s;
+            transition: all 0.2s;
             line-height: 1.5;
         }
 
@@ -110,6 +357,12 @@
             scroll-margin-top: 80px;
         }
 
+        .nav-empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
         .page-indicator {
             text-align: center;
             margin: 20px 0;
@@ -130,181 +383,68 @@
             background: linear-gradient(135deg, #e082ea 0%, #e4465b 100%);
         }
 
+        /* Tooltip */
+        .tooltip {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 10001;
+            cursor: pointer;
+        }
+
+        .tooltip-meaning {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            line-height: 1.6;
+        }
+
+        .tooltip-meaning:last-child {
+            margin-bottom: 0;
+        }
+
+        .tooltip-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            z-index: 10000;
+        }
+
         @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .lesson-list {
+                grid-template-columns: 1fr;
+            }
+
             .nav-sidebar {
                 width: 280px;
                 left: -280px;
             }
 
-            .nav-sidebar-header h3 {
-                font-size: 1.1em;
-            }
-
-            .nav-item.h1 {
-                font-size: 1em;
-            }
-
-            .nav-item.h2 {
-                padding-left: 20px;
-                font-size: 0.95em;
-            }
-
-            .nav-item.h3 {
-                padding-left: 35px;
-                font-size: 0.9em;
+            .tooltip {
+                max-width: 90%;
+                padding: 20px;
             }
         }
-
-        .nav-empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #999;
-        }
-
-        .nav-empty-state svg {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 15px;
-            opacity: 0.5;
-        }
-		<style>
-    /* Navigation Sidebar Styles */
-    .nav-sidebar {
-        position: fixed;
-        left: -350px;
-        top: 0;
-        width: 350px;
-        height: 100vh;
-        background: white;
-        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-        transition: left 0.3s ease;
-        z-index: 1000;
-        overflow-y: auto;
-        padding: 20px;
-    }
-
-    .nav-sidebar.open {
-        left: 0;
-    }
-
-    .nav-sidebar-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-        padding-bottom: 15px;
-        border-bottom: 2px solid #667eea;
-    }
-
-    .nav-sidebar-header h3 {
-        color: #667eea;
-        font-size: 1.3em;
-        margin: 0;
-    }
-
-    .nav-close-btn {
-        background: none;
-        border: none;
-        font-size: 1.5em;
-        cursor: pointer;
-        color: #667eea;
-        padding: 5px 10px;
-    }
-
-    .nav-close-btn:hover {
-        background: #f0f0f0;
-        border-radius: 5px;
-    }
-
-    .nav-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.5);
-        display: none;
-        z-index: 999;
-    }
-
-    .nav-overlay.active {
-        display: block;
-    }
-
-    .nav-item {
-        padding: 10px 15px;
-        margin: 5px 0;
-        cursor: pointer;
-        border-radius: 5px;
-        transition: background 0.2s;
-        line-height: 1.5;
-    }
-
-    .nav-item:hover {
-        background: #f0f0f0;
-    }
-
-    .nav-item.h1 {
-        font-weight: bold;
-        font-size: 1.1em;
-        color: #667eea;
-        margin-top: 15px;
-        border-left: 4px solid #667eea;
-    }
-
-    .nav-item.h2 {
-        padding-left: 25px;
-        color: #555;
-        font-size: 1em;
-        border-left: 3px solid #ccc;
-        margin-left: 10px;
-    }
-
-    .nav-item.h3 {
-        padding-left: 40px;
-        color: #777;
-        font-size: 0.95em;
-        border-left: 2px solid #ddd;
-        margin-left: 20px;
-    }
-
-    .section-anchor {
-        scroll-margin-top: 80px;
-    }
-
-    .page-indicator {
-        text-align: center;
-        margin: 20px 0;
-        padding: 15px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 8px;
-        font-weight: bold;
-        color: white;
-        display: none;
-        font-size: 1.1em;
-    }
-
-    #navBtn {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    }
-
-    #navBtn:hover {
-        background: linear-gradient(135deg, #e082ea 0%, #e4465b 100%);
-    }
-
-    @media (max-width: 768px) {
-        .nav-sidebar {
-            width: 280px;
-            left: -280px;
-        }
-    }
-
-    .nav-empty-state {
-        text-align: center;
-        padding: 40px 20px;
-        color: #999;
-    }
-</style>
     </style>
 </head>
 <body>
@@ -325,32 +465,12 @@
     </div>
 
     <div class="container">
-    <!-- ඔබේ පැරණි content එක මෙතැනින් පටන් ගන්නවා -->
-    <div class="nav-overlay" id="navOverlay"></div>
-    
-    <!-- Navigation Sidebar -->
-    <div class="nav-sidebar" id="navSidebar">
-        <div class="nav-sidebar-header">
-            <h3>📑 පිටු සංචරණය</h3>
-            <button class="nav-close-btn" id="navCloseBtn">✕</button>
-        </div>
-        <div id="navContent">
-            <div class="nav-empty-state">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <p>පාඩමක් තෝරන්න...</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
         <h1 id="pageTitle">සටහන් පොත</h1>
         
         <div class="category-tabs">
-            <button class="category-tab slhis active" onclick="switchCategory('slhis')">ශ්‍රී ලංකාව</button>
-            <button class="category-tab erphis" onclick="switchCategory('erphis')">යුරෝපය</button>
-            <button class="category-tab indhis" onclick="switchCategory('indhis')">ඉන්දියාව</button>
+            <button class="category-tab slhis active">ශ්‍රී ලංකාව</button>
+            <button class="category-tab erphis">යුරෝපය</button>
+            <button class="category-tab indhis">ඉන්දියාව</button>
         </div>
         
         <div class="lesson-list" id="lessonList"></div>
@@ -365,8 +485,9 @@
             <div class="search-nav-buttons" id="searchNavButtons">
                 <button class="search-nav-btn" id="prevSearchBtn">▲</button>
                 <button class="search-nav-btn" id="nextSearchBtn">▼</button>
-				</div>
+            </div>
         </div>
+        
         <div class="page-indicator" id="pageIndicator"></div>
         
         <div class="tooltip-overlay" id="tooltipOverlay"></div>
@@ -377,16 +498,18 @@
         </div>
         
         <div class="button-container">
-            <div class="button-container">
-    <button id="navBtn" title="පිටු සංචරණය">📑</button>
-    <button id="prevLessonBtn" title="පෙර පාඩම">◄</button>
+            <button id="navBtn" title="පිටු සංචරණය">📑</button>
+            <button id="prevLessonBtn" title="පෙර පාඩම">◄</button>
             <button id="nextLessonBtn" title="ඊළඟ පාඩම">►</button>
             <button id="increaseBtn" title="විශාල කරන්න">+</button>
             <button id="decreaseBtn" title="කුඩා කරන්න">-</button>
         </div>
     </div>
     
+    <!-- Supabase Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Your External Script -->
     <script src="script.js"></script>
 </body>
 </html>
