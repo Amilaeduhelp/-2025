@@ -313,14 +313,16 @@
         /* Tooltip */
         .tooltip {
             position: fixed;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.95);
             color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
+            padding: 15px 20px;
+            border-radius: 10px;
             display: none;
             z-index: 1001;
-            max-width: 300px;
-            font-size: 14px;
+            max-width: 400px;
+            font-size: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            line-height: 1.6;
         }
 
         .tooltip-overlay {
@@ -331,6 +333,20 @@
             height: 100%;
             display: none;
             z-index: 1000;
+        }
+
+        .dictionary-word {
+            color: #2196F3;
+            font-weight: 600;
+            cursor: help;
+            border-bottom: 2px dotted #2196F3;
+            transition: all 0.2s;
+        }
+
+        .dictionary-word:hover {
+            background: rgba(33, 150, 243, 0.1);
+            padding: 2px 4px;
+            border-radius: 3px;
         }
 
         /* Button Container */
@@ -479,10 +495,15 @@
         document.addEventListener('copy', e => e.preventDefault());
         document.addEventListener('cut', e => e.preventDefault());
 
-        // Supabase Configuration
+        // Supabase Configuration - Historynt
         const SUPABASE_URL = 'https://uqgzlaxsnknheoerbfus.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxZ3psYXhzbmtuaGVvZXJiZnVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5MjM2MTUsImV4cCI6MjA3OTI4MzYxNX0.IYWZ7ukx8J-GJMWy7cMk2BWnmzJmJjjE93yEmJie7nQ';
         const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // Supabase Configuration - learnX pedia (Dictionary)
+        const PEDIA_URL = 'https://uqgzlaxsnknheoerbfus.supabase.co';
+        const PEDIA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxZ3psYXhzbmtuaGVvZXJiZnVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5MjM2MTUsImV4cCI6MjA3OTI4MzYxNX0.IYWZ7ukx8J-GJMWy7cMk2BWnmzJmJjjE93yEmJie7nQ';
+        const pediaClient = window.supabase.createClient(PEDIA_URL, PEDIA_KEY);
 
         let currentCategory = 'slhis';
         let currentLessons = [];
@@ -490,9 +511,11 @@
         let fontSize = 18;
         let searchMatches = [];
         let currentSearchIndex = 0;
+        let dictionaryWords = {}; // Store dictionary words
 
         // Load lessons on page load
         document.addEventListener('DOMContentLoaded', () => {
+            loadDictionary();
             loadLessons(currentCategory);
             setupEventListeners();
         });
@@ -525,6 +548,28 @@
             document.getElementById('searchBox').addEventListener('input', handleSearch);
             document.getElementById('prevSearchBtn').addEventListener('click', () => navigateSearch(-1));
             document.getElementById('nextSearchBtn').addEventListener('click', () => navigateSearch(1));
+
+            // Tooltip close
+            document.getElementById('tooltipOverlay').addEventListener('click', hideTooltip);
+        }
+
+        async function loadDictionary() {
+            try {
+                const { data, error } = await pediaClient
+                    .from('learnX pedia')
+                    .select('word, meaning');
+
+                if (error) throw error;
+
+                // Store dictionary words in object for quick lookup
+                data.forEach(item => {
+                    dictionaryWords[item.word.toLowerCase()] = item.meaning;
+                });
+
+                console.log('Dictionary loaded:', Object.keys(dictionaryWords).length, 'words');
+            } catch (error) {
+                console.error('Error loading dictionary:', error);
+            }
         }
 
         async function loadLessons(category) {
@@ -575,12 +620,76 @@
             document.getElementById('pageIndicator').textContent = `පාඩම ${index + 1} / ${currentLessons.length}`;
             
             const noteArea = document.getElementById('noteArea');
-            noteArea.innerHTML = lesson.content;
+            noteArea.innerHTML = highlightDictionaryWords(lesson.content);
             noteArea.style.fontSize = fontSize + 'px';
+            
+            // Add click listeners to dictionary words
+            setupDictionaryWordListeners();
             
             displayLessonList();
             generateNavigation(lesson.content);
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function highlightDictionaryWords(content) {
+            let highlightedContent = content;
+            
+            // Sort words by length (longest first) to avoid partial matches
+            const sortedWords = Object.keys(dictionaryWords).sort((a, b) => b.length - a.length);
+            
+            sortedWords.forEach(word => {
+                // Create regex to match whole words only
+                const regex = new RegExp(`\\b(${word})\\b`, 'gi');
+                highlightedContent = highlightedContent.replace(regex, (match) => {
+                    return `<span class="dictionary-word" data-word="${word}">${match}</span>`;
+                });
+            });
+            
+            return highlightedContent;
+        }
+
+        function setupDictionaryWordListeners() {
+            const dictionaryWordElements = document.querySelectorAll('.dictionary-word');
+            dictionaryWordElements.forEach(element => {
+                element.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const word = this.dataset.word.toLowerCase();
+                    const meaning = dictionaryWords[word];
+                    if (meaning) {
+                        showTooltip(e.clientX, e.clientY, word, meaning);
+                    }
+                });
+            });
+        }
+
+        function showTooltip(x, y, word, meaning) {
+            const tooltip = document.getElementById('tooltip');
+            const overlay = document.getElementById('tooltipOverlay');
+            
+            tooltip.innerHTML = `<strong style="color: #2196F3; font-size: 18px;">${word}</strong><br><br>${meaning}`;
+            tooltip.style.display = 'block';
+            overlay.style.display = 'block';
+            
+            // Position tooltip
+            const tooltipRect = tooltip.getBoundingClientRect();
+            let left = x + 10;
+            let top = y + 10;
+            
+            // Keep tooltip within viewport
+            if (left + tooltipRect.width > window.innerWidth) {
+                left = x - tooltipRect.width - 10;
+            }
+            if (top + tooltipRect.height > window.innerHeight) {
+                top = y - tooltipRect.height - 10;
+            }
+            
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+        }
+
+        function hideTooltip() {
+            document.getElementById('tooltip').style.display = 'none';
+            document.getElementById('tooltipOverlay').style.display = 'none';
         }
 
         function generateNavigation(content) {
