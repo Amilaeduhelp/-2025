@@ -165,9 +165,9 @@
         <h1 id="pageTitle">සටහන් පොත</h1>
         
         <div class="category-tabs">
-            <button class="category-tab slhis active" onclick="switchCategory('slhis')">ශ්‍රී ලංකාව</button>
-            <button class="category-tab erphis" onclick="switchCategory('erphis')">යුරෝපය</button>
-            <button class="category-tab indhis" onclick="switchCategory('indhis')">ඉන්දියාව</button>
+            <button class="category-tab slhis active" data-category="slhis">ශ්‍රී ලංකාව</button>
+            <button class="category-tab erphis" data-category="erphis">යුරෝපය</button>
+            <button class="category-tab indhis" data-category="indhis">ඉන්දියාව</button>
         </div>
         
         <div class="lesson-list" id="lessonList"></div>
@@ -203,7 +203,10 @@
         </div>
     </div>
     
+    <!-- Supabase Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Main Script - වරක් පමණක් load වෙනවා -->
     <script src="script.js"></script>
 </body>
 </html>
