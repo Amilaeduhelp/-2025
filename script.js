@@ -647,6 +647,14 @@ decreaseBtn.addEventListener('click', function() {
     }
 });
 
+// Category tab click handlers - data-category භාවිතා කරලා
+document.querySelectorAll('.category-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+        const category = this.getAttribute('data-category');
+        switchCategory(category);
+    });
+});
+
 window.addEventListener('DOMContentLoaded', async function() {
     console.log('Page loaded, initializing...');
     await loadLearnXTerms();
