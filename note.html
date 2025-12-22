@@ -130,19 +130,6 @@
             background: linear-gradient(135deg, #e082ea 0%, #e4465b 100%);
         }
 
-        .nav-empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #999;
-        }
-
-        .nav-empty-state svg {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 15px;
-            opacity: 0.5;
-        }
-
         @media (max-width: 768px) {
             .nav-sidebar {
                 width: 280px;
@@ -167,10 +154,178 @@
                 font-size: 0.9em;
             }
         }
+
+        .nav-empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .nav-empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+		<style>
+    /* Navigation Sidebar Styles */
+    .nav-sidebar {
+        position: fixed;
+        left: -350px;
+        top: 0;
+        width: 350px;
+        height: 100vh;
+        background: white;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        transition: left 0.3s ease;
+        z-index: 1000;
+        overflow-y: auto;
+        padding: 20px;
+    }
+
+    .nav-sidebar.open {
+        left: 0;
+    }
+
+    .nav-sidebar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #667eea;
+    }
+
+    .nav-sidebar-header h3 {
+        color: #667eea;
+        font-size: 1.3em;
+        margin: 0;
+    }
+
+    .nav-close-btn {
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        cursor: pointer;
+        color: #667eea;
+        padding: 5px 10px;
+    }
+
+    .nav-close-btn:hover {
+        background: #f0f0f0;
+        border-radius: 5px;
+    }
+
+    .nav-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: none;
+        z-index: 999;
+    }
+
+    .nav-overlay.active {
+        display: block;
+    }
+
+    .nav-item {
+        padding: 10px 15px;
+        margin: 5px 0;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background 0.2s;
+        line-height: 1.5;
+    }
+
+    .nav-item:hover {
+        background: #f0f0f0;
+    }
+
+    .nav-item.h1 {
+        font-weight: bold;
+        font-size: 1.1em;
+        color: #667eea;
+        margin-top: 15px;
+        border-left: 4px solid #667eea;
+    }
+
+    .nav-item.h2 {
+        padding-left: 25px;
+        color: #555;
+        font-size: 1em;
+        border-left: 3px solid #ccc;
+        margin-left: 10px;
+    }
+
+    .nav-item.h3 {
+        padding-left: 40px;
+        color: #777;
+        font-size: 0.95em;
+        border-left: 2px solid #ddd;
+        margin-left: 20px;
+    }
+
+    .section-anchor {
+        scroll-margin-top: 80px;
+    }
+
+    .page-indicator {
+        text-align: center;
+        margin: 20px 0;
+        padding: 15px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 8px;
+        font-weight: bold;
+        color: white;
+        display: none;
+        font-size: 1.1em;
+    }
+
+    #navBtn {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+
+    #navBtn:hover {
+        background: linear-gradient(135deg, #e082ea 0%, #e4465b 100%);
+    }
+
+    @media (max-width: 768px) {
+        .nav-sidebar {
+            width: 280px;
+            left: -280px;
+        }
+    }
+
+    .nav-empty-state {
+        text-align: center;
+        padding: 40px 20px;
+        color: #999;
+    }
+</style>
     </style>
 </head>
 <body>
     <!-- Navigation Overlay -->
+    <div class="nav-overlay" id="navOverlay"></div>
+    
+    <!-- Navigation Sidebar -->
+    <div class="nav-sidebar" id="navSidebar">
+        <div class="nav-sidebar-header">
+            <h3>📑 පිටු සංචරණය</h3>
+            <button class="nav-close-btn" id="navCloseBtn">✕</button>
+        </div>
+        <div id="navContent">
+            <div class="nav-empty-state">
+                <p>පාඩමක් තෝරන්න...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+    <!-- ඔබේ පැරණි content එක මෙතැනින් පටන් ගන්නවා -->
     <div class="nav-overlay" id="navOverlay"></div>
     
     <!-- Navigation Sidebar -->
@@ -210,9 +365,8 @@
             <div class="search-nav-buttons" id="searchNavButtons">
                 <button class="search-nav-btn" id="prevSearchBtn">▲</button>
                 <button class="search-nav-btn" id="nextSearchBtn">▼</button>
-            </div>
+				</div>
         </div>
-        
         <div class="page-indicator" id="pageIndicator"></div>
         
         <div class="tooltip-overlay" id="tooltipOverlay"></div>
@@ -223,8 +377,9 @@
         </div>
         
         <div class="button-container">
-            <button id="navBtn" title="පිටු සංචරණය">📑</button>
-            <button id="prevLessonBtn" title="පෙර පාඩම">◄</button>
+            <div class="button-container">
+    <button id="navBtn" title="පිටු සංචරණය">📑</button>
+    <button id="prevLessonBtn" title="පෙර පාඩම">◄</button>
             <button id="nextLessonBtn" title="ඊළඟ පාඩම">►</button>
             <button id="increaseBtn" title="විශාල කරන්න">+</button>
             <button id="decreaseBtn" title="කුඩා කරන්න">-</button>
