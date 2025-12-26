@@ -267,15 +267,20 @@
         }
         .tooltip {
             position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             background: rgba(0,0,0,0.95);
             color: white;
-            padding: 15px 20px;
-            border-radius: 10px;
+            padding: 20px 30px;
+            border-radius: 15px;
             display: none;
             z-index: 1001;
-            max-width: 400px;
+            max-width: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
             font-size: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
             line-height: 1.6;
         }
         .tooltip-overlay {
@@ -631,17 +636,6 @@
             tooltip.innerHTML = '<strong style="color: #2196F3; font-size: 18px;">' + word + '</strong><br><br>' + meaning;
             tooltip.style.display = 'block';
             overlay.style.display = 'block';
-            var tooltipRect = tooltip.getBoundingClientRect();
-            var left = x + 10;
-            var top = y + 10;
-            if (left + tooltipRect.width > window.innerWidth) {
-                left = x - tooltipRect.width - 10;
-            }
-            if (top + tooltipRect.height > window.innerHeight) {
-                top = y - tooltipRect.height - 10;
-            }
-            tooltip.style.left = left + 'px';
-            tooltip.style.top = top + 'px';
         }
 
         function hideTooltip() {
