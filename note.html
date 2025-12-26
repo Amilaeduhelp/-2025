@@ -242,7 +242,7 @@
             background: #f8f9fa;
             padding: 30px;
             border-radius: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 100px;
             min-height: 400px;
             line-height: 1.8;
             font-size: 18px;
@@ -300,10 +300,19 @@
             border-radius: 3px;
         }
         .button-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
             display: flex;
             gap: 10px;
             justify-content: center;
             flex-wrap: wrap;
+            background: linear-gradient(to top, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.95) 100%);
+            padding: 15px 20px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+            z-index: 900;
+            backdrop-filter: blur(10px);
         }
         .button-container button {
             padding: 12px 20px;
