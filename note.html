@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>සටහන් පොත</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Noto Sans Sinhala', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -28,12 +24,7 @@
             margin: 0 auto;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-        }
+        h1 { text-align: center; color: #333; margin-bottom: 30px; font-size: 2.5em; }
         .nav-sidebar {
             position: fixed;
             left: -350px;
@@ -47,9 +38,7 @@
             overflow-y: auto;
             padding: 20px;
         }
-        .nav-sidebar.open {
-            left: 0;
-        }
+        .nav-sidebar.open { left: 0; }
         .nav-sidebar-header {
             display: flex;
             justify-content: space-between;
@@ -58,11 +47,7 @@
             padding-bottom: 15px;
             border-bottom: 2px solid #667eea;
         }
-        .nav-sidebar-header h3 {
-            color: #667eea;
-            font-size: 1.3em;
-            margin: 0;
-        }
+        .nav-sidebar-header h3 { color: #667eea; font-size: 1.3em; margin: 0; }
         .nav-close-btn {
             background: none;
             border: none;
@@ -81,9 +66,7 @@
             display: none;
             z-index: 999;
         }
-        .nav-overlay.active {
-            display: block;
-        }
+        .nav-overlay.active { display: block; }
         .nav-item {
             padding: 10px 15px;
             margin: 5px 0;
@@ -92,9 +75,7 @@
             transition: background 0.2s;
             line-height: 1.5;
         }
-        .nav-item:hover {
-            background: #f0f0f0;
-        }
+        .nav-item:hover { background: #f0f0f0; }
         .nav-item.h1 {
             font-weight: bold;
             font-size: 1.1em;
@@ -116,9 +97,7 @@
             border-left: 2px solid #ddd;
             margin-left: 20px;
         }
-        .section-anchor {
-            scroll-margin-top: 80px;
-        }
+        .section-anchor { scroll-margin-top: 80px; }
         .category-tabs {
             display: flex;
             gap: 10px;
@@ -138,17 +117,58 @@
             background: #f0f0f0;
             color: #555;
         }
-        .category-tab.slhis.active {
-            background: #4285f4;
-            color: white;
+        .category-tab.slhis.active { background: #4285f4; color: white; }
+        .category-tab.erphis.active { background: #ea4335; color: white; }
+        .category-tab.indhis.active { background: #34a853; color: white; }
+        .universal-search-box {
+            width: 100%;
+            padding: 15px;
+            border: 3px solid #667eea;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: 'Noto Sans Sinhala', sans-serif;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #fff, #f8f9ff);
         }
-        .category-tab.erphis.active {
-            background: #ea4335;
-            color: white;
+        .universal-search-box:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
         }
-        .category-tab.indhis.active {
-            background: #34a853;
-            color: white;
+        #universalSearchResults {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        .universal-result-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-left: 4px solid #667eea;
+        }
+        .universal-result-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .result-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        .result-preview {
+            color: #555;
+            line-height: 1.6;
+        }
+        .result-preview mark {
+            background-color: #ffeb3b;
+            padding: 2px 4px;
+            border-radius: 2px;
+            font-weight: bold;
         }
         .lesson-list {
             display: grid;
@@ -191,13 +211,8 @@
             font-weight: bold;
             transition: transform 0.2s;
         }
-        .book-link:hover {
-            transform: translateY(-2px);
-        }
-        .search-container {
-            position: relative;
-            margin-bottom: 20px;
-        }
+        .book-link:hover { transform: translateY(-2px); }
+        .search-container { position: relative; margin-bottom: 20px; }
         #searchBox {
             width: 100%;
             padding: 15px;
@@ -256,9 +271,7 @@
             margin-top: 20px;
             margin-bottom: 10px;
         }
-        .note-area p {
-            margin-bottom: 15px;
-        }
+        .note-area p { margin-bottom: 15px; }
         .loading {
             text-align: center;
             color: #667eea;
@@ -330,15 +343,9 @@
             color: white;
             min-width: 50px;
         }
-        #navBtn {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
-        #prevLessonBtn, #nextLessonBtn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        #increaseBtn, #decreaseBtn {
-            background: linear-gradient(135deg, #34a853 0%, #2d9248 100%);
-        }
+        #navBtn { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        #prevLessonBtn, #nextLessonBtn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        #increaseBtn, #decreaseBtn { background: linear-gradient(135deg, #34a853 0%, #2d9248 100%); }
         .button-container button:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
@@ -374,10 +381,12 @@
             <button class="category-tab erphis" data-category="erphis">යුරෝපය</button>
             <button class="category-tab indhis" data-category="indhis">ඉන්දියාව</button>
         </div>
+        <input type="text" class="universal-search-box" id="universalSearchBox" placeholder="🔍 සියලුම පාඩම් වල සෙවීමට වචනයක් ඇතුළත් කරන්න...">
+        <div id="universalSearchResults"></div>
         <div class="lesson-list" id="lessonList"></div>
         <a href="https://amilaeduhelp.github.io/book-price/" target="_blank" class="book-link">📚 මෙම සටහන ඇතුළු සම්පූර්ණ සටහන් ඇතුළත් මුද්‍රිත පොත ලබාගැනීම සඳහා මෙතැනින් පිවිසෙන්න</a>
         <div class="search-container">
-            <input type="text" id="searchBox" placeholder="සෙවීමට වචනයක් ඇතුලත් කරන්න...">
+            <input type="text" id="searchBox" placeholder="වත්මන් පාඩමෙන් සෙවීමට වචනයක් ඇතුලත් කරන්න...">
             <div class="search-results-info" id="searchInfo"></div>
             <div class="search-nav-buttons" id="searchNavButtons">
                 <button class="search-nav-btn" id="prevSearchBtn">▲</button>
@@ -400,109 +409,106 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
             if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73) || (e.ctrlKey && e.shiftKey && e.keyCode == 74) || (e.ctrlKey && e.keyCode == 85) || (e.ctrlKey && e.keyCode == 67) || (e.ctrlKey && e.keyCode == 65) || (e.ctrlKey && e.keyCode == 88) || (e.metaKey && e.keyCode == 67) || (e.metaKey && e.keyCode == 65) || (e.metaKey && e.keyCode == 88)) {
                 e.preventDefault();
             }
         });
-        document.addEventListener('copy', function(e) { e.preventDefault(); });
-        document.addEventListener('cut', function(e) { e.preventDefault(); });
+        document.addEventListener('copy', e => e.preventDefault());
+        document.addEventListener('cut', e => e.preventDefault());
 
-        var SUPABASE_URL = 'https://uqgzlaxsnknheoerbfus.supabase.co';
-        var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxZ3psYXhzbmtuaGVvZXJiZnVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5MjM2MTUsImV4cCI6MjA3OTI4MzYxNX0.IYWZ7ukx8J-GJMWy7cMk2BWnmzJmJjjE93yEmJie7nQ';
-        var sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        var PEDIA_URL = 'https://uqgzlaxsnknheoerbfus.supabase.co';
-        var PEDIA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxZ3psYXhzbmtuaGVvZXJiZnVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5MjM2MTUsImV4cCI6MjA3OTI4MzYxNX0.IYWZ7ukx8J-GJMWy7cMk2BWnmzJmJjjE93yEmJie7nQ';
-        var pediaClient = window.supabase.createClient(PEDIA_URL, PEDIA_KEY);
-        var currentCategory = 'slhis';
-        var currentLessons = [];
-        var currentLessonIndex = 0;
-        var fontSize = 18;
-        var searchMatches = [];
-        var currentSearchIndex = 0;
-        var dictionaryWords = {};
+        const SUPABASE_URL = 'https://uqgzlaxsnknheoerbfus.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxZ3psYXhzbmtuaGVvZXJiZnVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5MjM2MTUsImV4cCI6MjA3OTI4MzYxNX0.IYWZ7ukx8J-GJMWy7cMk2BWnmzJmJjjE93yEmJie7nQ';
+        const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const pediaClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+        let state = {
+            currentCategory: 'slhis',
+            currentLessons: [],
+            currentLessonIndex: 0,
+            fontSize: 18,
+            searchMatches: [],
+            currentSearchIndex: 0,
+            dictionaryWords: {}
+        };
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', () => {
             setupEventListeners();
-            loadDictionary().then(function() {
-                loadLessons(currentCategory);
-            });
+            loadDictionary().then(() => loadLessons(state.currentCategory));
         });
 
         function setupEventListeners() {
-            document.querySelectorAll('.category-tab').forEach(function(tab) {
-                tab.addEventListener('click', function() {
-                    document.querySelectorAll('.category-tab').forEach(function(t) { t.classList.remove('active'); });
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
                     tab.classList.add('active');
-                    currentCategory = tab.dataset.category;
-                    loadLessons(currentCategory);
+                    state.currentCategory = tab.dataset.category;
+                    loadLessons(state.currentCategory);
                 });
             });
-            document.getElementById('navBtn').addEventListener('click', toggleNavSidebar);
-            document.getElementById('navCloseBtn').addEventListener('click', toggleNavSidebar);
-            document.getElementById('navOverlay').addEventListener('click', toggleNavSidebar);
-            document.getElementById('prevLessonBtn').addEventListener('click', function() { navigateLesson(-1); });
-            document.getElementById('nextLessonBtn').addEventListener('click', function() { navigateLesson(1); });
-            document.getElementById('increaseBtn').addEventListener('click', function() { changeFontSize(2); });
-            document.getElementById('decreaseBtn').addEventListener('click', function() { changeFontSize(-2); });
-            document.getElementById('searchBox').addEventListener('input', handleSearch);
-            document.getElementById('prevSearchBtn').addEventListener('click', function() { navigateSearch(-1); });
-            document.getElementById('nextSearchBtn').addEventListener('click', function() { navigateSearch(1); });
-            document.getElementById('tooltipOverlay').addEventListener('click', hideTooltip);
+            const btn = id => document.getElementById(id);
+            btn('navBtn').addEventListener('click', toggleNavSidebar);
+            btn('navCloseBtn').addEventListener('click', toggleNavSidebar);
+            btn('navOverlay').addEventListener('click', toggleNavSidebar);
+            btn('prevLessonBtn').addEventListener('click', () => navigateLesson(-1));
+            btn('nextLessonBtn').addEventListener('click', () => navigateLesson(1));
+            btn('increaseBtn').addEventListener('click', () => changeFontSize(2));
+            btn('decreaseBtn').addEventListener('click', () => changeFontSize(-2));
+            btn('searchBox').addEventListener('input', handleSearch);
+            btn('prevSearchBtn').addEventListener('click', () => navigateSearch(-1));
+            btn('nextSearchBtn').addEventListener('click', () => navigateSearch(1));
+            btn('tooltipOverlay').addEventListener('click', hideTooltip);
+            btn('universalSearchBox').addEventListener('input', handleUniversalSearch);
         }
 
         function loadDictionary() {
-            return pediaClient.from('learnX pedia').select('word, meaning').then(function(response) {
-                if (response.error) throw response.error;
-                response.data.forEach(function(item) {
-                    var word = item.word.trim();
-                    dictionaryWords[word] = item.meaning;
+            return pediaClient.from('learnX pedia').select('word, meaning').then(res => {
+                if (res.error) throw res.error;
+                res.data.forEach(item => {
+                    state.dictionaryWords[item.word.trim()] = item.meaning;
                 });
-                console.log('Dictionary loaded:', Object.keys(dictionaryWords).length, 'words');
-            }).catch(function(error) {
-                console.error('Error loading dictionary:', error);
-            });
+                console.log('Dictionary loaded:', Object.keys(state.dictionaryWords).length, 'words');
+            }).catch(err => console.error('Error loading dictionary:', err));
         }
 
         function loadLessons(category) {
             document.getElementById('noteArea').innerHTML = '<div class="loading">පාඩම් පූරණය වෙමින්...</div>';
-            sbClient.from('Historynt').select('*').like('slug', category + '%').order('slug', { ascending: true }).then(function(response) {
-                if (response.error) throw response.error;
-                currentLessons = response.data;
-                currentLessonIndex = 0;
+            sbClient.from('Historynt').select('*').like('slug', category + '%').order('slug', { ascending: true }).then(res => {
+                if (res.error) throw res.error;
+                state.currentLessons = res.data;
+                state.currentLessonIndex = 0;
                 displayLessonList();
-                if (currentLessons.length > 0) {
-                    displayLesson(0);
-                }
-            }).catch(function(error) {
-                console.error('Error loading lessons:', error);
+                if (state.currentLessons.length > 0) displayLesson(0);
+            }).catch(err => {
+                console.error('Error loading lessons:', err);
                 document.getElementById('noteArea').innerHTML = '<div class="loading">දත්ත පූරණය කිරීමේ දෝෂයක් සිදුවිය!</div>';
             });
         }
 
         function displayLessonList() {
-            var lessonList = document.getElementById('lessonList');
-            if (currentLessons.length === 0) {
+            const lessonList = document.getElementById('lessonList');
+            if (state.currentLessons.length === 0) {
                 lessonList.innerHTML = '<div class="loading">පාඩම් නොමැත</div>';
                 return;
             }
-            lessonList.innerHTML = currentLessons.map(function(lesson, index) {
-                return '<div class="lesson-item ' + (index === currentLessonIndex ? 'active' : '') + '" onclick="displayLesson(' + index + ')">' + lesson.title + '</div>';
-            }).join('');
+            lessonList.innerHTML = state.currentLessons.map((lesson, i) => 
+                `<div class="lesson-item ${i === state.currentLessonIndex ? 'active' : ''}" onclick="displayLesson(${i})">${lesson.title}</div>`
+            ).join('');
         }
 
         function displayLesson(index) {
-            if (index < 0 || index >= currentLessons.length) return;
-            currentLessonIndex = index;
-            var lesson = currentLessons[index];
+            if (index < 0 || index >= state.currentLessons.length) return;
+            state.currentLessonIndex = index;
+            const lesson = state.currentLessons[index];
             document.getElementById('pageTitle').textContent = lesson.title;
-            document.getElementById('pageIndicator').style.display = 'block';
-            document.getElementById('pageIndicator').textContent = 'පාඩම ' + (index + 1) + ' / ' + currentLessons.length;
-            var contentWithNav = addNavigationIds(lesson.content);
-            var noteArea = document.getElementById('noteArea');
+            const pageIndicator = document.getElementById('pageIndicator');
+            pageIndicator.style.display = 'block';
+            pageIndicator.textContent = `පාඩම ${index + 1} / ${state.currentLessons.length}`;
+            const contentWithNav = addNavigationIds(lesson.content);
+            const noteArea = document.getElementById('noteArea');
             noteArea.innerHTML = highlightDictionaryWords(contentWithNav);
-            noteArea.style.fontSize = fontSize + 'px';
+            noteArea.style.fontSize = state.fontSize + 'px';
             setupDictionaryWordListeners();
             displayLessonList();
             generateNavigationMenu(lesson.content);
@@ -510,130 +516,101 @@
         }
 
         function addNavigationIds(content) {
-            var tempDiv = document.createElement('div');
+            const tempDiv = document.createElement('div');
             tempDiv.innerHTML = content;
-            var headings = tempDiv.querySelectorAll('h1, h2, h3');
-            headings.forEach(function(heading, i) {
-                var id = 'section-' + i;
-                heading.id = id;
-                heading.classList.add('section-anchor');
+            tempDiv.querySelectorAll('h1, h2, h3').forEach((h, i) => {
+                h.id = 'section-' + i;
+                h.classList.add('section-anchor');
             });
             return tempDiv.innerHTML;
         }
 
         function generateNavigationMenu(content) {
-            var tempDiv = document.createElement('div');
+            const tempDiv = document.createElement('div');
             tempDiv.innerHTML = content;
-            var headings = tempDiv.querySelectorAll('h1, h2, h3');
-            var navContent = document.getElementById('navContent');
+            const headings = tempDiv.querySelectorAll('h1, h2, h3');
+            const navContent = document.getElementById('navContent');
             if (headings.length === 0) {
                 navContent.innerHTML = '<div class="nav-empty-state"><p>මාතෘකා නොමැත</p></div>';
                 return;
             }
-            navContent.innerHTML = Array.from(headings).map(function(heading, i) {
-                var id = 'section-' + i;
-                return '<div class="nav-item ' + heading.tagName.toLowerCase() + '" onclick="scrollToSection(\'' + id + '\')">' + heading.textContent + '</div>';
-            }).join('');
+            navContent.innerHTML = Array.from(headings).map((h, i) => 
+                `<div class="nav-item ${h.tagName.toLowerCase()}" onclick="scrollToSection('section-${i}')">${h.textContent}</div>`
+            ).join('');
         }
 
         function highlightDictionaryWords(content) {
-            var tempDiv = document.createElement('div');
+            const tempDiv = document.createElement('div');
             tempDiv.innerHTML = content;
-            var walker = document.createTreeWalker(tempDiv, NodeFilter.SHOW_TEXT, null, false);
-            var textNodes = [];
-            var node;
-            while (node = walker.nextNode()) {
-                textNodes.push(node);
-            }
+            const walker = document.createTreeWalker(tempDiv, NodeFilter.SHOW_TEXT, null, false);
+            const textNodes = [];
+            let node;
+            while (node = walker.nextNode()) textNodes.push(node);
             
-            var sortedWords = Object.keys(dictionaryWords).sort(function(a, b) { 
-                return b.length - a.length; 
-            });
+            const sortedWords = Object.keys(state.dictionaryWords).sort((a, b) => b.length - a.length);
             
-            textNodes.forEach(function(textNode) {
-                var originalText = textNode.textContent;
-                var processedRanges = [];
-                var replacements = [];
+            textNodes.forEach(textNode => {
+                const originalText = textNode.textContent;
+                const processedRanges = [];
+                const replacements = [];
                 
-                sortedWords.forEach(function(word) {
-                    var searchIndex = 0;
-                    
+                sortedWords.forEach(word => {
+                    let searchIndex = 0;
                     while (searchIndex < originalText.length) {
-                        var foundIndex = originalText.indexOf(word, searchIndex);
+                        const foundIndex = originalText.indexOf(word, searchIndex);
+                        if (foundIndex === -1) break;
                         
-                        if (foundIndex === -1) {
-                            break;
-                        }
-                        
-                        var charBefore = foundIndex > 0 ? originalText.charAt(foundIndex - 1) : ' ';
-                        var charAfter = foundIndex + word.length < originalText.length ? originalText.charAt(foundIndex + word.length) : ' ';
-                        var boundaries = ' .,!?;:\n\r\t';
-                        
-                        var isWordBoundary = (foundIndex === 0 || boundaries.indexOf(charBefore) !== -1) && 
-                                             (foundIndex + word.length === originalText.length || boundaries.indexOf(charAfter) !== -1);
+                        const charBefore = foundIndex > 0 ? originalText.charAt(foundIndex - 1) : ' ';
+                        const charAfter = foundIndex + word.length < originalText.length ? originalText.charAt(foundIndex + word.length) : ' ';
+                        const boundaries = ' .,!?;:\n\r\t';
+                        const isWordBoundary = (foundIndex === 0 || boundaries.indexOf(charBefore) !== -1) && 
+                                               (foundIndex + word.length === originalText.length || boundaries.indexOf(charAfter) !== -1);
                         
                         if (isWordBoundary) {
-                            var overlaps = false;
-                            for (var i = 0; i < processedRanges.length; i++) {
-                                var range = processedRanges[i];
-                                if (!(foundIndex + word.length <= range.start || foundIndex >= range.end)) {
-                                    overlaps = true;
-                                    break;
-                                }
-                            }
-                            
+                            const overlaps = processedRanges.some(range => 
+                                !(foundIndex + word.length <= range.start || foundIndex >= range.end)
+                            );
                             if (!overlaps) {
                                 processedRanges.push({start: foundIndex, end: foundIndex + word.length});
-                                replacements.push({
-                                    index: foundIndex,
-                                    length: word.length,
-                                    word: word
-                                });
+                                replacements.push({index: foundIndex, length: word.length, word: word});
                             }
                         }
-                        
                         searchIndex = foundIndex + 1;
                     }
                 });
                 
                 if (replacements.length > 0) {
-                    replacements.sort(function(a, b) { return b.index - a.index; });
-                    
-                    var result = originalText;
-                    replacements.forEach(function(replacement) {
-                        var before = result.substring(0, replacement.index);
-                        var middle = result.substring(replacement.index, replacement.index + replacement.length);
-                        var after = result.substring(replacement.index + replacement.length);
-                        result = before + '<span class="dictionary-word" data-word="' + replacement.word + '">' + middle + '</span>' + after;
+                    replacements.sort((a, b) => b.index - a.index);
+                    let result = originalText;
+                    replacements.forEach(r => {
+                        const before = result.substring(0, r.index);
+                        const middle = result.substring(r.index, r.index + r.length);
+                        const after = result.substring(r.index + r.length);
+                        result = before + `<span class="dictionary-word" data-word="${r.word}">${middle}</span>` + after;
                     });
-                    
-                    var span = document.createElement('span');
+                    const span = document.createElement('span');
                     span.innerHTML = result;
                     textNode.replaceWith(span);
                 }
             });
-            
             return tempDiv.innerHTML;
         }
 
         function setupDictionaryWordListeners() {
-            var dictionaryWordElements = document.querySelectorAll('.dictionary-word');
-            dictionaryWordElements.forEach(function(element) {
-                element.addEventListener('click', function(e) {
+            document.querySelectorAll('.dictionary-word').forEach(el => {
+                el.addEventListener('click', e => {
                     e.stopPropagation();
-                    var word = this.dataset.word;
-                    var meaning = dictionaryWords[word];
-                    if (meaning) {
-                        showTooltip(e.clientX, e.clientY, word, meaning);
-                    }
+                    const word = el.dataset.word;
+                    const meaning = state.dictionaryWords[word];
+                    if (meaning) showTooltip(e.clientX, e.clientY, word, meaning);
                 });
             });
         }
 
         function showTooltip(x, y, word, meaning) {
-            var tooltip = document.getElementById('tooltip');
-            var overlay = document.getElementById('tooltipOverlay');
-            tooltip.innerHTML = '<strong style="color: #2196F3; font-size: 18px;">' + word + '</strong><br><br>' + meaning;
+            const tooltip = document.getElementById('tooltip');
+            const overlay = document.getElementById('tooltipOverlay');
+            tooltip.innerHTML = `<strong style="color: #2196F3; font-size: 18px;">${word}</strong><br><br>${meaning}`;
             tooltip.style.display = 'block';
             overlay.style.display = 'block';
         }
@@ -644,7 +621,7 @@
         }
 
         function scrollToSection(id) {
-            var element = document.getElementById(id);
+            const element = document.getElementById(id);
             if (element) {
                 element.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 toggleNavSidebar();
@@ -652,50 +629,41 @@
         }
 
         function toggleNavSidebar() {
-            var sidebar = document.getElementById('navSidebar');
-            var overlay = document.getElementById('navOverlay');
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('active');
+            document.getElementById('navSidebar').classList.toggle('open');
+            document.getElementById('navOverlay').classList.toggle('active');
         }
 
         function navigateLesson(direction) {
-            var newIndex = currentLessonIndex + direction;
-            if (newIndex >= 0 && newIndex < currentLessons.length) {
-                displayLesson(newIndex);
-            }
+            const newIndex = state.currentLessonIndex + direction;
+            if (newIndex >= 0 && newIndex < state.currentLessons.length) displayLesson(newIndex);
         }
 
         function changeFontSize(change) {
-            fontSize = Math.max(14, Math.min(28, fontSize + change));
-            document.getElementById('noteArea').style.fontSize = fontSize + 'px';
+            state.fontSize = Math.max(14, Math.min(28, state.fontSize + change));
+            document.getElementById('noteArea').style.fontSize = state.fontSize + 'px';
         }
 
         function handleSearch() {
-            var searchTerm = document.getElementById('searchBox').value.trim();
-            var noteArea = document.getElementById('noteArea');
+            const searchTerm = document.getElementById('searchBox').value.trim();
+            const noteArea = document.getElementById('noteArea');
             noteArea.innerHTML = noteArea.innerHTML.replace(/<mark>/g, '').replace(/<\/mark>/g, '');
-            searchMatches = [];
-            currentSearchIndex = 0;
+            state.searchMatches = [];
+            state.currentSearchIndex = 0;
             if (!searchTerm) {
                 document.getElementById('searchInfo').textContent = '';
                 document.getElementById('searchNavButtons').style.display = 'none';
                 return;
             }
-            var content = noteArea.textContent;
-            var regex = new RegExp(searchTerm, 'gi');
-            var matches = content.match(regex);
+            const content = noteArea.textContent;
+            const regex = new RegExp(searchTerm, 'gi');
+            const matches = content.match(regex);
             if (matches) {
-                searchMatches = matches;
-                var highlightedContent = noteArea.innerHTML.replace(new RegExp(searchTerm, 'gi'), function(match) {
-                    return '<mark>' + match + '</mark>';
-                });
-                noteArea.innerHTML = highlightedContent;
-                document.getElementById('searchInfo').textContent = matches.length + ' ප්‍රතිඵල හමුවිය';
+                state.searchMatches = matches;
+                noteArea.innerHTML = noteArea.innerHTML.replace(new RegExp(searchTerm, 'gi'), match => `<mark>${match}</mark>`);
+                document.getElementById('searchInfo').textContent = `${matches.length} ප්‍රතිඵල හමුවිය`;
                 document.getElementById('searchNavButtons').style.display = 'flex';
-                var firstMark = noteArea.querySelector('mark');
-                if (firstMark) {
-                    firstMark.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
+                const firstMark = noteArea.querySelector('mark');
+                if (firstMark) firstMark.scrollIntoView({ behavior: 'smooth', block: 'center' });
             } else {
                 document.getElementById('searchInfo').textContent = 'ප්‍රතිඵල හමු නොවීය';
                 document.getElementById('searchNavButtons').style.display = 'none';
@@ -703,14 +671,79 @@
         }
 
         function navigateSearch(direction) {
-            if (searchMatches.length === 0) return;
-            currentSearchIndex += direction;
-            if (currentSearchIndex < 0) currentSearchIndex = searchMatches.length - 1;
-            if (currentSearchIndex >= searchMatches.length) currentSearchIndex = 0;
-            var marks = document.querySelectorAll('mark');
-            if (marks[currentSearchIndex]) {
-                marks[currentSearchIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            if (state.searchMatches.length === 0) return;
+            state.currentSearchIndex += direction;
+            if (state.currentSearchIndex < 0) state.currentSearchIndex = state.searchMatches.length - 1;
+            if (state.currentSearchIndex >= state.searchMatches.length) state.currentSearchIndex = 0;
+            const marks = document.querySelectorAll('mark');
+            if (marks[state.currentSearchIndex]) {
+                marks[state.currentSearchIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
+        }
+
+        function handleUniversalSearch() {
+            const searchTerm = document.getElementById('universalSearchBox').value.trim();
+            const resultsDiv = document.getElementById('universalSearchResults');
+            
+            if (!searchTerm || searchTerm.length < 2) {
+                resultsDiv.innerHTML = '';
+                return;
+            }
+            
+            resultsDiv.innerHTML = '<div class="loading">සොයමින්...</div>';
+            
+            sbClient.from('Historynt').select('*').ilike('content', `%${searchTerm}%`).order('slug', { ascending: true }).then(res => {
+                if (res.error) throw res.error;
+                
+                if (res.data.length === 0) {
+                    resultsDiv.innerHTML = '<div style="text-align: center; padding: 20px; color: #667eea;">ප්‍රතිඵල හමු නොවීය</div>';
+                    return;
+                }
+                
+                let html = `<div style="margin-bottom: 10px; font-weight: bold; color: #667eea;">${res.data.length} ප්‍රතිඵල හමුවිය:</div>`;
+                
+res.data.forEach(lesson => {
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = lesson.content;
+                    const textContent = tempDiv.textContent || tempDiv.innerText;
+                    const searchIndex = textContent.toLowerCase().indexOf(searchTerm.toLowerCase());
+                    const contextStart = Math.max(0, searchIndex - 100);
+                    const contextEnd = Math.min(textContent.length, searchIndex + searchTerm.length + 100);
+                    let preview = textContent.substring(contextStart, contextEnd);
+                    if (contextStart > 0) preview = '...' + preview;
+                    if (contextEnd < textContent.length) preview = preview + '...';
+                    preview = preview.replace(new RegExp(`\\S*${searchTerm}\\S*`, 'gi'), '<mark>$&</mark>');
+                    const categoryName = lesson.slug.startsWith('slhis') ? 'ශ්‍රී ලංකාව' : 
+                                       lesson.slug.startsWith('erphis') ? 'යුරෝපය' : 'ඉන්දියාව';
+                    html += `<div class="universal-result-item" onclick="openUniversalResult('${lesson.slug}')">
+                            <div class="result-title">${lesson.title} (${categoryName})</div>
+                            <div class="result-preview">${preview}</div>
+                            </div>`;
+                });
+                resultsDiv.innerHTML = html;
+            }).catch(err => {
+                console.error('Universal search error:', err);
+                resultsDiv.innerHTML = '<div style="text-align: center; padding: 20px; color: red;">සෙවීමේ දෝෂයක් සිදුවිය</div>';
+            });
+        }
+        
+        function openUniversalResult(slug) {
+            const category = slug.startsWith('slhis') ? 'slhis' : 
+                           slug.startsWith('erphis') ? 'erphis' : 'indhis';
+            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.category-tab[data-category="${category}"]`).classList.add('active');
+            state.currentCategory = category;
+            sbClient.from('Historynt').select('*').like('slug', category + '%').order('slug', { ascending: true }).then(res => {
+                if (res.error) throw res.error;
+                state.currentLessons = res.data;
+                const lessonIndex = state.currentLessons.findIndex(l => l.slug === slug);
+                if (lessonIndex !== -1) {
+                    displayLesson(lessonIndex);
+                    document.getElementById('universalSearchBox').value = '';
+                    document.getElementById('universalSearchResults').innerHTML = '';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }).catch(err => console.error('Error loading lesson:', err));
         }
     </script>
 </body>
