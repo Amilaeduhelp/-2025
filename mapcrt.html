@@ -15,7 +15,7 @@
             font-family: 'Noto Sans Sinhala', Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -24,6 +24,7 @@
         
         .container {
             max-width: 1200px;
+            width: 100%;
             background: white;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
@@ -33,17 +34,21 @@
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 30px;
+            padding: 20px;
             text-align: center;
         }
         
         .header h1 {
-            font-size: 2em;
+            font-size: 1.5em;
             margin-bottom: 10px;
         }
         
+        .header p {
+            font-size: 0.9em;
+        }
+        
         .map-container {
-            padding: 30px;
+            padding: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -264,11 +269,110 @@
         
         .info-box {
             background: #e7f3ff;
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border-left: 4px solid #667eea;
             text-align: center;
+            font-size: 0.9em;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .header h1 {
+                font-size: 1.2em;
+            }
+            
+            .header p {
+                font-size: 0.8em;
+            }
+            
+            .map-container {
+                padding: 10px;
+            }
+            
+            .map-selector label {
+                font-size: 1em;
+            }
+            
+            .map-selector select {
+                min-width: 200px;
+                padding: 10px 15px;
+                font-size: 0.9em;
+            }
+            
+            .mode-btn {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+            
+            button {
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+            
+            .external-label {
+                font-size: 10px;
+                padding: 2px 6px;
+            }
+            
+            .label-left {
+                left: -60px;
+            }
+            
+            .label-right {
+                right: -60px;
+            }
+            
+            .info-box {
+                font-size: 0.85em;
+                padding: 10px;
+            }
+            
+            .item-name {
+                font-size: 0.95em;
+            }
+            
+            .item-type {
+                font-size: 0.8em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1em;
+            }
+            
+            .map-selector select {
+                min-width: 180px;
+                font-size: 0.85em;
+            }
+            
+            .mode-selector {
+                gap: 5px;
+            }
+            
+            .mode-btn {
+                padding: 6px 10px;
+                font-size: 0.85em;
+            }
+            
+            .controls {
+                gap: 8px;
+            }
+            
+            button {
+                padding: 8px 15px;
+                font-size: 0.85em;
+            }
+            
+            .external-label {
+                font-size: 9px;
+            }
         }
     </style>
 </head>
@@ -326,6 +430,32 @@
     <script>
         const canvas = document.getElementById('mapCanvas');
         const ctx = canvas.getContext('2d');
+        
+        // Canvas size setup - responsive
+        let canvasWidth = 700;
+        let canvasHeight = 900;
+        
+        function resizeCanvas() {
+            const wrapper = document.querySelector('.canvas-wrapper');
+            const maxWidth = wrapper.clientWidth;
+            
+            if (maxWidth < canvasWidth) {
+                const scale = maxWidth / canvasWidth;
+                canvas.width = canvasWidth;
+                canvas.height = canvasHeight;
+                canvas.style.width = maxWidth + 'px';
+                canvas.style.height = (canvasHeight * scale) + 'px';
+            } else {
+                canvas.width = canvasWidth;
+                canvas.height = canvasHeight;
+                canvas.style.width = canvasWidth + 'px';
+                canvas.style.height = canvasHeight + 'px';
+            }
+            
+            drawMap();
+        }
+        
+        window.addEventListener('resize', resizeCanvas);
         
         // සිතියම් configurations
         const mapConfigs = {
@@ -444,7 +574,38 @@
         }
         
         // Mouse events
-        canvas.addEventListener('mousedown', function(e) {
+        canvas.addEventListener('mousedown', handleStart);
+        canvas.addEventListener('mousemove', handleMove);
+        canvas.addEventListener('mouseup', handleEnd);
+        
+        // Touch events for mobile
+        canvas.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousedown', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        });
+        
+        canvas.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousemove', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        });
+        
+        canvas.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            const mouseEvent = new MouseEvent('mouseup', {});
+            canvas.dispatchEvent(mouseEvent);
+        });
+        
+        function handleStart(e) {
             if (!mapLoaded) {
                 alert('කරුණාකර මුලින්ම සිතියමක් තෝරන්න!');
                 return;
@@ -474,9 +635,9 @@
                 isDrawing = true;
                 currentPath = [{x: x, y: y, lat: lat, lng: lng}];
             }
-        });
+        }
         
-        canvas.addEventListener('mousemove', function(e) {
+        function handleMove(e) {
             if (!isDrawing) return;
             
             const rect = canvas.getBoundingClientRect();
@@ -488,9 +649,9 @@
             currentPath.push({x: x, y: y, lat: lat, lng: lng});
             drawMap();
             drawTemporaryPath();
-        });
+        }
         
-        canvas.addEventListener('mouseup', function(e) {
+        function handleEnd(e) {
             if (!isDrawing) return;
             
             isDrawing = false;
@@ -541,7 +702,7 @@
             }
             
             currentPath = [];
-        });
+        }
         
         function drawTemporaryPath() {
             if (currentPath.length < 2) return;
@@ -748,6 +909,8 @@
             link.click();
         }
         
+        // Initialize
+        resizeCanvas();
         drawMap();
     </script>
 </body>
