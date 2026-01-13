@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>අක්ෂාංශ-දේශාංශ සිතියම් පින්තාරුව</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans Sinhala', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .map-container {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        
+        .canvas-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .external-label {
+            position: absolute;
+            font-size: 12px;
+            font-weight: 600;
+            color: #667eea;
+            background: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .label-top {
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .label-right {
+            right: -80px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .label-bottom {
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .label-left {
+            left: -80px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        #mapCanvas {
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            cursor: crosshair;
+            background: white;
+        }
+        
+        .map-selector {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .map-selector label {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1em;
+        }
+        
+        .map-selector select {
+            padding: 12px 20px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: 'Noto Sans Sinhala', Arial, sans-serif;
+            background: white;
+            cursor: pointer;
+            min-width: 250px;
+            transition: all 0.3s;
+        }
+        
+        .map-selector select:hover {
+            border-color: #764ba2;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+        }
+        
+        .map-selector select:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 3px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+            font-family: 'Noto Sans Sinhala', Arial, sans-serif;
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .points-list {
+            margin-top: 20px;
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        .points-list h3 {
+            margin-bottom: 10px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .point-item {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .point-info {
+            flex: 1;
+        }
+        
+        .point-name {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 3px;
+        }
+        
+        .point-coords {
+            font-size: 0.85em;
+            color: #666;
+        }
+        
+        .btn-remove {
+            background: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.85em;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .info-box {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>අක්ෂාංශ-දේශාංශ සිතියම් පින්තාරුව</h1>
+            <p>සිතියමේ click කර ස්ථාන සලකුණු කරන්න</p>
+        </div>
+        
+        <div class="map-container">
+            <div class="info-box">
+                <strong>භාවිතා කරන ආකාරය:</strong> සිතියමක් තෝරන්න → සිතියමේ ඕනෑම තැනක click කර ස්ථානයට නමක් ලබා දෙන්න
+            </div>
+            
+            <div class="map-selector">
+                <label for="mapSelect">🗺️ සිතියම තෝරන්න:</label>
+                <select id="mapSelect" onchange="loadSelectedMap()">
+                    <option value="">-- සිතියමක් තෝරන්න --</option>
+                    <option value="sl_ol">සා. පෙළ ලංකා</option>
+                    <option value="world_ol">සා.පෙළ ලෝක</option>
+                    <option value="sl_al">උසස් පෙළ ලංකා</option>
+                    <option value="europe_al">උසස් පෙළ යුරෝපා</option>
+                    <option value="india_al">උසස් පෙළ ඉන්දියා</option>
+                </select>
+            </div>
+            
+            <div class="canvas-wrapper">
+                <div class="external-label label-top" id="labelTop">▲ 9.83619</div>
+                <div class="external-label label-right" id="labelRight">▶ 81.86700</div>
+                <div class="external-label label-bottom" id="labelBottom">▼ 5.91853</div>
+                <div class="external-label label-left" id="labelLeft">◀ 79.69264</div>
+                <canvas id="mapCanvas" width="700" height="900"></canvas>
+            </div>
+            
+            <div class="controls">
+                <button class="btn-success" onclick="downloadMap()">📥 පින්තූරය Download කරන්න</button>
+                <button class="btn-secondary" onclick="clearLast()">අවසාන ස්ථානය ඉවත් කරන්න</button>
+                <button class="btn-danger" onclick="clearAll()">සියල්ල ඉවත් කරන්න</button>
+            </div>
+            
+            <div class="points-list" id="pointsListContainer" style="display: none;">
+                <h3>එක් කළ ස්ථාන</h3>
+                <div id="pointsList"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const canvas = document.getElementById('mapCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // සිතියම් configurations
+        const mapConfigs = {
+            sl_ol: {
+                name: 'සා. පෙළ ලංකා',
+                url: 'https://raw.githubusercontent.com/Amilaeduhelp/-2025/main/slditalmap-02.jpg',
+                bounds: {
+                    north: 9.83619,
+                    south: 5.91853,
+                    east: 81.86700,
+                    west: 79.69264
+                }
+            },
+            world_ol: {
+                name: 'සා.පෙළ ලෝක',
+                url: '', // පසුව එක් කරන්න
+                bounds: {
+                    north: 90,
+                    south: -90,
+                    east: 180,
+                    west: -180
+                }
+            },
+            sl_al: {
+                name: 'උසස් පෙළ ලංකා',
+                url: '', // පසුව එක් කරන්න
+                bounds: {
+                    north: 9.83619,
+                    south: 5.91853,
+                    east: 81.86700,
+                    west: 79.69264
+                }
+            },
+            europe_al: {
+                name: 'උසස් පෙළ යුරෝපා',
+                url: '', // පසුව එක් කරන්න
+                bounds: {
+                    north: 71,
+                    south: 36,
+                    east: 40,
+                    west: -10
+                }
+            },
+            india_al: {
+                name: 'උසස් පෙළ ඉන්දියා',
+                url: '', // පසුව එක් කරන්න
+                bounds: {
+                    north: 35,
+                    south: 8,
+                    east: 97,
+                    west: 68
+                }
+            }
+        };
+        
+        let bounds = mapConfigs.sl_ol.bounds;
+        let points = [];
+        let mapImage = new Image();
+        let mapLoaded = false;
+        let currentMapKey = '';
+        
+        mapImage.onload = function() {
+            mapLoaded = true;
+            drawMap();
+        };
+        
+        mapImage.onerror = function() {
+            console.log('සිතියම load කිරීම අසාර්ථකයි');
+            alert('සිතියම load කිරීම අසාර්ථකයි. කරුණාකර නැවත උත්සාහ කරන්න.');
+            mapLoaded = false;
+            drawMap();
+        };
+        
+        function loadSelectedMap() {
+            const select = document.getElementById('mapSelect');
+            const mapKey = select.value;
+            
+            if (!mapKey) {
+                return;
+            }
+            
+            const config = mapConfigs[mapKey];
+            
+            if (!config.url) {
+                alert('මෙම සිතියම තවමත් එක් කර නොමැත. ඉක්මනින් ලබා ගත හැක.');
+                select.value = currentMapKey;
+                return;
+            }
+            
+            currentMapKey = mapKey;
+            bounds = config.bounds;
+            points = []; // Clear existing points when changing map
+            mapLoaded = false;
+            
+            // Load new map
+            mapImage.crossOrigin = "anonymous";
+            mapImage.src = config.url;
+            
+            updatePointsList();
+        }
+        
+        // Canvas click event
+        canvas.addEventListener('click', function(e) {
+            if (!mapLoaded) {
+                alert('කරුණාකර මුලින්ම සිතියමක් තෝරන්න!');
+                return;
+            }
+            
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Convert pixel coordinates to lat/lng
+            const lng = bounds.west + (x / canvas.width) * (bounds.east - bounds.west);
+            const lat = bounds.north - (y / canvas.height) * (bounds.north - bounds.south);
+            
+            // ස්ථානයේ නම අසන්න
+            const name = prompt('ස්ථානයේ නම ඇතුළත් කරන්න:', '');
+            
+            if (name !== null && name.trim() !== '') {
+                const point = { 
+                    lat: lat, 
+                    lng: lng, 
+                    name: name.trim() 
+                };
+                points.push(point);
+                drawMap();
+                updatePointsList();
+            }
+        });
+        
+        function drawMap() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // සුදු පසුබිම
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // සිතියම් පින්තූරය අඳින්න
+            if (mapLoaded && mapImage.complete) {
+                ctx.drawImage(mapImage, 0, 0, canvas.width, canvas.height);
+            }
+            
+            // ස්ථාන අඳින්න
+            points.forEach(point => {
+                const x = lngToX(point.lng);
+                const y = latToY(point.lat);
+                
+                // සුදු පිටත රවුම
+                ctx.strokeStyle = 'white';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(x, y, 3, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // කළු තිත
+                ctx.fillStyle = '#000000';
+                ctx.beginPath();
+                ctx.arc(x, y, 3, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // නම
+                if (point.name) {
+                    ctx.fillStyle = '#000';
+                    ctx.strokeStyle = 'white';
+                    ctx.lineWidth = 3;
+                    ctx.font = 'bold 12px Noto Sans Sinhala, Arial';
+                    ctx.strokeText(point.name, x + 6, y - 6);
+                    ctx.fillText(point.name, x + 6, y - 6);
+                }
+            });
+            
+            updateExternalLabels();
+        }
+        
+        function updateExternalLabels() {
+            document.getElementById('labelTop').textContent = '▲ ' + bounds.north;
+            document.getElementById('labelRight').textContent = '▶ ' + bounds.east;
+            document.getElementById('labelBottom').textContent = '▼ ' + bounds.south;
+            document.getElementById('labelLeft').textContent = '◀ ' + bounds.west;
+        }
+        
+        function latToY(lat) {
+            return canvas.height - ((lat - bounds.south) / (bounds.north - bounds.south)) * canvas.height;
+        }
+        
+        function lngToX(lng) {
+            return ((lng - bounds.west) / (bounds.east - bounds.west)) * canvas.width;
+        }
+        
+        function updatePointsList() {
+            const listContainer = document.getElementById('pointsListContainer');
+            const list = document.getElementById('pointsList');
+            
+            if (points.length > 0) {
+                listContainer.style.display = 'block';
+                list.innerHTML = '';
+                
+                points.forEach((point, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'point-item';
+                    div.innerHTML = `
+                        <div class="point-info">
+                            <div class="point-name">${point.name}</div>
+                            <div class="point-coords">${point.lat.toFixed(5)}, ${point.lng.toFixed(5)}</div>
+                        </div>
+                        <button class="btn-remove" onclick="removePoint(${index})">ඉවත් කරන්න</button>
+                    `;
+                    list.appendChild(div);
+                });
+            } else {
+                listContainer.style.display = 'none';
+            }
+        }
+        
+        function removePoint(index) {
+            points.splice(index, 1);
+            drawMap();
+            updatePointsList();
+        }
+        
+        function clearLast() {
+            if (points.length > 0) {
+                points.pop();
+                drawMap();
+                updatePointsList();
+            }
+        }
+        
+        function clearAll() {
+            if (points.length > 0 && confirm('ඔබට සියලුම ස්ථාන ඉවත් කිරීමට අවශ්‍යද?')) {
+                points = [];
+                drawMap();
+                updatePointsList();
+            }
+        }
+        
+        function downloadMap() {
+            if (!mapLoaded) {
+                alert('කරුණාකර මුලින්ම සිතියමක් තෝරන්න!');
+                return;
+            }
+            const link = document.createElement('a');
+            link.download = 'map_' + new Date().getTime() + '.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        // Initial draw
+        drawMap();
+    </script>
+</body>
+</html>
