@@ -385,7 +385,8 @@
         
         <div class="map-container">
             <div class="info-box">
-                <strong>භාවිතා කරන ආකාරය:</strong> සිතියමක් තෝරන්න → ලකුණු කිරීමේ ආකාරය තෝරන්න → සිතියමේ අඳින්න
+                <strong>භාවිතා කරන ආකාරය:</strong> සිතියමක් තෝරන්න → ලකුණු කිරීමේ ආකාරය තෝරන්න → සිතියමේ අඳින්න<br>
+                <small>📍 ස්ථානයක්: Double click/tap කරන්න | 🗺️ ප්‍රදේශය/〰️ ගංගා: Click & drag කරන්න</small>
             </div>
             
             <div class="map-selector">
@@ -519,6 +520,7 @@
         let currentMode = 'point'; // 'point', 'area', 'river'
         let isDrawing = false;
         let currentPath = [];
+        let lastTapTime = 0;
         
         mapImage.onload = function() {
             mapLoaded = true;
@@ -574,40 +576,96 @@
         }
         
         // Mouse events
+        canvas.addEventListener('dblclick', handleDoubleClick);
         canvas.addEventListener('mousedown', handleStart);
         canvas.addEventListener('mousemove', handleMove);
         canvas.addEventListener('mouseup', handleEnd);
         
         // Touch events for mobile
         canvas.addEventListener('touchstart', function(e) {
-            e.preventDefault();
             const touch = e.touches[0];
-            const mouseEvent = new MouseEvent('mousedown', {
-                clientX: touch.clientX,
-                clientY: touch.clientY
-            });
-            canvas.dispatchEvent(mouseEvent);
+            const currentTime = new Date().getTime();
+            const tapGap = currentTime - lastTapTime;
+            
+            // Double tap detection (< 300ms)
+            if (tapGap < 300 && tapGap > 0) {
+                e.preventDefault();
+                const mouseEvent = new MouseEvent('dblclick', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                canvas.dispatchEvent(mouseEvent);
+                lastTapTime = 0;
+            } else {
+                lastTapTime = currentTime;
+                
+                // Single tap - start drawing for area/river modes
+                if (currentMode !== 'point') {
+                    e.preventDefault();
+                    const mouseEvent = new MouseEvent('mousedown', {
+                        clientX: touch.clientX,
+                        clientY: touch.clientY
+                    });
+                    canvas.dispatchEvent(mouseEvent);
+                }
+            }
         });
         
         canvas.addEventListener('touchmove', function(e) {
-            e.preventDefault();
-            const touch = e.touches[0];
-            const mouseEvent = new MouseEvent('mousemove', {
-                clientX: touch.clientX,
-                clientY: touch.clientY
-            });
-            canvas.dispatchEvent(mouseEvent);
+            if (currentMode !== 'point') {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const mouseEvent = new MouseEvent('mousemove', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                canvas.dispatchEvent(mouseEvent);
+            }
         });
         
         canvas.addEventListener('touchend', function(e) {
-            e.preventDefault();
-            const mouseEvent = new MouseEvent('mouseup', {});
-            canvas.dispatchEvent(mouseEvent);
+            if (currentMode !== 'point') {
+                e.preventDefault();
+                const mouseEvent = new MouseEvent('mouseup', {});
+                canvas.dispatchEvent(mouseEvent);
+            }
         });
+        
+        function handleDoubleClick(e) {
+            if (!mapLoaded) {
+                alert('කරුණාකර මුලින්ම සිතියමක් තෝරන්න!');
+                return;
+            }
+            
+            if (currentMode !== 'point') return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const lng = bounds.west + (x / canvas.width) * (bounds.east - bounds.west);
+            const lat = bounds.north - (y / canvas.height) * (bounds.north - bounds.south);
+            
+            const name = prompt('ස්ථානයේ නම ඇතුළත් කරන්න:', '');
+            if (name !== null && name.trim() !== '') {
+                items.push({
+                    type: 'point',
+                    lat: lat,
+                    lng: lng,
+                    name: name.trim()
+                });
+                drawMap();
+                updateItemsList();
+            }
+        }
         
         function handleStart(e) {
             if (!mapLoaded) {
                 alert('කරුණාකර මුලින්ම සිතියමක් තෝරන්න!');
+                return;
+            }
+            
+            // Point mode එකේ single click ignore කරන්න (double click එකට බලාපොරොත්තු වෙනවා)
+            if (currentMode === 'point') {
                 return;
             }
             
@@ -617,24 +675,9 @@
             const lng = bounds.west + (x / canvas.width) * (bounds.east - bounds.west);
             const lat = bounds.north - (y / canvas.height) * (bounds.north - bounds.south);
             
-            if (currentMode === 'point') {
-                // තනි ස්ථානයක්
-                const name = prompt('ස්ථානයේ නම ඇතුළත් කරන්න:', '');
-                if (name !== null && name.trim() !== '') {
-                    items.push({
-                        type: 'point',
-                        lat: lat,
-                        lng: lng,
-                        name: name.trim()
-                    });
-                    drawMap();
-                    updateItemsList();
-                }
-            } else {
-                // ප්‍රදේශයක් හෝ ගංගාවක් - drawing ආරම්භ කරන්න
-                isDrawing = true;
-                currentPath = [{x: x, y: y, lat: lat, lng: lng}];
-            }
+            // ප්‍රදේශයක් හෝ ගංගාවක් - drawing ආරම්භ කරන්න
+            isDrawing = true;
+            currentPath = [{x: x, y: y, lat: lat, lng: lng}];
         }
         
         function handleMove(e) {
