@@ -19,6 +19,9 @@
         const SUPABASE_URL = 'https://uqgzlaxsnknheoerbfus.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxZ3psYXhzbmtuaGVvZXJiZnVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5MjM2MTUsImV4cCI6MjA3OTI4MzYxNX0.IYWZ7ukx8J-GJMWy7cMk2BWnmzJmJjjE93yEmJie7nQ';
 
+        const WORDS_SUPABASE_URL = 'https://jcijglwpkfluyzrltimk.supabase.co';
+        const WORDS_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpjaWpnbHdwa2ZsdXl6cmx0aW1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY4MzU3OTUsImV4cCI6MjA4MjQxMTc5NX0.dvT8OiyVEiYn_DhkMakmSq1Vvr4REDr0kYPnyqCtWHs';
+
         // Icons
         const SearchIcon = () => (
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -90,12 +93,12 @@
                         }
 
                         const searchTerms = words.map(w => `meaning.ilike.*${encodeURIComponent(w)}*`).join(',');
-                        const url = `${SUPABASE_URL}/rest/v1/learnX pedia?select=id,word,meaning&or=(${searchTerms})&word=neq.${encodeURIComponent(searchWord)}&limit=6`;
+                        const url = `${WORDS_SUPABASE_URL}/rest/v1/words?select=id,word,meaning&or=(${searchTerms})&word=neq.${encodeURIComponent(searchWord)}&limit=6`;
                         
                         const response = await fetch(url, {
                             headers: {
-                                'apikey': SUPABASE_ANON_KEY,
-                                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                                'apikey': WORDS_ANON_KEY,
+                                'Authorization': `Bearer ${WORDS_ANON_KEY}`,
                                 'Content-Type': 'application/json'
                             }
                         });
@@ -279,12 +282,12 @@
                     const encodedTerm = encodeURIComponent(term);
                     const allResults = [];
 
-                    // 1. learnX pedia search
-                    const pediaUrl = `${SUPABASE_URL}/rest/v1/learnX pedia?select=id,word,meaning&word=ilike.*${encodedTerm}*&limit=5&order=word.asc`;
+                    // 1. words table search (අර්ථදීපනී)
+                    const pediaUrl = `${WORDS_SUPABASE_URL}/rest/v1/words?select=id,word,meaning&word=ilike.*${encodedTerm}*&limit=5&order=word.asc`;
                     const pediaRes = await fetch(pediaUrl, {
                         headers: {
-                            'apikey': SUPABASE_ANON_KEY,
-                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                            'apikey': WORDS_ANON_KEY,
+                            'Authorization': `Bearer ${WORDS_ANON_KEY}`,
                             'Content-Type': 'application/json'
                         }
                     });
